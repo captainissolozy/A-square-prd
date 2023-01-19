@@ -2,16 +2,17 @@ import { useUserContext } from "../../context/UserContexts";
 import LogoutBtn1 from "../common/Logoutbtn1";
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { doc, onSnapshot } from "firebase/firestore";
+import {doc, getDoc, onSnapshot} from "firebase/firestore";
 import db from "../../config/firebase-config";
 import NavWrapper from "./NavWrapper";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import { Button } from "@mui/material";
 
 const Navbar = () => {
   const { user } = useUserContext();
   const [open, setOpen] = useState(false);
   const [userInfo, setUserInfo] = useState({});
+  const navigate = (useNavigate());
 
   useEffect(() => {
     if (user) {
@@ -40,7 +41,11 @@ const Navbar = () => {
     }
   });
 
-  if (userInfo == {}) return null;
+  const handlePrPo = () => {
+    navigate("/lobby")
+  }
+
+  if (userInfo === {}) return null;
   return (
     <NavWrapper>
       <nav className="navbar navbar-expand-lg navbar-light bg-light fixed-top mb-4">
@@ -66,7 +71,7 @@ const Navbar = () => {
 
           <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
             <ul className="navbar-nav me-auto mb-lg-0">
-              {userInfo.role == "Admin" && user ? (
+              {userInfo.role === "Admin" && user ? (
                 <li className="nav-item"
                     data-bs-toggle="collapse"
                     data-bs-target="#navbarTogglerDemo02"
@@ -119,9 +124,8 @@ const Navbar = () => {
                     data-bs-target="#navbarTogglerDemo02"
                     aria-controls="navbarTogglerDemo02">
                   <form
-                    class="nav-link active d-flex justify-content-center"
-                    href="#"
-                  ><Button className="m-0 p-0 text-secondary" variant="text">PR/PO</Button>
+                    className="nav-link active d-flex justify-content-center"
+                  ><Button className="m-0 p-0 text-secondary" variant="text" onClick={handlePrPo}>PR/PO</Button>
                   </form>
                 </li>
               ) : (

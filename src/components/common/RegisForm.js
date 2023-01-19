@@ -4,7 +4,7 @@ import {MdOutlineArrowBackIos} from 'react-icons/md'
 import FormWrapper from "./FormWrapper";
 import {Link} from "react-router-dom";
 
-const BasicTextFieldsRegis = ({setPassword, setEmail, setRole, handleAction}) => {
+const BasicTextFieldsRegis = ({setPassword, setEmail, setRole, setName, handleAction}) => {
     const handleSubmit = e => {
         e.preventDefault();
 
@@ -28,6 +28,13 @@ const BasicTextFieldsRegis = ({setPassword, setEmail, setRole, handleAction}) =>
                                type="email"
                                required
                                onChange={(e) => setEmail(e.target.value)}
+                    />
+                    <TextField className="my-3"
+                               label="name"
+                               variant="filled"
+                               type="name"
+                               required
+                               onChange={(e) => setName(e.target.value)}
                     />
                     <TextField className="my-3 mb-4"
                                label="Password"

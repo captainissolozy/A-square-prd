@@ -1,5 +1,4 @@
 import BasicTextFieldsRegis from "../../components/common/RegisForm";
-
 import {
     getAuth,
     createUserWithEmailAndPassword
@@ -17,6 +16,7 @@ const RegisPage = () => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [name, setName] = useState("");
     const [role, setRole] = useState("");
     const navigate = (useNavigate());
     const {user, setUser} = useUserContext()
@@ -25,7 +25,7 @@ const RegisPage = () => {
         if (!user) {
             navigate('/')
         }
-        if (sessionStorage.getItem('role') != "Admin"){
+        if (sessionStorage.getItem('role') !== "Admin"){
             navigate('/')
         }
     }, [navigate, user, sessionStorage.getItem('role')])
@@ -37,7 +37,7 @@ const RegisPage = () => {
                 sessionStorage.setItem('email', response.user.email)
                 const docRef = doc(db, "UsersDetail", response.user.email);
                 sessionStorage.setItem('User', JSON.stringify(response.user))
-                setDoc(docRef, {email: response.user.email, role: role}).then()
+                setDoc(docRef, {email: response.user.email, role: role, name: name}).then()
                 setUser(response.user)
                 navigate("/lobby");
 
@@ -52,6 +52,7 @@ const RegisPage = () => {
     return (
         <div>
             <BasicTextFieldsRegis setEmail={setEmail}
+                                  setName={setName}
                                   setPassword={setPassword}
                                   setRole={setRole}
                                   handleAction={() => handleAction()}/>

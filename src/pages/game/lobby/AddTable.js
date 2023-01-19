@@ -36,7 +36,7 @@ const AddTable = () => {
                 <tr onClick={() => handleJoinPublic(data.UniqueKey, data.pubLic)} style={{cursor: "pointer"}}>
                     <td>{data.winCon}</td>
                     <td>{data.title}</td>
-                    <td>{data.email}</td>
+                    <td>{data.name}</td>
                     <td>{data.pubLic}</td>
 
                 </tr>

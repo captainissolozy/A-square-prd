@@ -360,12 +360,24 @@ export default function Lobby() {
         <LobbyWrapper>
             <div className="wrapper-box pt-4">
                 <div className="container pt-5">
-                    <div className="row mt-2">
-                        <div className="col-12 t-tab box">
-                            <table className="table">
+                    <div className="row mt-3 d-flex justify-content-center">
+                        <div className="col-8 p-0 pt-1 col-md-6 mb-2">
+                            <TextField id="outlined-search" type="search"
+                                       label="Join Room" className="w-100" onChange={joinChange}/>
+                        </div>
+                        <div className="col-8 d-flex justify-content-center col-md-2 m-2 mx-0 px-0" onClick={handleJoin}>
+                            <BasicButtons title={'Search'} color={'success'}/>
+                        </div>
+                        <div className="col-8 d-flex justify-content-center col-md-2 m-2 mx-0 px-0" onClick={handleCreate}>
+                            <Button variant="contained" className="w-100" color="success">CREATE</Button>
+                        </div>
+                    </div>
+                    <div className="row m-2">
+                        <div className="col-12 t-tab box p-0">
+                            <table className="table table-sm">
                                 <thead>
                                 <tr>
-                                    <th scope="col" className="t-stick">Best of</th>
+                                    <th scope="col" className="t-stick">No</th>
                                     <th scope="col" className="t-stick">Rooms</th>
                                     <th scope="col" className="t-stick">Owner</th>
                                     <th scope="col" className="t-stick">Public</th>
@@ -373,18 +385,6 @@ export default function Lobby() {
                                 </thead>
                                 <AddTable/>
                             </table>
-                        </div>
-                    </div>
-                    <div className="row mt-3 d-flex justify-content-center">
-                        <div className="col-7 p-0 pt-1 col-md-6">
-                            <TextField id="outlined-search" type="search"
-                                       label="Join Room" className="w-100" onChange={joinChange}/>
-                        </div>
-                        <div className="col-4 d-flex justify-content-center col-md-2 m-2" onClick={handleJoin}>
-                            <BasicButtons title={'Join'}/>
-                        </div>
-                        <div className="col-6 d-flex justify-content-center col-md-2 m-2" onClick={handleCreate}>
-                            <BasicButtons title={'Create'}/>
                         </div>
                     </div>
                 </div>
