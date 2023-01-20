@@ -1,6 +1,7 @@
 body {
   margin: 0;
-  font-family: 'Verdana' !important;
+  font-family: 'Verdana', serif !important;
+  font-size: 0.7rem !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #ffffee;

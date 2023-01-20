@@ -8,7 +8,8 @@ import Lobby from "./pages/game/lobby";
 import LoginPage from "./pages/login";
 import RegisPage from "./pages/signup";
 import Game from "./pages/game/gamePlay/Game";
-import Initial from "./pages/initial/Initial";
+import Customer from "./pages/customer"
+import Supplier from "./pages/supplier"
 
 function App() {
 
@@ -30,6 +31,8 @@ function App() {
                     />
                     <Route path="/lobby" element={<Lobby/>}/>
                     <Route path="/game" element={<Game/>}/>
+                    <Route path="/customer" element={<Customer/>}/>
+                    <Route path="/supplier" element={<Supplier/>}/>
                 </Routes>
             </BrowserRouter>
         </>);

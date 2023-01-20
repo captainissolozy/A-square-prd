@@ -1,31 +1,21 @@
-import LobbyWrapper from "./LobbyWrapper";
 import * as React from "react";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {useUserContext} from "../../../context/UserContexts";
-import {
-    BottomNavigation, BottomNavigationAction,
-    Button,
-    Fab,
-    FormControl,
-    FormControlLabel,
-    FormLabel, Paper,
-    Radio,
-    RadioGroup, Tab, Tabs,
-    TextField
-} from "@mui/material";
+import {useUserContext} from "../../context/UserContexts";
+import {Button, Fab, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from '@mui/icons-material/Search';
 import Modal from "@material-ui/core/Modal";
-import db from "../../../config/firebase-config"
+import db from "../../config/firebase-config"
 import {doc, getDoc, setDoc} from "firebase/firestore"
 import {v4 as uuid} from 'uuid';
-import AddTable from "./AddTable";
+import formS from "./formS";
 import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import SupplierWrapper from "./SupplierWrapper";
 
 
-export default function Lobby() {
+export default function Supplier() {
 
     const initialFormData = Object.freeze({
         email: sessionStorage.getItem('email'),
@@ -368,12 +358,12 @@ export default function Lobby() {
     }
 
     return (
-        <LobbyWrapper>
+        <SupplierWrapper>
             <div className="wrapper-box pt-4">
                 <div className="container pt-5">
                     <div className="row mt-3 d-flex justify-content-center">
                         <div className="row">
-                            <div className="col-md-4 px-2 col-4">
+                            <div className="col-8 px-2">
                                 <div className="col pt-1 col-md-12 mb-2">
                                     <TextField id="outlined-search" type="search" InputLabelProps={{
                                         shrink: true,
@@ -382,19 +372,7 @@ export default function Lobby() {
                                             height: "5px",
                                         },
                                     }}
-                                               label="Quotation Id" className="w-100" onChange={joinChange}/>
-                                </div>
-                            </div>
-                            <div className="col-md-4 p-0 col">
-                                <div className="col p-0 pt-1 mb-2 mx-2">
-                                    <TextField id="outlined-search" type="name" InputLabelProps={{
-                                        shrink: true
-                                    }} inputProps={{
-                                        style: {
-                                            height: "5px",
-                                        },
-                                    }}
-                                               label="Sales" className="w-100" onChange={joinChange}/>
+                                               label="Name" className="w-100" onChange={joinChange}/>
                                 </div>
                             </div>
                             <div className="col p-0">
@@ -411,50 +389,28 @@ export default function Lobby() {
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col-6 col-md-8">
-                                <div className="row d-flex">
-                                    <div className="col p-0 pt-1 col-md mb-2 mx-2">
-                                        <TextField id="outlined-search" type="search" InputLabelProps={{
-                                            shrink: true,
-                                        }} inputProps={{
-                                            style: {
-                                                height: "5px",
-                                            },
-                                        }}
-                                                   label="Date" className="w-100" onChange={joinChange}/>
-                                    </div>
-                                    <div className="col p-0 pt-1 col-md mb-2 mx-2">
-                                        <TextField id="outlined-search" type="search" InputLabelProps={{
-                                            shrink: true,
-                                        }} inputProps={{
-                                            style: {
-                                                height: "5px",
-                                            },
-                                        }}
-                                                   label="Month" className="w-100" onChange={joinChange}/>
-                                    </div>
-                                    <div className="col p-0 pt-1 col-md mb-2 mx-2">
-                                        <TextField id="outlined-search" type="search" InputLabelProps={{
-                                            shrink: true,
-                                        }} inputProps={{
-                                            style: {
-                                                height: "5px",
-                                            },
-                                        }}
-                                                   label="Year" className="w-100" onChange={joinChange}/>
-                                    </div>
+                            <div className="col-md-8 p-0 col-7">
+                                <div className="col p-0 pt-1 mb-2 mx-2">
+                                    <TextField id="outlined-search" type="name" InputLabelProps={{
+                                        shrink: true,
+                                    }} inputProps={{
+                                        style: {
+                                            height: "5px",
+                                        },
+                                    }}
+                                               label="Nickname" className="w-100" onChange={joinChange}/>
                                 </div>
                             </div>
-                            <div className="col-5 col-md-4">
+                            <div className="col-4 col-md-4">
                                 <div className="row d-flex justify-content-center">
                                     <div
-                                        className="col-6 d-flex justify-content-center col-md mx-2 px-0 pt-lg-0 m-2"
+                                        className="col-5 col-md-8 d-flex justify-content-center col-md mx-2 px-0 pt-lg-0 m-2"
                                         onClick={handleJoin}>
                                         <Button variant="contained" className="w-100" color="secondary"
                                                 size="small"><SearchIcon/></Button>
                                     </div>
                                     <div
-                                        className="col-3 mt-1 mx-2 mt-lg-1"
+                                        className="col-3 mt-1 mx-2 mt-lg-1 col-md-2"
                                         onClick={handleCreate}>
                                         <Fab size="small" color="primary" aria-label="add">
                                             <AddIcon />
@@ -469,24 +425,23 @@ export default function Lobby() {
                             <table className="table table-sm border-bottom-0">
                                 <thead>
                                 <tr>
-                                    <th scope="col" className="t-stick">Q-No</th>
-                                    <th scope="col" className="t-stick">Customer</th>
-                                    <th scope="col" className="t-stick">Sales</th>
-                                    <th scope="col" className="t-stick">Date</th>
-                                    <th scope="col" className="t-stick">Status</th>
+                                    <th scope="col" className="t-stick">Name</th>
+                                    <th scope="col" className="t-stick">Contact</th>
+                                    <th scope="col" className="t-stick">tel.</th>
+                                    <th scope="col" className="t-stick">status</th>
                                 </tr>
                                 </thead>
-                                <AddTable/>
+                                <formS/>
                             </table>
                         </div>
                     </div>
                 </div>
-
             </div>
             <Modal
                 open={open}
                 onClose={handleClose}
                 className="d-flex justify-content-center align-items-center"
+
             >
                 <form className="border border-secondary p-4 m-2 rounded-2 row bg-white">
                     <div className="heading-container mt-2 d-flex flex-row-reverse justify-content-center">
@@ -552,10 +507,9 @@ export default function Lobby() {
                         </div>
                     </div>
                 </form>
-
             </Modal>
             <ToastContainer/>
-        </LobbyWrapper>
+        </SupplierWrapper>
 
     );
 }

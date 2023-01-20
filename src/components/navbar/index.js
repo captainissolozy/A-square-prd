@@ -91,13 +91,12 @@ const Navbar = () => {
                 data-bs-toggle="collapse"
                     data-bs-target="#navbarTogglerDemo02"
                     aria-controls="navbarTogglerDemo02">
-                  <form
-                    className="nav-link active d-flex justify-content-center"
-                    aria-current="page"
-                    href="#"
+                  <Link
+                      to={"/customer"}
+                      className="nav-link d-flex justify-content-center"
                   >
                     <Button className="m-0 p-0 text-secondary" variant="text">Customer</Button>
-                  </form>
+                    </Link>
                 </li>
               ) : (
                 <></>
@@ -107,13 +106,12 @@ const Navbar = () => {
                 data-bs-toggle="collapse"
                     data-bs-target="#navbarTogglerDemo02"
                     aria-controls="navbarTogglerDemo02">
-                  <form
-                    className="nav-link active d-flex justify-content-center"
-                    aria-current="page"
-                    href="#"
+                  <Link
+                      to={"/supplier"}
+                      className="nav-link d-flex justify-content-center"
                   >
-                   <Button className="m-0 p-0 text-secondary" variant="text">Supplier</Button>
-                  </form>
+                    <Button className="m-0 p-0 text-secondary" variant="text">Supplier</Button>
+                  </Link>
                 </li>
               ) : (
                 <></>
