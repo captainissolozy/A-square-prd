@@ -140,7 +140,7 @@ export default function Supplier() {
                 <div className="container pt-5">
                     <div className="col px-2">
                         <IconButton variant="outlined" className="px-0" color="primary" onClick={handleCreate}
-                                    size="small"><h4 className="text-dark mb-0">Customer</h4><AddIcon className="mt-1 mx-1 bg-primary rounded text-light"/></IconButton>
+                                    size="small"><h4 className="text-dark mb-0">Supplier</h4><AddIcon className="mt-1 mx-1 bg-primary rounded text-light"/></IconButton>
                     </div>
                     <div className="row mt-3 d-flex justify-content-center">
                         <div className="row">
