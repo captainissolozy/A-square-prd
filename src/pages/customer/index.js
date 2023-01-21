@@ -87,14 +87,14 @@ export default function Customer() {
         }
     }
 
-    const handleChangeToOrg = (e) => {
+    const handleChangeToOrg = () => {
         setBox2("taxpayerNum")
         setBox3("registerCapital")
         setSendTo(2)
         setBoxLa("Agent")
     }
 
-    const handleChangeToPer = (e) => {
+    const handleChangeToPer = () => {
         setBox2("surname")
         setBox3("email")
         setSendTo(1)
@@ -110,11 +110,11 @@ export default function Customer() {
         console.log(formData2)
         e.preventDefault()
         if (sendTo === 1) {
-            const docRef1 = doc(db, "CustomersDetail", formData.nickname);
+            const docRef1 = doc(db, "CustomersDetail", formData.name+formData.nickname);
             await setDoc(docRef1, formData);
             console.log(formData)
         } else {
-            const docRef1 = doc(db, "CustomersDetail", formData2.name);
+            const docRef1 = doc(db, "CustomersDetail", formData2.name+formData2.nickname);
             await setDoc(docRef1, formData2);
             console.log(formData2)
         }
@@ -229,12 +229,6 @@ export default function Customer() {
                             Private
                         </Button>
                     </div>
-                    <TextField className="my-3"
-                               label="sales"
-                               disabled={true}
-                               value={sessionStorage.getItem('email')}
-                               onChange={handleChange}
-                    />
                     <TextField className="my-3"
                                label="Name"
                                name="name"

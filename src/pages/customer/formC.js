@@ -17,21 +17,19 @@ const AddTable = () => {
     }, [])
 
     const handleJoinPublic = async (id) => {
-
-            sessionStorage.setItem('roomKey', id)
-            const docRef1 = doc(db, "CustomersDetail", id);
-            const docSnap = await getDoc(docRef1);
-            if (docSnap.exists()) {
-                navigate('/inc')
+        sessionStorage.setItem('roomKeyCus', id)
+        const docRef1 = doc(db, "CustomersDetail", id);
+        const docSnap = await getDoc(docRef1);
+        if (docSnap.exists()) {
+            navigate('/inc')
         }
     }
 
     return (
 
         formData.map((data) => (
-
             <tbody>
-            <tr onClick={() => handleJoinPublic(data.tel)} style={{cursor: "pointer"}}>
+            <tr onClick={() => handleJoinPublic(data.name+data.nickname)} style={{cursor: "pointer"}}>
                 <td>{data.name}</td>
                 <td>{data.nickname}</td>
                 <td>{data.tel}</td>

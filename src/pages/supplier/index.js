@@ -111,11 +111,11 @@ export default function Supplier() {
         console.log(formData2)
         e.preventDefault()
         if (sendTo === 1) {
-            const docRef1 = doc(db, "CustomersDetail", formData.nickname);
+            const docRef1 = doc(db, "SuppliersDetail", formData.name+formData.nickname);
             await setDoc(docRef1, formData);
             console.log(formData)
         } else {
-            const docRef1 = doc(db, "CustomersDetail", formData2.name);
+            const docRef1 = doc(db, "SuppliersDetail", formData2.name+formData2.nickname);
             await setDoc(docRef1, formData2);
             console.log(formData2)
         }
@@ -220,7 +220,7 @@ export default function Supplier() {
 
                 <form className="border border-secondary p-4 m-2 rounded-2 row bg-white">
                     <div className="heading-container mt-2 d-flex justify-content-start">
-                        <h3>Customer</h3>
+                        <h3>Supplier</h3>
                         <Button type="submit" variant="outlined" color="warning" className="mx-2 m"
                                 onClick={handleChangeToOrg}>
                             Org
