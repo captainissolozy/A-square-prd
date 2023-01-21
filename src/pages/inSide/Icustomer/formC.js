@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import db from "../../config/firebase-config"
+import db from "../../../config/firebase-config"
 import {onSnapshot, collection, doc, getDoc} from "firebase/firestore"
 import {useNavigate} from "react-router-dom";
 
@@ -18,11 +18,11 @@ const AddTable = () => {
 
     const handleJoinPublic = async (id) => {
 
-            sessionStorage.setItem('roomKey', id)
-            const docRef1 = doc(db, "CustomersDetail", id);
+            sessionStorage.setItem('gameKey', id)
+            const docRef1 = doc(db, "Game", id);
             const docSnap = await getDoc(docRef1);
             if (docSnap.exists()) {
-                navigate('/inc')
+                navigate('/game')
         }
     }
 

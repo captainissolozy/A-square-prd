@@ -9,7 +9,7 @@ import {
     Fab,
     FormControl,
     FormControlLabel,
-    FormLabel, Paper,
+    FormLabel, IconButton, Paper,
     Radio,
     RadioGroup, Tab, Tabs,
     TextField
@@ -284,10 +284,6 @@ export default function Lobby() {
     const [gameData, upDateGameData] = useState(initialGameData)
     const [pKey, generatePKey] = useState("")
     const [searchKey, setSearchKey] = useState('')
-    sessionStorage.setItem('timeX', "300")
-    sessionStorage.setItem('timeO', "300")
-    sessionStorage.setItem('Iron', "no")
-    sessionStorage.setItem('Bomb', "no")
 
     useEffect(() => {
         if (!user) {
@@ -371,6 +367,10 @@ export default function Lobby() {
         <LobbyWrapper>
             <div className="wrapper-box pt-4">
                 <div className="container pt-5">
+                    <div className="col px-2">
+                        <IconButton variant="outlined" className="px-0" color="primary" onClick={handleCreate}
+                                    size="small"><h4 className="text-dark mb-0">Quotation</h4><AddIcon className="mt-1 mx-1 bg-primary rounded text-light"/></IconButton>
+                    </div>
                     <div className="row mt-3 d-flex justify-content-center">
                         <div className="row">
                             <div className="col-md-4 px-2 col-4">
@@ -411,7 +411,7 @@ export default function Lobby() {
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col-6 col-md-8">
+                            <div className="col-8">
                                 <div className="row d-flex">
                                     <div className="col p-0 pt-1 col-md mb-2 mx-2">
                                         <TextField id="outlined-search" type="search" InputLabelProps={{
@@ -445,20 +445,13 @@ export default function Lobby() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-5 col-md-4">
+                            <div className="col">
                                 <div className="row d-flex justify-content-center">
                                     <div
-                                        className="col-6 d-flex justify-content-center col-md mx-2 px-0 pt-lg-0 m-2"
+                                        className="col d-flex justify-content-center mx-2 px-0 pt-lg-0 m-2"
                                         onClick={handleJoin}>
                                         <Button variant="contained" className="w-100" color="secondary"
                                                 size="small"><SearchIcon/></Button>
-                                    </div>
-                                    <div
-                                        className="col-3 mt-1 mx-2 mt-lg-1"
-                                        onClick={handleCreate}>
-                                        <Fab size="small" color="primary" aria-label="add">
-                                            <AddIcon />
-                                        </Fab>
                                     </div>
                                 </div>
                             </div>
@@ -467,7 +460,7 @@ export default function Lobby() {
                     <div className="row m-2">
                         <div className="col-12 t-tab box p-0">
                             <table className="table table-sm border-bottom-0">
-                                <thead>
+                                <thead className="bg-dark text-light">
                                 <tr>
                                     <th scope="col" className="t-stick">Q-No</th>
                                     <th scope="col" className="t-stick">Customer</th>

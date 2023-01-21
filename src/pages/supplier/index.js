@@ -2,282 +2,59 @@ import * as React from "react";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useUserContext} from "../../context/UserContexts";
-import {Button, Fab, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, TextField} from "@mui/material";
+import {
+    Button,
+    Fab, IconButton,
+    TextField
+} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from '@mui/icons-material/Search';
 import Modal from "@material-ui/core/Modal";
 import db from "../../config/firebase-config"
 import {doc, getDoc, setDoc} from "firebase/firestore"
 import {v4 as uuid} from 'uuid';
-import formS from "./formS";
+import FormS from "./formS";
 import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import SupplierWrapper from "./SupplierWrapper";
 
 
+
 export default function Supplier() {
 
-    const initialFormData = Object.freeze({
-        email: sessionStorage.getItem('email'),
-        title: "",
-        timeLimit: 0,
-        gameState: true,
-        turn: 0,
-        pubLic: "no",
-        WinState: false,
-        UniqueKey: "",
-        winCon: 0
+    const initialFormData2 = Object.freeze({
+        sales: sessionStorage.getItem('email'),
+        type: "Organization",
+        name: "",
+        taxpayerNum: "",
+        registerCapital: "",
+        nickname: "",
+        tel: "",
+        status: "Active"
     });
-    const initialGameData = Object.freeze({
-        winX: 0,
-        winY: 0,
-        winCon: 0,
-        playerX: "",
-        playerY: "",
-        gameState: false,
-        turn: 0,
-        ironX: "",
-        ironO: "",
-        timeX: 20,
-        timeO: 20,
-        1: '',
-        2: '',
-        3: '',
-        4: '',
-        5: '',
-        6: '',
-        7: '',
-        8: '',
-        9: '',
-        10: '',
-        11: '',
-        12: '',
-        13: '',
-        14: '',
-        15: '',
-        16: '',
-        17: '',
-        18: '',
-        19: '',
-        20: '',
-        21: '',
-        22: '',
-        23: '',
-        24: '',
-        25: '',
-        26: '',
-        27: '',
-        28: '',
-        29: '',
-        30: '',
-        31: '',
-        32: '',
-        33: '',
-        34: '',
-        35: '',
-        36: '',
-        37: '',
-        38: '',
-        39: '',
-        40: '',
-        41: '',
-        42: '',
-        43: '',
-        44: '',
-        45: '',
-        46: '',
-        47: '',
-        48: '',
-        49: '',
-        50: '',
-        51: '',
-        52: '',
-        53: '',
-        54: '',
-        55: '',
-        56: '',
-        57: '',
-        58: '',
-        59: '',
-        60: '',
-        61: '',
-        62: '',
-        63: '',
-        64: '',
-        65: '',
-        66: '',
-        67: '',
-        68: '',
-        69: '',
-        70: '',
-        71: '',
-        72: '',
-        73: '',
-        74: '',
-        75: '',
-        76: '',
-        77: '',
-        78: '',
-        79: '',
-        80: '',
-        81: '',
-        82: '',
-        83: '',
-        84: '',
-        85: '',
-        86: '',
-        87: '',
-        88: '',
-        89: '',
-        90: '',
-        91: '',
-        92: '',
-        93: '',
-        94: '',
-        95: '',
-        96: '',
-        97: '',
-        98: '',
-        99: '',
-        100: '',
-        101: '',
-        102: '',
-        103: '',
-        104: '',
-        105: '',
-        106: '',
-        107: '',
-        108: '',
-        109: '',
-        110: '',
-        111: '',
-        112: '',
-        113: '',
-        114: '',
-        115: '',
-        116: '',
-        117: '',
-        118: '',
-        119: '',
-        120: '',
-        121: '',
-        122: '',
-        123: '',
-        124: '',
-        125: '',
-        126: '',
-        127: '',
-        128: '',
-        129: '',
-        130: '',
-        131: '',
-        132: '',
-        133: '',
-        134: '',
-        135: '',
-        136: '',
-        137: '',
-        138: '',
-        139: '',
-        140: '',
-        141: '',
-        142: '',
-        143: '',
-        144: '',
-        145: '',
-        146: '',
-        147: '',
-        148: '',
-        149: '',
-        150: '',
-        151: '',
-        152: '',
-        153: '',
-        154: '',
-        155: '',
-        156: '',
-        157: '',
-        158: '',
-        159: '',
-        160: '',
-        161: '',
-        162: '',
-        163: '',
-        164: '',
-        165: '',
-        166: '',
-        167: '',
-        168: '',
-        169: '',
-        170: '',
-        171: '',
-        172: '',
-        173: '',
-        174: '',
-        175: '',
-        176: '',
-        177: '',
-        178: '',
-        179: '',
-        180: '',
-        181: '',
-        182: '',
-        183: '',
-        184: '',
-        185: '',
-        186: '',
-        187: '',
-        188: '',
-        189: '',
-        190: '',
-        191: '',
-        192: '',
-        193: '',
-        194: '',
-        195: '',
-        196: '',
-        197: '',
-        198: '',
-        199: '',
-        200: '',
-        201: '',
-        202: '',
-        203: '',
-        204: '',
-        205: '',
-        206: '',
-        207: '',
-        208: '',
-        209: '',
-        210: '',
-        211: '',
-        212: '',
-        213: '',
-        214: '',
-        215: '',
-        216: '',
-        217: '',
-        218: '',
-        219: '',
-        220: '',
-        221: '',
-        222: '',
-        223: '',
-        224: '',
-        225: '',
-    })
+
+    const initialFormData = Object.freeze({
+        sales: sessionStorage.getItem('email'),
+        type: "Private",
+        name: "",
+        surname: "",
+        email: "",
+        nickname: "",
+        tel: "",
+        status: "Active"
+    });
 
     const navigate = useNavigate()
     const {user} = useUserContext()
     const [open, setOpen] = useState(false)
     const [formData, updateFormData] = useState(initialFormData)
-    const [gameData, upDateGameData] = useState(initialGameData)
-    const [pKey, generatePKey] = useState("")
+    const [formData2, updateFormData2] = useState(initialFormData2)
+    const [generatePKey] = useState("")
     const [searchKey, setSearchKey] = useState('')
-    sessionStorage.setItem('timeX', "300")
-    sessionStorage.setItem('timeO', "300")
-    sessionStorage.setItem('Iron', "no")
-    sessionStorage.setItem('Bomb', "no")
+    const [box2, setBox2] = useState("Taxpayer-num")
+    const [box3, setBox3] = useState("Register-capital")
+    const [boxLa, setBoxLa] = useState("Agent")
+    const [sendTo, setSendTo] = useState(2)
 
     useEffect(() => {
         if (!user) {
@@ -285,18 +62,6 @@ export default function Supplier() {
         }
     }, [navigate, user])
 
-    const validate = (title, win) => {
-        const errors = [];
-
-        if (title === "") {
-            errors.push("Can't be empty");
-        }
-        if (win === 0) {
-            errors.push("empty");
-        }
-
-        return errors;
-    }
 
     const generateKey = function () {
         const unique_id = uuid();
@@ -310,17 +75,31 @@ export default function Supplier() {
         setOpen(false)
     }
     const handleChange = (e) => {
-        updateFormData({
-            ...formData,
-            [e.target.name]: e.target.value.trim(),
-            UniqueKey: pKey
-        })
-        if (e.target.name === "winCon") {
-            upDateGameData({
-                ...gameData,
-                [e.target.name]: parseInt(e.target.value.trim())
+        if (sendTo === 1) {
+            updateFormData({
+                ...formData,
+                [e.target.name]: e.target.value.trim()
+            })
+        }else if (sendTo === 2) {
+            updateFormData2({
+                ...formData2,
+                [e.target.name]: e.target.value.trim()
             })
         }
+    }
+
+    const handleChangeToOrg = () => {
+        setBox2("taxpayerNum")
+        setBox3("registerCapital")
+        setSendTo(2)
+        setBoxLa("Agent")
+    }
+
+    const handleChangeToPer = () => {
+        setBox2("surname")
+        setBox3("email")
+        setSendTo(1)
+        setBoxLa("Nickname")
     }
 
     const joinChange = (e) => {
@@ -328,19 +107,17 @@ export default function Supplier() {
     }
 
     const handleSubmit = async (e) => {
-
+        console.log(sendTo)
+        console.log(formData2)
         e.preventDefault()
-        sessionStorage.setItem('gameKey', pKey);
-        const errors = validate(formData.title, formData.winCon)
-
-        if (errors.length === 0) {
-            const docRef1 = doc(db, "Game", pKey);
-            await setDoc(docRef1, gameData);
-            const docRef = doc(db, "User", pKey);
-            await setDoc(docRef, formData);
-            navigate('/game')
+        if (sendTo === 1) {
+            const docRef1 = doc(db, "CustomersDetail", formData.nickname);
+            await setDoc(docRef1, formData);
+            console.log(formData)
         } else {
-            toast.error('Please fill in all the Criteria');
+            const docRef1 = doc(db, "CustomersDetail", formData2.name);
+            await setDoc(docRef1, formData2);
+            console.log(formData2)
         }
     };
 
@@ -361,6 +138,10 @@ export default function Supplier() {
         <SupplierWrapper>
             <div className="wrapper-box pt-4">
                 <div className="container pt-5">
+                    <div className="col px-2">
+                        <IconButton variant="outlined" className="px-0" color="primary" onClick={handleCreate}
+                                    size="small"><h4 className="text-dark mb-0">Customer</h4><AddIcon className="mt-1 mx-1 bg-primary rounded text-light"/></IconButton>
+                    </div>
                     <div className="row mt-3 d-flex justify-content-center">
                         <div className="row">
                             <div className="col-8 px-2">
@@ -389,7 +170,7 @@ export default function Supplier() {
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col-md-8 p-0 col-7">
+                            <div className="col-md-8 p-0 col-8">
                                 <div className="col p-0 pt-1 mb-2 mx-2">
                                     <TextField id="outlined-search" type="name" InputLabelProps={{
                                         shrink: true,
@@ -404,17 +185,10 @@ export default function Supplier() {
                             <div className="col-4 col-md-4">
                                 <div className="row d-flex justify-content-center">
                                     <div
-                                        className="col-5 col-md-8 d-flex justify-content-center col-md mx-2 px-0 pt-lg-0 m-2"
+                                        className="col d-flex justify-content-center col-md mx-2 px-0 pt-lg-0 m-2"
                                         onClick={handleJoin}>
                                         <Button variant="contained" className="w-100" color="secondary"
                                                 size="small"><SearchIcon/></Button>
-                                    </div>
-                                    <div
-                                        className="col-3 mt-1 mx-2 mt-lg-1 col-md-2"
-                                        onClick={handleCreate}>
-                                        <Fab size="small" color="primary" aria-label="add">
-                                            <AddIcon />
-                                        </Fab>
                                     </div>
                                 </div>
                             </div>
@@ -423,7 +197,7 @@ export default function Supplier() {
                     <div className="row m-2">
                         <div className="col-12 t-tab box p-0">
                             <table className="table table-sm border-bottom-0">
-                                <thead>
+                                <thead className="bg-dark text-light">
                                 <tr>
                                     <th scope="col" className="t-stick">Name</th>
                                     <th scope="col" className="t-stick">Contact</th>
@@ -431,7 +205,7 @@ export default function Supplier() {
                                     <th scope="col" className="t-stick">status</th>
                                 </tr>
                                 </thead>
-                                <formS/>
+                                <FormS/>
                             </table>
                         </div>
                     </div>
@@ -443,55 +217,61 @@ export default function Supplier() {
                 className="d-flex justify-content-center align-items-center"
 
             >
+
                 <form className="border border-secondary p-4 m-2 rounded-2 row bg-white">
-                    <div className="heading-container mt-2 d-flex flex-row-reverse justify-content-center">
-                        <h3>Create-Lobby</h3>
+                    <div className="heading-container mt-2 d-flex justify-content-start">
+                        <h3>Customer</h3>
+                        <Button type="submit" variant="outlined" color="warning" className="mx-2 m"
+                                onClick={handleChangeToOrg}>
+                            Org
+                        </Button>
+                        <Button type="submit" variant="outlined" color="success" className="mx-1 m"
+                                onClick={handleChangeToPer}>
+                            Private
+                        </Button>
                     </div>
                     <TextField className="my-3"
-                               label="email"
+                               label="sales"
                                disabled={true}
                                value={sessionStorage.getItem('email')}
                                onChange={handleChange}
                     />
                     <TextField className="my-3"
-                               label="UniqueKey"
-                               disabled={true}
-                               value={pKey}
+                               label="Name"
+                               name="name"
+                               required
                                onChange={handleChange}
                     />
                     <TextField className="my-3"
-                               label="Title"
-                               name="title"
+                               label={box2}
+                               name={box2}
+                               type="text"
+                               required
+                               onChange={handleChange}
+                    />
+                    <TextField className="my-3"
+                               label={box3}
+                               name={box3}
+                               type="text"
+                               required
+                               onChange={handleChange}
+                    />
+                    <TextField className="my-3"
+                               label={boxLa}
+                               name="nickname"
                                variant="filled"
                                type="text"
                                required
                                onChange={handleChange}
                     />
-                    <FormControl>
-                        <FormLabel id="demo-radio-buttons-group-label">Win-condition</FormLabel>
-                        <RadioGroup
-                            aria-labelledby="demo-radio-buttons-group-label"
-                            name="winCon"
-                            type="number"
-                            onChange={handleChange}
-
-                        >
-                            <FormControlLabel value={2} control={<Radio/>} label="Best of 2"/>
-                            <FormControlLabel value={3} control={<Radio/>} label="Best of 3"/>
-                        </RadioGroup>
-                    </FormControl>
-                    <FormControl>
-                        <FormLabel id="demo-radio-buttons-group-label">Public</FormLabel>
-                        <RadioGroup
-                            aria-labelledby="demo-radio-buttons-group-label"
-                            name="pubLic"
-                            required
-                            onChange={handleChange}
-                        >
-                            <FormControlLabel value="yes" control={<Radio/>} label="Yes"/>
-                            <FormControlLabel value="no" control={<Radio/>} label="No"/>
-                        </RadioGroup>
-                    </FormControl>
+                    <TextField className="my-3"
+                               label="Tel."
+                               name="tel"
+                               variant="filled"
+                               type="text"
+                               required
+                               onChange={handleChange}
+                    />
 
                     <div className="pt-2">
                         <div className="col d-flex justify-content-center">

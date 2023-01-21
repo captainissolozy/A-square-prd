@@ -1,7 +1,7 @@
 import * as React from "react";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {useUserContext} from "../../context/UserContexts";
+import {useUserContext} from "../../../context/UserContexts";
 import {
     Button,
     Fab, IconButton,
@@ -10,7 +10,7 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from '@mui/icons-material/Search';
 import Modal from "@material-ui/core/Modal";
-import db from "../../config/firebase-config"
+import db from "../../../config/firebase-config"
 import {doc, getDoc, setDoc} from "firebase/firestore"
 import {v4 as uuid} from 'uuid';
 import FormC from "./formC";
@@ -61,6 +61,18 @@ export default function Customer() {
         }
     }, [navigate, user])
 
+    const validate = (title, win) => {
+        const errors = [];
+
+        if (title === "") {
+            errors.push("Can't be empty");
+        }
+        if (win === 0) {
+            errors.push("empty");
+        }
+
+        return errors;
+    }
 
     const generateKey = function () {
         const unique_id = uuid();
@@ -87,14 +99,14 @@ export default function Customer() {
         }
     }
 
-    const handleChangeToOrg = (e) => {
+    const handleChangeToOrg = () => {
         setBox2("taxpayerNum")
         setBox3("registerCapital")
         setSendTo(2)
         setBoxLa("Agent")
     }
 
-    const handleChangeToPer = (e) => {
+    const handleChangeToPer = () => {
         setBox2("surname")
         setBox3("email")
         setSendTo(1)
@@ -138,7 +150,7 @@ export default function Customer() {
             <div className="wrapper-box pt-4">
                 <div className="container pt-5">
                     <div className="col px-2">
-                            <IconButton variant="outlined" className="px-0" color="primary" onClick={handleCreate}
+                        <IconButton variant="outlined" className="px-0" color="primary" onClick={handleCreate}
                                     size="small"><h4 className="text-dark mb-0">Customer</h4><AddIcon className="mt-1 mx-1 bg-primary rounded text-light"/></IconButton>
                     </div>
                     <div className="row mt-3 d-flex justify-content-center">
