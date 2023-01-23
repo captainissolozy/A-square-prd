@@ -5,8 +5,7 @@ import {useUserContext} from "../../../context/UserContexts";
 import {Button, TextField} from "@mui/material";
 import Modal from "@material-ui/core/Modal";
 import db from "../../../config/firebase-config"
-import {doc, getDoc, setDoc} from "firebase/firestore"
-import {v4 as uuid} from 'uuid';
+import {doc, getDoc, updateDoc} from "firebase/firestore"
 import FormC from "./formC";
 import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -41,7 +40,7 @@ export default function Customer() {
     const navigate = useNavigate()
     const {user} = useUserContext()
     const [open, setOpen] = useState(false)
-    const [formDataIn, setFormDataIn] = useState(initialFormData)
+    const [formDataIn, setFormDataIn] = useState([])
     const [formData, updateFormData] = useState(initialFormData)
     const [formData2, updateFormData2] = useState(initialFormData2)
     const [searchKey, setSearchKey] = useState('')
@@ -54,19 +53,18 @@ export default function Customer() {
     const [v_boxLa, setV_BoxLa] = useState("")
     const [sendTo, setSendTo] = useState(1)
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(async () => {
-        const docRef1 = doc(db, "CustomersDetail", sessionStorage.getItem("roomKeyCus"));
-        const docSnap = await getDoc(docRef1);
-        if (docSnap.exists()) {
-            setFormDataIn(docSnap.data())
-            console.log(formDataIn)
+        async function fetchData(){
+            const docRef1 = doc(db, "CustomersDetail", sessionStorage.getItem("roomKeyCus"));
+            const docSnap = await getDoc(docRef1);
+            if (docSnap.exists()) {
+                setFormDataIn(docSnap.data())
+                console.log(formDataIn)
+                console.log(sessionStorage.getItem("roomKeyCus"))
+            }
         }
-    },[formDataIn])
-
-    useEffect( () => {
-        if (!user) {
-            navigate('/')
-        }
+        await fetchData()
         if (formDataIn.type === "Private"){
             setBox2("surname")
             setV_Box2(formDataIn.surname)
@@ -83,6 +81,12 @@ export default function Customer() {
             setV_Box3(formDataIn.registerCapital)
             setV_BoxLa(formDataIn.nickname)
             setSendTo(2)
+        }
+    },[formDataIn.name, edit])
+
+    useEffect( () => {
+        if (!user) {
+            navigate('/')
         }
     }, [navigate, user])
 
@@ -113,11 +117,11 @@ export default function Customer() {
         if (!edit){
             setEdit(true)
             if (sendTo === 1) {
-                const docRef1 = doc(db, "CustomersDetail", formData.nickname);
-                await setDoc(docRef1, formData);
+                const docRef1 = doc(db, "CustomersDetail", formDataIn.name+formDataIn.nickname);
+                await updateDoc(docRef1, formData);
             } else {
-                const docRef1 = doc(db, "CustomersDetail", formData2.name);
-                await setDoc(docRef1, formData2);
+                const docRef1 = doc(db, "CustomersDetail", formDataIn.name+formDataIn.nickname);
+                await updateDoc(docRef1, formData2);
             }
         }else {
             setEdit(false)
@@ -145,8 +149,8 @@ export default function Customer() {
                                             height: "5px",
                                         },
                                     }}
-                                               name="name" label="Name" className="w-100" onChange={joinChange}
-                                               value={formDataIn.name} disabled={edit}/>
+                                               name="name" label="Name" className="w-100" onChange={handleChange}
+                                               defaultValue={formDataIn.name} disabled={edit}/>
                                 </div>
                             </div>
                             <div className="col p-0">
@@ -158,7 +162,7 @@ export default function Customer() {
                                             height: "5px",
                                         },
                                     }}
-                                               name={box2} label={box2} className="w-100" onChange={joinChange}
+                                               name={box2} label={box2} className="w-100" onChange={handleChange}
                                                value={v_box2} disabled={edit}/>
                                 </div>
                             </div>
@@ -173,7 +177,7 @@ export default function Customer() {
                                             height: "5px",
                                         },
                                     }}
-                                               name={box3} label={box3} className="w-100" onChange={joinChange}
+                                               name={box3} label={box3} className="w-100" onChange={handleChange}
                                                value={v_box3} disabled={edit}/>
                                 </div>
                             </div>
@@ -186,7 +190,7 @@ export default function Customer() {
                                             height: "5px",
                                         },
                                     }}
-                                               label={boxLa} className="w-100" onChange={joinChange}
+                                               label={boxLa} className="w-100" onChange={handleChange}
                                                value={v_boxLa} disabled={edit}/>
                                 </div>
                             </div>
@@ -201,7 +205,7 @@ export default function Customer() {
                                             height: "5px",
                                         },
                                     }}
-                                               name="tel" label="Tel." className="w-100" onChange={joinChange}
+                                               name="tel" label="Tel." className="w-100" onChange={handleChange}
                                                value={formDataIn.tel} disabled={edit}/>
                                 </div>
                             </div>
@@ -214,7 +218,7 @@ export default function Customer() {
                                             height: "5px",
                                         },
                                     }}
-                                               label="Status" className="w-100" onChange={joinChange}
+                                               label="Status" className="w-100" onChange={handleChange}
                                                value="Active" disabled={edit}/>
                                 </div>
                             </div>

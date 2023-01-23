@@ -23,7 +23,7 @@ const Navbar = () => {
         }
       );
     }
-  }, [open]);
+  }, [open, user]);
 
   useEffect(() => {
     sessionStorage.setItem("role", userInfo.role);
@@ -39,7 +39,7 @@ const Navbar = () => {
       sessionStorage.removeItem("role");
       console.log(sessionStorage.getItem("role"));
     }
-  });
+  }, [user]);
 
   const handlePrPo = () => {
     navigate("/lobby")
