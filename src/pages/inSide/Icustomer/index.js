@@ -44,35 +44,48 @@ export default function Customer() {
     const [formDataIn, setFormDataIn] = useState(initialFormData)
     const [formData, updateFormData] = useState(initialFormData)
     const [formData2, updateFormData2] = useState(initialFormData2)
-    const [pKey, generatePKey] = useState("")
     const [searchKey, setSearchKey] = useState('')
-    const [sendTo, setSendTo] = useState(2)
     const [edit, setEdit] = useState(true)
     const [box2, setBox2] = useState("Taxpayer-num")
     const [box3, setBox3] = useState("Register-capital")
     const [boxLa, setBoxLa] = useState("Agent")
+    const [v_box2, setV_Box2] = useState("")
+    const [v_box3, setV_Box3] = useState("")
+    const [v_boxLa, setV_BoxLa] = useState("")
+    const [sendTo, setSendTo] = useState(1)
 
     useEffect(async () => {
-        if (!user) {
-            navigate('/')
-        }
         const docRef1 = doc(db, "CustomersDetail", sessionStorage.getItem("roomKeyCus"));
         const docSnap = await getDoc(docRef1);
         if (docSnap.exists()) {
             setFormDataIn(docSnap.data())
             console.log(formDataIn)
         }
+    },[formDataIn])
+
+    useEffect( () => {
+        if (!user) {
+            navigate('/')
+        }
+        if (formDataIn.type === "Private"){
+            setBox2("surname")
+            setV_Box2(formDataIn.surname)
+            setBox3("email")
+            setV_Box3(formDataIn.email)
+            setBoxLa("nickname")
+            setV_BoxLa(formDataIn.nickname)
+            setSendTo(1)
+        } else {
+            setBoxLa("nickname")
+            setBox3("registeredCapital")
+            setBox2("taxpayerNum")
+            setV_Box2(formDataIn.taxpayerNum)
+            setV_Box3(formDataIn.registerCapital)
+            setV_BoxLa(formDataIn.nickname)
+            setSendTo(2)
+        }
     }, [navigate, user])
 
-
-    const generateKey = function () {
-        const unique_id = uuid();
-        return unique_id.slice(0, 8);
-    }
-    const handleCreate = () => {
-        setOpen(true)
-        generatePKey(generateKey)
-    }
     const handleClose = () => {
         setOpen(false)
     }
@@ -96,40 +109,29 @@ export default function Customer() {
     }
 
     const handleSubmit = async (e) => {
-        console.log(sendTo)
-        console.log(formData2)
         e.preventDefault()
-        if (sendTo === 1) {
-            const docRef1 = doc(db, "CustomersDetail", formData.nickname);
-            await setDoc(docRef1, formData);
-            console.log(formData)
-        } else {
-            const docRef1 = doc(db, "CustomersDetail", formData2.name);
-            await setDoc(docRef1, formData2);
-            console.log(formData2)
+        if (!edit){
+            setEdit(true)
+            if (sendTo === 1) {
+                const docRef1 = doc(db, "CustomersDetail", formData.nickname);
+                await setDoc(docRef1, formData);
+            } else {
+                const docRef1 = doc(db, "CustomersDetail", formData2.name);
+                await setDoc(docRef1, formData2);
+            }
+        }else {
+            setEdit(false)
         }
     };
-
-    const handleJoin = async (e) => {
-
-        e.preventDefault()
-        const docRef1 = doc(db, "Game", searchKey);
-        const docSnap = await getDoc(docRef1);
-        if (docSnap.exists()) {
-            navigate('/game')
-        } else {
-            toast.error('Please fill in the correct Room-key');
-        }
-    }
 
     return (
         <CustomerWrapper>
             <div className="wrapper-box pt-4">
                 <div className="container pt-5">
                     <div className="heading-container mt-2 d-flex justify-content-start px-2">
-                        <h3 className="pt-1 pt-md-1">Customer:</h3>
-                        <Button variant="outlined" color="warning" className="mx-2 ">
-                            {formDataIn.type} <EditIcon className="p-0 mb-1"/>
+                        <h4 className="pt-1 pt-md-1">Customer-Info:</h4>
+                        <Button variant="outlined" color="warning" className="mx-2 " onClick={handleSubmit}>
+                            Edit <EditIcon className="p-0 mb-1"/>
                         </Button>
                     </div>
                     <div className="row mt-3 d-flex justify-content-center">
@@ -156,8 +158,8 @@ export default function Customer() {
                                             height: "5px",
                                         },
                                     }}
-                                               label={box2} className="w-100" onChange={joinChange}
-                                                disabled={edit}/>
+                                               name={box2} label={box2} className="w-100" onChange={joinChange}
+                                               value={v_box2} disabled={edit}/>
                                 </div>
                             </div>
                         </div>
@@ -172,7 +174,7 @@ export default function Customer() {
                                         },
                                     }}
                                                name={box3} label={box3} className="w-100" onChange={joinChange}
-                                                disabled={edit}/>
+                                               value={v_box3} disabled={edit}/>
                                 </div>
                             </div>
                             <div className="col p-0">
@@ -185,7 +187,7 @@ export default function Customer() {
                                         },
                                     }}
                                                label={boxLa} className="w-100" onChange={joinChange}
-                                               value={formDataIn.registerCapital} disabled={edit}/>
+                                               value={v_boxLa} disabled={edit}/>
                                 </div>
                             </div>
                         </div>
