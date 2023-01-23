@@ -107,14 +107,14 @@ export default function Customer() {
         <CustomerWrapper>
             <div className="wrapper-box pt-4">
                 <div className="container pt-5">
-                    <div className="heading-container mt-2 d-flex justify-content-start px-2">
+                    <div className="heading-container mt-2 d-flex justify-content-start px-2 pt-3">
                         <h4 className="pt-1 pt-md-1">Customer-Info:</h4>
                         <Button variant="outlined" color={textColor} className="mx-2 " onClick={handleSubmit}>
                             {textEdit} <EditIcon className="p-0"/>
                         </Button>
                     </div>
                     <div className="row mt-3 d-flex justify-content-center">
-                        <div className="row">
+                        <div className="row pt-1">
                             <div className="col px-2">
                                 <div className="col pt-1 col-md-12 mb-2">
                                     <TextField id="v_box1" type="search" InputLabelProps={{
@@ -199,7 +199,7 @@ export default function Customer() {
                             </div>
                         </div>
                     </div>
-                    <div className="row m-2">
+                    <div className="row m-2 pt-4">
 
                         <table className="table table-sm border-bottom-0">
                             <thead className="bg-dark text-light">

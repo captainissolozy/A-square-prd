@@ -458,7 +458,7 @@ export default function Lobby() {
                         </div>
                     </div>
                     <div className="row m-2">
-                        <div className="col-12 t-tab box p-0">
+                        <div className="">
                             <table className="table table-sm border-bottom-0">
                                 <thead className="bg-dark text-light">
                                 <tr>
