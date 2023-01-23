@@ -150,7 +150,7 @@ export default function Customer() {
                                         },
                                     }}
                                                name="name" label="Name" className="w-100" onChange={handleChange}
-                                               defaultValue={formDataIn.name} disabled={edit}/>
+                                               value={formDataIn.name} disabled={edit}/>
                                 </div>
                             </div>
                             <div className="col p-0">
@@ -163,7 +163,7 @@ export default function Customer() {
                                         },
                                     }}
                                                name={box2} label={box2} className="w-100" onChange={handleChange}
-                                               value={v_box2} disabled={edit}/>
+                                               value={setV_Box2} disabled={edit}/>
                                 </div>
                             </div>
                         </div>
