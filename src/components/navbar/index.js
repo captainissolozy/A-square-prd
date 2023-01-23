@@ -27,7 +27,6 @@ const Navbar = () => {
 
   useEffect(() => {
     sessionStorage.setItem("role", userInfo.role);
-    console.log(sessionStorage.getItem("role"));
   }, [userInfo]);
 
   useEffect(() => {
@@ -37,7 +36,6 @@ const Navbar = () => {
     if (!user) {
       setOpen(false);
       sessionStorage.removeItem("role");
-      console.log(sessionStorage.getItem("role"));
     }
   }, [user]);
 

@@ -15,26 +15,13 @@ import EditIcon from '@mui/icons-material/Edit';
 
 export default function Customer() {
 
-    const initialFormData2 = Object.freeze({
-        sales: sessionStorage.getItem('email'),
-        type: "Organization",
-        name: "",
-        taxpayerNum: "",
-        registerCapital: "",
-        nickname: "",
-        tel: "",
-        status: "Active"
-    });
-
     const initialFormData = Object.freeze({
-        sales: sessionStorage.getItem('email'),
-        type: "Private",
-        name: "",
-        surname: "",
-        email: "",
-        nickname: "",
-        tel: "",
-        status: "Active"
+        v_box1: "",
+        v_box2: "",
+        v_box3: "",
+        v_box4: "",
+        v_box5: "",
+        v_box6: ""
     });
 
     const navigate = useNavigate()
@@ -42,16 +29,13 @@ export default function Customer() {
     const [open, setOpen] = useState(false)
     const [formDataIn, setFormDataIn] = useState([])
     const [formData, updateFormData] = useState(initialFormData)
-    const [formData2, updateFormData2] = useState(initialFormData2)
-    const [searchKey, setSearchKey] = useState('')
     const [edit, setEdit] = useState(true)
+    const [textEdit, setTextEdit] = useState("Edit")
+    const [textColor, setTextColor] = useState("warning")
     const [box2, setBox2] = useState("Taxpayer-num")
     const [box3, setBox3] = useState("Register-capital")
     const [boxLa, setBoxLa] = useState("Agent")
-    const [v_box2, setV_Box2] = useState("")
-    const [v_box3, setV_Box3] = useState("")
-    const [v_boxLa, setV_BoxLa] = useState("")
-    const [sendTo, setSendTo] = useState(1)
+    const [count, setCount] = useState(0)
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(async () => {
@@ -60,29 +44,33 @@ export default function Customer() {
             const docSnap = await getDoc(docRef1);
             if (docSnap.exists()) {
                 setFormDataIn(docSnap.data())
-                console.log(formDataIn)
-                console.log(sessionStorage.getItem("roomKeyCus"))
+                if (count <= 1){
+                    setCount(count+1)
+                }
             }
         }
         await fetchData()
+    },[count])
+
+    useEffect( () => {
         if (formDataIn.type === "Private"){
             setBox2("surname")
-            setV_Box2(formDataIn.surname)
             setBox3("email")
-            setV_Box3(formDataIn.email)
             setBoxLa("nickname")
-            setV_BoxLa(formDataIn.nickname)
-            setSendTo(1)
         } else {
             setBoxLa("nickname")
             setBox3("registeredCapital")
             setBox2("taxpayerNum")
-            setV_Box2(formDataIn.taxpayerNum)
-            setV_Box3(formDataIn.registerCapital)
-            setV_BoxLa(formDataIn.nickname)
-            setSendTo(2)
         }
-    },[formDataIn.name, edit])
+        updateFormData({
+                v_box1: formDataIn.v_box1,
+                v_box2: formDataIn.v_box2,
+                v_box3: formDataIn.v_box3,
+                v_box4: formDataIn.v_box4,
+                v_box5: formDataIn.v_box5,
+                v_box6: formDataIn.v_box6
+            })
+    }, [count])
 
     useEffect( () => {
         if (!user) {
@@ -94,37 +82,24 @@ export default function Customer() {
         setOpen(false)
     }
     const handleChange = (e) => {
-        if (sendTo === 1) {
-            updateFormData({
-                ...formData,
-                [e.target.name]: e.target.value.trim()
-            })
-        } else if (sendTo === 2) {
-            updateFormData2({
-                ...formData2,
-                [e.target.name]: e.target.value.trim()
-            })
-        }
-    }
-
-
-    const joinChange = (e) => {
-        setSearchKey(e.target.value.trim())
+        updateFormData({
+            ...formData,
+            [e.target.name]: e.target.value.trim()
+        })
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         if (!edit){
             setEdit(true)
-            if (sendTo === 1) {
-                const docRef1 = doc(db, "CustomersDetail", formDataIn.name+formDataIn.nickname);
-                await updateDoc(docRef1, formData);
-            } else {
-                const docRef1 = doc(db, "CustomersDetail", formDataIn.name+formDataIn.nickname);
-                await updateDoc(docRef1, formData2);
-            }
+            setTextEdit("Edit")
+            setTextColor("warning")
+            const docRef1 = doc(db, "CustomersDetail", formData.v_box1+formData.v_box2);
+            await updateDoc(docRef1, formData);
         }else {
             setEdit(false)
+            setTextEdit("Confirm")
+            setTextColor("primary")
         }
     };
 
@@ -134,92 +109,92 @@ export default function Customer() {
                 <div className="container pt-5">
                     <div className="heading-container mt-2 d-flex justify-content-start px-2">
                         <h4 className="pt-1 pt-md-1">Customer-Info:</h4>
-                        <Button variant="outlined" color="warning" className="mx-2 " onClick={handleSubmit}>
-                            Edit <EditIcon className="p-0 mb-1"/>
+                        <Button variant="outlined" color={textColor} className="mx-2 " onClick={handleSubmit}>
+                            {textEdit} <EditIcon className="p-0"/>
                         </Button>
                     </div>
                     <div className="row mt-3 d-flex justify-content-center">
                         <div className="row">
                             <div className="col px-2">
                                 <div className="col pt-1 col-md-12 mb-2">
-                                    <TextField id="outlined-search" type="search" InputLabelProps={{
+                                    <TextField id="v_box1" type="search" InputLabelProps={{
                                         shrink: true,
                                     }} inputProps={{
                                         style: {
                                             height: "5px",
                                         },
                                     }}
-                                               name="name" label="Name" className="w-100" onChange={handleChange}
-                                               value={formDataIn.name} disabled={edit}/>
+                                               name="v_box1" label="Name" className="w-100" onChange={handleChange}
+                                               value={formData.v_box1} disabled={true}/>
                                 </div>
                             </div>
                             <div className="col p-0">
                                 <div className="col p-0 pt-1 mb-2 mx-2">
-                                    <TextField id="outlined-search" type="search" InputLabelProps={{
+                                    <TextField id="v_box2" type="search" InputLabelProps={{
                                         shrink: true,
                                     }} inputProps={{
                                         style: {
                                             height: "5px",
                                         },
                                     }}
-                                               name={box2} label={box2} className="w-100" onChange={handleChange}
-                                               value={setV_Box2} disabled={edit}/>
+                                               name="v_box2" label={box2} className="w-100" onChange={handleChange}
+                                               value={formData.v_box2} disabled={true}/>
                                 </div>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col px-2">
                                 <div className="col pt-1 col-md-12 mb-2">
-                                    <TextField id="outlined-search" type="search" InputLabelProps={{
+                                    <TextField id="v_box3" type="search" InputLabelProps={{
                                         shrink: true,
                                     }} inputProps={{
                                         style: {
                                             height: "5px",
                                         },
                                     }}
-                                               name={box3} label={box3} className="w-100" onChange={handleChange}
-                                               value={v_box3} disabled={edit}/>
+                                               name="v_box3" label={box3} className="w-100" onChange={handleChange}
+                                               value={formData.v_box3} disabled={edit}/>
                                 </div>
                             </div>
                             <div className="col p-0">
                                 <div className="col p-0 pt-1 mb-2 mx-2">
-                                    <TextField id="outlined-search" type="search" InputLabelProps={{
+                                    <TextField id="v_box4" type="search" InputLabelProps={{
                                         shrink: true,
                                     }} inputProps={{
                                         style: {
                                             height: "5px",
                                         },
                                     }}
-                                               label={boxLa} className="w-100" onChange={handleChange}
-                                               value={v_boxLa} disabled={edit}/>
+                                               name="v_box4" label={boxLa} className="w-100" onChange={handleChange}
+                                               value={formData.v_box4} disabled={edit}/>
                                 </div>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col px-2">
                                 <div className="col pt-1 col-md-12 mb-2">
-                                    <TextField id="outlined-search" type="search" InputLabelProps={{
+                                    <TextField id="v_box5" type="search" InputLabelProps={{
                                         shrink: true,
                                     }} inputProps={{
                                         style: {
                                             height: "5px",
                                         },
                                     }}
-                                               name="tel" label="Tel." className="w-100" onChange={handleChange}
-                                               value={formDataIn.tel} disabled={edit}/>
+                                               name="v_box5" label="Tel." className="w-100" onChange={handleChange}
+                                               value={formData.v_box5} disabled={edit}/>
                                 </div>
                             </div>
                             <div className="col p-0">
                                 <div className="col p-0 pt-1 mb-2 mx-2">
-                                    <TextField id="outlined-search" type="search" InputLabelProps={{
+                                    <TextField id="v_box6" type="search" InputLabelProps={{
                                         shrink: true,
                                     }} inputProps={{
                                         style: {
                                             height: "5px",
                                         },
                                     }}
-                                               label="Status" className="w-100" onChange={handleChange}
-                                               value="Active" disabled={edit}/>
+                                               name="v_box6" label="Status" className="w-100" onChange={handleChange}
+                                               value={formData.v_box6} disabled={edit}/>
                                 </div>
                             </div>
                         </div>

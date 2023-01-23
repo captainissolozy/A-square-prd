@@ -29,11 +29,11 @@ const AddTable = () => {
 
         formData.map((data) => (
             <tbody>
-            <tr onClick={() => handleJoinPublic(data.name+data.nickname)} style={{cursor: "pointer"}}>
-                <td>{data.name}</td>
-                <td>{data.nickname}</td>
-                <td>{data.tel}</td>
-                <td>{data.status}</td>
+            <tr onClick={() => handleJoinPublic(data.v_box1+data.v_box2)} style={{cursor: "pointer"}}>
+                <td>{data.v_box1}</td>
+                <td>{data.v_box4}</td>
+                <td>{data.v_box5}</td>
+                <td>{data.v_box6}</td>
 
             </tr>
             </tbody>

@@ -22,25 +22,23 @@ import CustomerWrapper from "./CustomerWrapper";
 export default function Customer() {
 
     const initialFormData2 = Object.freeze({
-        sales: sessionStorage.getItem('email'),
         type: "Organization",
-        name: "",
-        taxpayerNum: "",
-        registerCapital: "",
-        nickname: "",
-        tel: "",
-        status: "Active"
+        v_box1: "",
+        v_box2: "",
+        v_box3: "",
+        v_box4: "",
+        v_box5: "",
+        v_box6: "Incompleted"
     });
 
     const initialFormData = Object.freeze({
-        sales: sessionStorage.getItem('email'),
         type: "Private",
-        name: "",
-        surname: "",
-        email: "",
-        nickname: "",
-        tel: "",
-        status: "Active"
+        v_box1: "",
+        v_box2: "",
+        v_box3: "",
+        v_box4: "",
+        v_box5: "",
+        v_box6: "Incompleted"
     });
 
     const navigate = useNavigate()
@@ -110,12 +108,14 @@ export default function Customer() {
         console.log(formData2)
         e.preventDefault()
         if (sendTo === 1) {
-            const docRef1 = doc(db, "CustomersDetail", formData.name+formData.nickname);
+            const docRef1 = doc(db, "CustomersDetail", formData.v_box1+formData.v_box2);
             await setDoc(docRef1, formData);
+            navigate('/inc')
             console.log(formData)
         } else {
-            const docRef1 = doc(db, "CustomersDetail", formData2.name+formData2.nickname);
+            const docRef1 = doc(db, "CustomersDetail", formData2.v_box1+formData2.v_box2);
             await setDoc(docRef1, formData2);
+            navigate('/inc')
             console.log(formData2)
         }
     };
@@ -231,27 +231,27 @@ export default function Customer() {
                     </div>
                     <TextField className="my-3"
                                label="Name"
-                               name="name"
+                               name="v_box1"
                                required
                                onChange={handleChange}
                     />
                     <TextField className="my-3"
                                label={box2}
-                               name={box2}
+                               name="v_box2"
                                type="text"
                                required
                                onChange={handleChange}
                     />
                     <TextField className="my-3"
                                label={box3}
-                               name={box3}
+                               name="v_box3"
                                type="text"
                                required
                                onChange={handleChange}
                     />
                     <TextField className="my-3"
                                label={boxLa}
-                               name="nickname"
+                               name="v_box4"
                                variant="filled"
                                type="text"
                                required
@@ -259,7 +259,7 @@ export default function Customer() {
                     />
                     <TextField className="my-3"
                                label="Tel."
-                               name="tel"
+                               name="v_box5"
                                variant="filled"
                                type="text"
                                required
