@@ -11,6 +11,8 @@ import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import CustomerWrapper from "./CustomerWrapper";
 import EditIcon from '@mui/icons-material/Edit';
+import SearchIcon from "@mui/icons-material/Search";
+import AddIcon from "@mui/icons-material/Add";
 
 
 export default function Customer() {
@@ -213,6 +215,13 @@ export default function Customer() {
                             <FormC/>
                         </table>
 
+                    </div>
+                    <div className="row m-2 pt-2 justify-content-end">
+                        <div className="col-2 p-0 mx-3">
+                        <Button variant="contained" className="w-100" color="secondary"
+                                size="small"><AddIcon/>
+                        </Button>
+                        </div>
                     </div>
                 </div>
             </div>

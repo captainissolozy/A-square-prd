@@ -46,12 +46,16 @@ export default function Customer() {
     const [open, setOpen] = useState(false)
     const [formData, updateFormData] = useState(initialFormData)
     const [formData2, updateFormData2] = useState(initialFormData2)
-    const [pKey, generatePKey] = useState("")
-    const [searchKey, setSearchKey] = useState('')
     const [box2, setBox2] = useState("Taxpayer-num")
     const [box3, setBox3] = useState("Register-capital")
     const [boxLa, setBoxLa] = useState("Agent")
     const [sendTo, setSendTo] = useState(2)
+    const [searchChanged, setSearchChanged] = useState({
+        name: "",
+        status: "",
+        nickname: "",
+        tel: ""
+    })
 
     useEffect(() => {
         if (!user) {
@@ -59,14 +63,8 @@ export default function Customer() {
         }
     }, [navigate, user])
 
-
-    const generateKey = function () {
-        const unique_id = uuid();
-        return unique_id.slice(0, 8);
-    }
     const handleCreate = () => {
         setOpen(true)
-        generatePKey(generateKey)
     }
     const handleClose = () => {
         setOpen(false)
@@ -100,12 +98,13 @@ export default function Customer() {
     }
 
     const joinChange = (e) => {
-        setSearchKey(e.target.value.trim())
+        setSearchChanged({
+            ...searchChanged,
+            [e.target.name]: e.target.value.trim()
+        })
     }
 
     const handleSubmit = async (e) => {
-        console.log(sendTo)
-        console.log(formData2)
         e.preventDefault()
         if (sendTo === 1) {
             const docRef1 = doc(db, "CustomersDetail", formData.v_box1+formData.v_box2);
@@ -120,18 +119,6 @@ export default function Customer() {
         }
     };
 
-    const handleJoin = async (e) => {
-
-        e.preventDefault()
-        sessionStorage.setItem('gameKey', searchKey)
-        const docRef1 = doc(db, "Game", searchKey);
-        const docSnap = await getDoc(docRef1);
-        if (docSnap.exists()) {
-            navigate('/game')
-        } else {
-            toast.error('Please fill in the correct Room-key');
-        }
-    }
 
     return (
         <CustomerWrapper>
@@ -153,7 +140,7 @@ export default function Customer() {
                                             height: "5px",
                                         },
                                     }}
-                                               label="Name" className="w-100" onChange={joinChange}/>
+                                               name="name" label="Name" className="w-100" onChange={joinChange}/>
                                 </div>
                             </div>
                             <div className="col p-0">
@@ -165,7 +152,7 @@ export default function Customer() {
                                             height: "5px",
                                         },
                                     }}
-                                               label="Status" className="w-100" onChange={joinChange}/>
+                                               name="status" label="Status" className="w-100" onChange={joinChange}/>
                                 </div>
                             </div>
                         </div>
@@ -179,17 +166,19 @@ export default function Customer() {
                                             height: "5px",
                                         },
                                     }}
-                                               label="Nickname" className="w-100" onChange={joinChange}/>
+                                               name="nickname" label="Nickname" className="w-100" onChange={joinChange}/>
                                 </div>
                             </div>
-                            <div className="col-4 col-md-4">
-                                <div className="row d-flex justify-content-center">
-                                    <div
-                                        className="col d-flex justify-content-center col-md mx-2 px-0 pt-lg-0 m-2"
-                                        onClick={handleJoin}>
-                                        <Button variant="contained" className="w-100" color="secondary"
-                                                size="small"><SearchIcon/></Button>
-                                    </div>
+                            <div className="col p-0">
+                                <div className="col p-0 pt-1 mb-2 mx-2">
+                                    <TextField id="outlined-search" type="search" InputLabelProps={{
+                                        shrink: true,
+                                    }} inputProps={{
+                                        style: {
+                                            height: "5px",
+                                        },
+                                    }}
+                                               name="tel" label="Tel." className="w-100" onChange={joinChange}/>
                                 </div>
                             </div>
                         </div>
@@ -206,7 +195,7 @@ export default function Customer() {
                                     <th scope="col" className="t-stick">status</th>
                                 </tr>
                                 </thead>
-                                <FormC/>
+                                <FormC s_name={searchChanged.name} s_status={searchChanged.status} s_nickname={searchChanged.nickname} s_tel={searchChanged.tel}/>
                             </table>
 
                     </div>
