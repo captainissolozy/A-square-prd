@@ -23,7 +23,8 @@ export default function Customer() {
         v_box3: "",
         v_box4: "",
         v_box5: "",
-        v_box6: ""
+        v_box6: "",
+        v_box7: ""
     });
 
     const navigate = useNavigate()
@@ -70,7 +71,8 @@ export default function Customer() {
                 v_box3: formDataIn.v_box3,
                 v_box4: formDataIn.v_box4,
                 v_box5: formDataIn.v_box5,
-                v_box6: formDataIn.v_box6
+                v_box6: formDataIn.v_box6,
+                v_box7: formDataIn.v_box7
             })
     }, [count])
 
@@ -86,7 +88,7 @@ export default function Customer() {
     const handleChange = (e) => {
         updateFormData({
             ...formData,
-            [e.target.name]: e.target.value.trim()
+            [e.target.name]: e.target.value
         })
     }
 
@@ -197,6 +199,21 @@ export default function Customer() {
                                     }}
                                                name="v_box6" label="Status" className="w-100" onChange={handleChange}
                                                value={formData.v_box6} disabled={edit}/>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col p-0">
+                                <div className="col p-0 pt-1 mb-2 mx-2">
+                                    <TextField id="v_box7" type="search" InputLabelProps={{
+                                        shrink: true,
+                                    }} inputProps={{
+                                        style: {
+                                            height: "5px",
+                                        },
+                                    }}
+                                               name="v_box7" label="Address" className="w-100" onChange={handleChange}
+                                               value={formData.v_box7} disabled={edit}/>
                                 </div>
                             </div>
                         </div>

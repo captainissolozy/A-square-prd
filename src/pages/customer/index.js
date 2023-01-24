@@ -28,7 +28,8 @@ export default function Customer() {
         v_box3: "",
         v_box4: "",
         v_box5: "",
-        v_box6: "Incompleted"
+        v_box6: "Incompleted",
+        v_box7: ""
     });
 
     const initialFormData = Object.freeze({
@@ -38,7 +39,8 @@ export default function Customer() {
         v_box3: "",
         v_box4: "",
         v_box5: "",
-        v_box6: "Incompleted"
+        v_box6: "Incompleted",
+        v_box7: ""
     });
 
     const navigate = useNavigate()
@@ -253,6 +255,13 @@ export default function Customer() {
                                label="Tel."
                                name="v_box5"
                                variant="filled"
+                               type="text"
+                               required
+                               onChange={handleChange}
+                    />
+                    <TextField className="my-3"
+                               label="Address"
+                               name="v_box7"
                                type="text"
                                required
                                onChange={handleChange}
