@@ -112,12 +112,10 @@ export default function Customer() {
             const docRef1 = doc(db, "CustomersDetail", formData.v_box1+formData.v_box2);
             await setDoc(docRef1, formData);
             navigate('/inc')
-            console.log(formData)
         } else {
             const docRef1 = doc(db, "CustomersDetail", formData2.v_box1+formData2.v_box2);
             await setDoc(docRef1, formData2);
             navigate('/inc')
-            console.log(formData2)
         }
     };
 

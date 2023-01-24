@@ -1,31 +1,28 @@
 import {useEffect, useState} from "react";
 import db from "../../../config/firebase-config"
-import {onSnapshot, collection, doc, getDoc} from "firebase/firestore"
+import {collection, getCollection, onSnapshot} from "firebase/firestore"
 
 
 
 
-const AddTable = () => {
+const AddTable = (props) => {
 
     const [formData, setFormData] = useState([])
 
-    useEffect(() => {
-        onSnapshot(collection(db, "CustomersDetail"), (snapshot) => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(async () => {
+        onSnapshot(collection(db, "CustomersDetail", props.docname, "media"), (snapshot) => {
             setFormData(snapshot.docs.map((doc) => doc.data()))
         });
-    }, [])
+        console.log("hi")
+    }, [props.docname])
 
     return (
-
         formData.map((data) => (
-
             <tbody>
             <tr style={{cursor: "pointer"}}>
-                <td>{data.v_box1}</td>
-                <td>{data.v_box4}</td>
-                <td>{data.v_box5}</td>
-                <td>{data.v_box6}</td>
-
+                <td>{data.name}</td>
+                <td>{data.path}</td>
             </tr>
             </tbody>
 

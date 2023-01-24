@@ -2,7 +2,10 @@ import styled from "styled-components";
 
 const CustomerWrapper = styled.div`
   .wrapper-box{
-    height: calc(100vh - 62.5px);
+   
+  }
+  .t-height{
+    max-height: 190px;
   }
   .t-tab{
     height: calc(75vh - 62.5px);
@@ -16,7 +19,7 @@ const CustomerWrapper = styled.div`
   }
   .table{
     border-bottom: solid black 2px;
-    overflow: hidden;
+    overflow: scroll;
   }
   .box{
     border: solid black 2px;

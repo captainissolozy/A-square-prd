@@ -2,18 +2,17 @@ import * as React from "react";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useUserContext} from "../../../context/UserContexts";
-import {Button, TextField} from "@mui/material";
+import {Button, IconButton, TextField} from "@mui/material";
 import Modal from "@material-ui/core/Modal";
 import db from "../../../config/firebase-config"
-import {doc, getDoc, updateDoc} from "firebase/firestore"
+import {doc, getDoc, updateDoc, setDoc} from "firebase/firestore"
 import FormC from "./formC";
-import {toast, ToastContainer} from "react-toastify";
+import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import CustomerWrapper from "./CustomerWrapper";
 import EditIcon from '@mui/icons-material/Edit';
-import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
-
+import UploadFileIcon from '@mui/icons-material/UploadFile';
 
 export default function Customer() {
 
@@ -25,6 +24,11 @@ export default function Customer() {
         v_box5: "",
         v_box6: "",
         v_box7: ""
+    });
+
+    const initialDocData = Object.freeze({
+        name: "",
+        path: "bkk",
     });
 
     const navigate = useNavigate()
@@ -39,6 +43,7 @@ export default function Customer() {
     const [box3, setBox3] = useState("Register-capital")
     const [boxLa, setBoxLa] = useState("Agent")
     const [count, setCount] = useState(0)
+    const [docName, setDocName] = useState(initialDocData)
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(async () => {
@@ -82,6 +87,28 @@ export default function Customer() {
         }
     }, [navigate, user])
 
+    const handleCreate = () => {
+        setOpen(true)
+    }
+
+    const handleSubmitUpload = async (e) => {
+        e.preventDefault()
+        const docRef1 = doc(db, "CustomersDetail", formData.v_box1+formData.v_box2, "media", docName.name);
+        await setDoc(docRef1, docName);
+        setOpen(false)
+    }
+
+    const handleUpload = async () => {
+
+    }
+
+    const handleChangeUpload = (e) => {
+        setDocName({
+            ...docName,
+            [e.target.name]: e.target.value
+        })
+    }
+
     const handleClose = () => {
         setOpen(false)
     }
@@ -110,7 +137,7 @@ export default function Customer() {
     return (
         <CustomerWrapper>
             <div className="wrapper-box pt-4">
-                <div className="container pt-5">
+                <div className="container pt-5 mb-5">
                     <div className="heading-container mt-2 d-flex justify-content-start px-2 pt-3">
                         <h4 className="pt-1 pt-md-1">Customer-Info:</h4>
                         <Button variant="outlined" color={textColor} className="mx-2 " onClick={handleSubmit}>
@@ -225,17 +252,15 @@ export default function Customer() {
                             <tr>
                                 <th scope="col" className="t-stick">Name</th>
                                 <th scope="col" className="t-stick">Contact</th>
-                                <th scope="col" className="t-stick">tel.</th>
-                                <th scope="col" className="t-stick">status</th>
                             </tr>
                             </thead>
-                            <FormC/>
+                            <FormC docname={formData.v_box1+formData.v_box2} name={docName.name}/>
                         </table>
 
                     </div>
                     <div className="row m-2 pt-2 justify-content-end">
                         <div className="col-2 p-0 mx-3">
-                        <Button variant="contained" className="w-100" color="secondary"
+                        <Button variant="contained" className="w-100" color="secondary" onClick={handleCreate}
                                 size="small"><AddIcon/>
                         </Button>
                         </div>
@@ -251,15 +276,29 @@ export default function Customer() {
 
                 <form className="border border-secondary p-4 m-2 rounded-2 row bg-white">
                     <div className="pt-2">
+                        <h4 className="col d-flex justify-content-center">Add new-document</h4>
                         <div className="col d-flex justify-content-center">
-                            <Button type="submit" variant="contained" color="secondary" className="mx-3 m"
+
+                            <TextField className="m-3"
+                                       label="Name"
+                                       name="name"
+                                       required
+                                       onChange={handleChangeUpload}
+                            />
+                            <IconButton name="path" variant="text" className="px-0" color="primary" onClick={handleUpload}
+                                        size="small">upload
+                                <UploadFileIcon className="mt-1 mx-1 bg-primary rounded text-light"/></IconButton>
+                        </div>
+                        <div className="col d-flex justify-content-center">
+
+                            <Button type="submit" variant="contained" color="error" className="mx-3 col"
                                     onClick={handleClose}>
                                 Close
                             </Button>
 
-                            <Button type="submit" variant="contained" color="primary" className="mx-3"
-                                    onClick={handleSubmit}>
-                                Create
+                            <Button type="submit" variant="contained" color="primary" className="mx-3 col"
+                                    onClick={handleSubmitUpload}>
+                                Add
                             </Button>
                         </div>
                     </div>

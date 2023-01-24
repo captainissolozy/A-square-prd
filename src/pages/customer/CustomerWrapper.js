@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 const CustomerWrapper = styled.div`
   .wrapper-box{
-    height: calc(100vh - 62.5px);
   }
   .t-tab{
     height: calc(75vh - 62.5px);
