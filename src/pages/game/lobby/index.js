@@ -311,6 +311,7 @@ export default function Lobby() {
     const handleCreate = () => {
         setOpen(true)
         generatePKey(generateKey)
+        navigate('/createQuotation')
     }
     const handleClose = () => {
         setOpen(false)

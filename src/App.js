@@ -11,6 +11,7 @@ import Game from "./pages/game/gamePlay/Game";
 import Customer from "./pages/customer"
 import Supplier from "./pages/supplier"
 import InCustomer from "./pages/inSide/Icustomer"
+import CreateQuote from "./pages/inSide/IPO/create/create"
 
 function App() {
 
@@ -35,6 +36,7 @@ function App() {
                     <Route path="/customer" element={<Customer/>}/>
                     <Route path="/supplier" element={<Supplier/>}/>
                     <Route path="/inc" element={<InCustomer/>}/>
+                    <Route path="/createQuotation" element={<CreateQuote/>}/>
                 </Routes>
             </BrowserRouter>
         </>);
