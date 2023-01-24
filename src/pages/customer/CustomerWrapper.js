@@ -3,11 +3,17 @@ import styled from "styled-components";
 const CustomerWrapper = styled.div`
   .wrapper-box{
   }
-  .t-tab{
-    height: calc(75vh - 62.5px);
-    border-bottom: black;
+  .pos-top{
+    top: 50px;
+    box-shadow: 0 2px 4px -4px black;
+    background: white;
+    z-index: 2;
   }
-
+  .pos-r{
+    top: 200px;
+    position: relative;
+    z-index: 1;
+  }
   .t-stick{
     position: sticky; top: 0;
     border-top: white;
