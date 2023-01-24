@@ -4,15 +4,16 @@ import {useNavigate} from "react-router-dom";
 import {useUserContext} from "../../../context/UserContexts";
 import {Button, IconButton, TextField} from "@mui/material";
 import Modal from "@material-ui/core/Modal";
-import db from "../../../config/firebase-config"
+import db, {storage} from "../../../config/firebase-config"
 import {doc, getDoc, updateDoc, setDoc} from "firebase/firestore"
+import {ref, uploadBytesResumable, getDownloadURL} from "firebase/storage"
 import FormC from "./formC";
 import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import CustomerWrapper from "./CustomerWrapper";
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from "@mui/icons-material/Add";
-import UploadFileIcon from '@mui/icons-material/UploadFile';
+
 
 export default function Customer() {
 
@@ -27,8 +28,7 @@ export default function Customer() {
     });
 
     const initialDocData = Object.freeze({
-        name: "",
-        path: "bkk",
+        name: ""
     });
 
     const navigate = useNavigate()
@@ -44,6 +44,8 @@ export default function Customer() {
     const [boxLa, setBoxLa] = useState("Agent")
     const [count, setCount] = useState(0)
     const [docName, setDocName] = useState(initialDocData)
+    const [file, setFile] = useState("");
+    const [percent, setPercent] = useState(0);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(async () => {
@@ -91,15 +93,37 @@ export default function Customer() {
         setOpen(true)
     }
 
-    const handleSubmitUpload = async (e) => {
+    const handleSubmitUpload = (e) => {
         e.preventDefault()
-        const docRef1 = doc(db, "CustomersDetail", formData.v_box1+formData.v_box2, "media", docName.name);
-        await setDoc(docRef1, docName);
+        if (!file) {
+            alert("Please choose a file first!")
+        }
+        const storageRef = ref(storage, `/media/Customer/${file.name}`)
+        const uploadTask = uploadBytesResumable(storageRef, file);
+        uploadTask.on(
+            "state_changed",
+            (snapshot) => {
+                const percent = Math.round(
+                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                );
+                // update progress
+                setPercent(percent);
+            },
+            (err) => console.log(err),
+            () => {
+                // download url
+                getDownloadURL(uploadTask.snapshot.ref).then(async (url) => {
+                    const docRef1 = doc(db, "CustomersDetail", formData.v_box1 + formData.v_box2, "media", docName.name);
+                    await setDoc(docRef1, {docName, url});
+                });
+            }
+        );
         setOpen(false)
+        setDocName("")
     }
 
-    const handleUpload = async () => {
-
+    const handleChangeUploadFile = (e) => {
+        setFile(e.target.files[0])
     }
 
     const handleChangeUpload = (e) => {
@@ -111,6 +135,7 @@ export default function Customer() {
 
     const handleClose = () => {
         setOpen(false)
+        setFile("")
     }
     const handleChange = (e) => {
         updateFormData({
@@ -250,8 +275,8 @@ export default function Customer() {
                         <table className="table table-sm border-bottom-0">
                             <thead className="bg-dark text-light">
                             <tr>
-                                <th scope="col" className="t-stick">Name</th>
-                                <th scope="col" className="t-stick">Contact</th>
+                                <th scope="col" className="t-stick">Document-name</th>
+                                <th scope="col" className="t-stick">File</th>
                             </tr>
                             </thead>
                             <FormC docname={formData.v_box1+formData.v_box2} name={docName.name}/>
@@ -274,7 +299,7 @@ export default function Customer() {
 
             >
 
-                <form className="border border-secondary p-4 m-2 rounded-2 row bg-white">
+                <form className="border border-secondary p-2 m-2 rounded-2 row bg-white py-4">
                     <div className="pt-2">
                         <h4 className="col d-flex justify-content-center">Add new-document</h4>
                         <div className="col d-flex justify-content-center">
@@ -283,12 +308,13 @@ export default function Customer() {
                                        label="Name"
                                        name="name"
                                        required
+                                       size="small"
                                        onChange={handleChangeUpload}
                             />
-                            <IconButton name="path" variant="text" className="px-0" color="primary" onClick={handleUpload}
-                                        size="small">upload
-                                <UploadFileIcon className="mt-1 mx-1 bg-primary rounded text-light"/></IconButton>
+                            <input name="path" className="row d-flex justify-content-center px-2 mb-3 pt-4"
+                                   type="file" accept="image/*" onChange={handleChangeUploadFile}/>
                         </div>
+
                         <div className="col d-flex justify-content-center">
 
                             <Button type="submit" variant="contained" color="error" className="mx-3 col"

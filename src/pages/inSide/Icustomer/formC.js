@@ -20,8 +20,8 @@ const AddTable = (props) => {
         formData.map((data) => (
             <tbody>
             <tr style={{cursor: "pointer"}}>
-                <td key={data.name}>{data.name}</td>
-                <td key={data.path}>{data.path}</td>
+                <td key={data.docName.name}>{data.docName.name}</td>
+                <td key={data.url}><a href={data.url} target="_blank">{data.docName.name}.png</a></td>
             </tr>
             </tbody>
 

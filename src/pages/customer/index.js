@@ -124,14 +124,14 @@ export default function Customer() {
         <CustomerWrapper>
             <div className="wrapper-box pt-4 ">
                 <div className="container pt-4">
-                    <div className="my-1 p-3 pb-3 pos-top fixed-top">
-                    <div className="col px-2">
+                    <div className="my-1 p-3 pb-3 row d-flex justify-content-center">
+                    <div className="col-10 px-2 d-flex justify-content-start col-md-9">
                             <IconButton variant="outlined" className="px-0" color="primary" onClick={handleCreate}
                                     size="small"><h4 className="text-dark mb-0">Customer</h4><AddIcon className="mt-1 mx-1 bg-primary rounded text-light"/></IconButton>
                     </div>
-                    <div className="row mt-3 d-flex justify-content-center">
-                        <div className="row">
-                            <div className="col-8 px-2">
+                    <div className="row mt-2 d-flex justify-content-center">
+                        <div className="row d-flex justify-content-center">
+                            <div className="col-8 px-2 col-md-6">
                                 <div className="col pt-1 col-md-12 mb-2">
                                     <TextField id="outlined-search" type="search" InputLabelProps={{
                                         shrink: true,
@@ -143,7 +143,7 @@ export default function Customer() {
                                                name="name" label="Name" className="w-100" onChange={joinChange}/>
                                 </div>
                             </div>
-                            <div className="col p-0">
+                            <div className="col p-0 col-md-3">
                                 <div className="col p-0 pt-1 mb-2 mx-2">
                                     <TextField id="outlined-search" type="search" InputLabelProps={{
                                         shrink: true,
@@ -156,8 +156,8 @@ export default function Customer() {
                                 </div>
                             </div>
                         </div>
-                        <div className="row">
-                            <div className="col-md-8 p-0 col-8">
+                        <div className="row d-flex justify-content-center">
+                            <div className="col-md-6 p-0 col-8">
                                 <div className="col p-0 pt-1 mb-2 mx-2">
                                     <TextField id="outlined-search" type="name" InputLabelProps={{
                                         shrink: true,
@@ -169,7 +169,7 @@ export default function Customer() {
                                                name="nickname" label="Nickname" className="w-100" onChange={joinChange}/>
                                 </div>
                             </div>
-                            <div className="col p-0">
+                            <div className="col p-0 col-md-3">
                                 <div className="col p-0 pt-1 mb-2 mx-2">
                                     <TextField id="outlined-search" type="search" InputLabelProps={{
                                         shrink: true,
@@ -184,7 +184,7 @@ export default function Customer() {
                         </div>
                     </div>
                     </div>
-                    <div className="row m-2 mt-1 pt-2 pos-r">
+                    <div className="row m-2 mt-1 pt-2">
 
                             <table className="table table-sm border-bottom-0">
                                 <thead className="bg-dark text-light">
