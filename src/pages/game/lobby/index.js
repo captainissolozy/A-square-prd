@@ -304,13 +304,10 @@ export default function Lobby() {
         return errors;
     }
 
-    const generateKey = function () {
-        const unique_id = uuid();
-        return unique_id.slice(0, 8);
-    }
     const handleCreate = () => {
         setOpen(true)
-        generatePKey(generateKey)
+        sessionStorage.removeItem('roomKeyCus');
+        sessionStorage.removeItem('selectCus');
         navigate('/createQuotation')
     }
     const handleClose = () => {
@@ -335,9 +332,7 @@ export default function Lobby() {
     }
 
     const handleSubmit = async (e) => {
-
         e.preventDefault()
-        sessionStorage.setItem('gameKey', pKey);
         const errors = validate(formData.title, formData.winCon)
 
         if (errors.length === 0) {

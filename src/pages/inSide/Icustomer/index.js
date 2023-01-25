@@ -47,6 +47,7 @@ export default function Customer() {
     const [file, setFile] = useState("");
     const [percent, setPercent] = useState(0);
 
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(async () => {
         async function fetchData(){

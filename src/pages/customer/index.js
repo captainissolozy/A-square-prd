@@ -10,7 +10,7 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import Modal from "@material-ui/core/Modal";
 import db from "../../config/firebase-config"
-import {doc, getDoc, setDoc} from "firebase/firestore"
+import {doc, setDoc} from "firebase/firestore"
 import FormC from "./formC";
 import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
