@@ -1,4 +1,4 @@
-import { Button } from "@mui/material"
+import {Button} from "@mui/material"
 import * as React from 'react';
 
 function BasicButtons({title}, {color}) {
@@ -8,4 +8,5 @@ function BasicButtons({title}, {color}) {
         <Button variant="contained" className="w-100" color={color}>{title}</Button>
     );
 }
+
 export default BasicButtons

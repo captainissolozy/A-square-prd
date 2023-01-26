@@ -5,8 +5,8 @@ import {useUserContext} from "../../../../context/UserContexts";
 import {Button, IconButton, TextField} from "@mui/material";
 import Modal from "@material-ui/core/Modal";
 import db, {storage} from "../../../../config/firebase-config"
-import {doc, getDoc, updateDoc, setDoc} from "firebase/firestore"
-import {ref, uploadBytesResumable, getDownloadURL} from "firebase/storage"
+import {doc, getDoc, setDoc} from "firebase/firestore"
+import {getDownloadURL, ref, uploadBytesResumable} from "firebase/storage"
 import FormC from "./formC";
 import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -59,28 +59,28 @@ export default function Customer() {
     const [docName, setDocName] = useState(initialDocData)
     const [file, setFile] = useState("");
     const [setPercent] = useState(0);
+    const [listenC ,setListen] = useState("");
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(async () => {
-        async function fetchData(){
-            const docRef1 = doc(db, "CustomersDetail", sessionStorage.getItem("selectCus"));
+        async function fetchData() {
+            const docRef1 = doc(db, "CustomersDetail", listenC);
             const docSnap = await getDoc(docRef1);
             if (docSnap.exists()) {
                 setFormDataIn(docSnap.data())
-                if (count <= 1){
-                    setCount(count+1)
+                if (count <= 1) {
+                    setCount(count + 1)
                 }
             }
         }
+        console.log(count)
+
         await fetchData()
-    },[count])
+    }, [count, listenC])
+    
 
-    const handleCount = () => {
-        setCount(1)
-    }
-
-    useEffect( () => {
-        if (formDataIn.type === "Private"){
+    useEffect(() => {
+        if (formDataIn.type === "Private") {
             setBox2("surname")
             setBox3("email")
             setBoxLa("nickname")
@@ -100,7 +100,7 @@ export default function Customer() {
         })
     }, [count])
 
-    useEffect( () => {
+    useEffect(() => {
         if (!user) {
             navigate('/')
         }
@@ -111,6 +111,11 @@ export default function Customer() {
     }
     const handleCreateTwo = () => {
         setOpenTwo(true)
+    }
+
+    const listenChange = (data) => {
+        setListen(data)
+        console.log(data)
     }
 
     const handleSubmitUpload = (e) => {
@@ -182,7 +187,7 @@ export default function Customer() {
                 ...formData,
                 [e.target.name]: e.target.value.trim()
             })
-        }else if (sendTo === 2) {
+        } else if (sendTo === 2) {
             updateFormData2({
                 ...formData2,
                 [e.target.name]: e.target.value.trim()
@@ -193,13 +198,13 @@ export default function Customer() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         if (sendTo === 1) {
-            sessionStorage.setItem('roomKeyCus', formData.v_box1+formData.v_box2)
-            const docRef1 = doc(db, "CustomersDetail", formData.v_box1+formData.v_box2);
+            sessionStorage.setItem('roomKeyCus', formData.v_box1 + formData.v_box2)
+            const docRef1 = doc(db, "CustomersDetail", formData.v_box1 + formData.v_box2);
             await setDoc(docRef1, formData);
             setOpen(false)
         } else {
-            sessionStorage.setItem('roomKeyCus', formData2.v_box1+formData2.v_box2)
-            const docRef1 = doc(db, "CustomersDetail", formData2.v_box1+formData2.v_box2);
+            sessionStorage.setItem('roomKeyCus', formData2.v_box1 + formData2.v_box2)
+            const docRef1 = doc(db, "CustomersDetail", formData2.v_box1 + formData2.v_box2);
             await setDoc(docRef1, formData2);
             setOpen(false)
         }
@@ -211,9 +216,9 @@ export default function Customer() {
                 <div className="container pt-5 mb-3">
                     <h4 className="pt-1 pt-md-1 px-2 mb-0">Quotation</h4>
                     <div className="heading-container mt-2 d-flex justify-content-start px-2 pt-1">
-                        <div className="col" onClick={handleCount}>
+                        <div className="col">
                             <h5 className="pt-1 pt-md-1 px-1">Select Customer:</h5>
-                            <ComboBox/>
+                            <ComboBox func={listenChange}/>
                         </div>
 
                     </div>
@@ -321,7 +326,8 @@ export default function Customer() {
                         <div className="row">
                             <div className="col p-0">
                                 <div className="col p-0 pt-1 mb-2 mx-2">
-                                    <IconButton variant="outlined" className="px-1" color="primary" onClick={handleCreate}
+                                    <IconButton variant="outlined" className="px-1" color="primary"
+                                                onClick={handleCreate}
                                                 size="small"><h5 className="text-dark mb-0">Or Add new:</h5>
                                         <AddIcon className="mt-1 mx-1 bg-primary rounded text-light"/></IconButton>
                                 </div>
@@ -337,7 +343,7 @@ export default function Customer() {
                                 <th scope="col" className="t-stick">File</th>
                             </tr>
                             </thead>
-                            <FormC docname={formData.v_box1+formData.v_box2} name={docName.name}/>
+                            <FormC docname={formData.v_box1 + formData.v_box2} name={docName.name}/>
                         </table>
 
                     </div>

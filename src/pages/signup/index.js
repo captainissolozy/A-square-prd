@@ -1,16 +1,12 @@
 import BasicTextFieldsRegis from "../../components/common/RegisForm";
-import {
-    getAuth,
-    createUserWithEmailAndPassword
-} from "firebase/auth";
-import {useState} from "react";
+import {createUserWithEmailAndPassword, getAuth} from "firebase/auth";
+import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import {useUserContext} from "../../context/UserContexts";
 import db from "../../config/firebase-config"
-import {setDoc, doc} from "firebase/firestore"
-import { useEffect } from "react";
+import {doc, setDoc} from "firebase/firestore"
 
 const RegisPage = () => {
 
@@ -25,11 +21,11 @@ const RegisPage = () => {
         if (!user) {
             navigate('/')
         }
-        if (sessionStorage.getItem('role') !== "Admin"){
+        if (sessionStorage.getItem('role') !== "Admin") {
             navigate('/')
         }
     }, [navigate, user, sessionStorage.getItem('role')])
-    
+
     const handleAction = () => {
         const authentication = getAuth();
         createUserWithEmailAndPassword(authentication, email, password).then(
@@ -43,7 +39,7 @@ const RegisPage = () => {
 
             }
         ).catch((error) => {
-            if(error.code === 'auth/email-already-in-use'){
+            if (error.code === 'auth/email-already-in-use') {
                 toast.error('Email Already in Use');
             }
         });
@@ -56,7 +52,7 @@ const RegisPage = () => {
                                   setPassword={setPassword}
                                   setRole={setRole}
                                   handleAction={() => handleAction()}/>
-            <ToastContainer />
+            <ToastContainer/>
         </div>
     )
 }

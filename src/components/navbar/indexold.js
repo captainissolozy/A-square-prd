@@ -84,7 +84,7 @@ const Navbar = () => {
                         <Typography id="modal-modal-description" sx={{mt: 2}} className="m-4">
                             Role : {userInfo.role}
                         </Typography>
-                        
+
                     </Box>
                 </Modal>
             </nav>

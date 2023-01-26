@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import GamePlayWrapper from "./GamePlayWrapper";
-import {onSnapshot, doc, getDoc, updateDoc, deleteDoc} from "firebase/firestore";
+import {deleteDoc, doc, getDoc, onSnapshot, updateDoc} from "firebase/firestore";
 import db from "../../../config/firebase-config";
 import {Box, Button, Typography} from "@mui/material";
 import {useNavigate} from "react-router-dom";
@@ -72,10 +72,10 @@ const Game = () => {
 
     const handleXO = async (el) => {
 
-        if (gameData.ironO !== ''){
+        if (gameData.ironO !== '') {
             document.getElementById(gameData.ironO).classList.add('iron')
         }
-        if (gameData.ironX !== ''){
+        if (gameData.ironX !== '') {
             document.getElementById(gameData.ironX).classList.add('iron')
         }
         if (gameData.gameState === true) {
@@ -322,10 +322,10 @@ const Game = () => {
                             gameData.gameState = false
                             toast.success('O win', {position: toast.POSITION.TOP_CENTER, toastId: 1});
                         }
-                        if (gameData.ironX !== ''){
+                        if (gameData.ironX !== '') {
                             document.getElementById(gameData.ironX).classList.remove('iron')
                         }
-                        if (gameData.ironO !== ''){
+                        if (gameData.ironO !== '') {
                             document.getElementById(gameData.ironO).classList.remove('iron')
                         }
                     }
@@ -344,10 +344,10 @@ const Game = () => {
                             gameData.gameState = false
                             toast.success('O win', {position: toast.POSITION.TOP_CENTER, toastId: 1});
                         }
-                        if (gameData.ironX !== ''){
+                        if (gameData.ironX !== '') {
                             document.getElementById(gameData.ironX).classList.remove('iron')
                         }
-                        if (gameData.ironO !== ''){
+                        if (gameData.ironO !== '') {
                             document.getElementById(gameData.ironO).classList.remove('iron')
                         }
                     }
@@ -366,10 +366,10 @@ const Game = () => {
                             gameData.gameState = false
                             toast.success('O win', {position: toast.POSITION.TOP_CENTER, toastId: 1});
                         }
-                        if (gameData.ironX !== ''){
+                        if (gameData.ironX !== '') {
                             document.getElementById(gameData.ironX).classList.remove('iron')
                         }
-                        if (gameData.ironO !== ''){
+                        if (gameData.ironO !== '') {
                             document.getElementById(gameData.ironO).classList.remove('iron')
                         }
                     }
@@ -388,10 +388,10 @@ const Game = () => {
                             gameData.gameState = false
                             toast.success('O win', {position: toast.POSITION.TOP_CENTER, toastId: 1});
                         }
-                        if (gameData.ironX !== ''){
+                        if (gameData.ironX !== '') {
                             document.getElementById(gameData.ironX).classList.remove('iron')
                         }
-                        if (gameData.ironO !== ''){
+                        if (gameData.ironO !== '') {
                             document.getElementById(gameData.ironO).classList.remove('iron')
                         }
                     }
@@ -402,19 +402,19 @@ const Game = () => {
             if (gameData.winX === winCon && gameData.playerX === sessionStorage.getItem('email')) {
                 setOpen(true)
                 setModal("You Win!!")
-                if (gameData.ironX !== ''){
+                if (gameData.ironX !== '') {
                     document.getElementById(gameData.ironX).classList.remove('iron')
                 }
-                if (gameData.ironO !== ''){
+                if (gameData.ironO !== '') {
                     document.getElementById(gameData.ironO).classList.remove('iron')
                 }
             } else if (gameData.winX === winCon && gameData.playerX !== sessionStorage.getItem('email')) {
                 setOpen(true)
                 setModal("You Loses!!")
-                if (gameData.ironX !== ''){
+                if (gameData.ironX !== '') {
                     document.getElementById(gameData.ironX).classList.remove('iron')
                 }
-                if (gameData.ironO !== ''){
+                if (gameData.ironO !== '') {
                     document.getElementById(gameData.ironO).classList.remove('iron')
                 }
             }
@@ -424,10 +424,10 @@ const Game = () => {
             } else if (gameData.winY === winCon && gameData.playerY !== sessionStorage.getItem('email')) {
                 setOpen(true)
                 setModal("You Loses!!")
-                if (gameData.ironX !== ''){
+                if (gameData.ironX !== '') {
                     document.getElementById(gameData.ironX).classList.remove('iron')
                 }
-                if (gameData.ironO !== ''){
+                if (gameData.ironO !== '') {
                     document.getElementById(gameData.ironO).classList.remove('iron')
                 }
             }

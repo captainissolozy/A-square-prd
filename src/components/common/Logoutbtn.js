@@ -1,4 +1,4 @@
-import { Button } from "@mui/material"
+import {Button} from "@mui/material"
 import * as React from 'react';
 import BtnWrapper from "./BtnWrapper";
 import {useUserContext} from "../../context/UserContexts";
@@ -7,6 +7,7 @@ import {useUserContext} from "../../context/UserContexts";
 function LogoutBtn() {
 
     const {user, setUser} = useUserContext()
+
     function handleLogout() {
         sessionStorage.removeItem('User');
         sessionStorage.removeItem('email')
@@ -20,4 +21,5 @@ function LogoutBtn() {
         </BtnWrapper>
     );
 }
+
 export default LogoutBtn

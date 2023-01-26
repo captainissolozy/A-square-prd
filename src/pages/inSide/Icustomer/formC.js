@@ -3,8 +3,6 @@ import db from "../../../config/firebase-config"
 import {collection, onSnapshot} from "firebase/firestore"
 
 
-
-
 const AddTable = (props) => {
 
     const [formData, setFormData] = useState([])

@@ -1,12 +1,13 @@
 import * as React from 'react';
+import {useEffect, useState} from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import {collection, onSnapshot} from "firebase/firestore";
 import db from "../../../../config/firebase-config";
-import {useEffect, useState} from "react";
+
 const options = ['Option 1', 'Option 2'];
 
-export default function ComboBox() {
+export default function ComboBox(props) {
 
     const [formData, setFormData] = useState([])
     const [formName] = useState([])
@@ -20,9 +21,9 @@ export default function ComboBox() {
         });
     }, [])
 
-    useEffect( () => {
+    useEffect(() => {
         formData.map((data) => {
-            return formName.indexOf(data.v_box1+data.v_box2) === -1?formName.push(data.v_box1+data.v_box2):console.log("This item already exists");
+            return formName.indexOf(data.v_box1 + data.v_box2) === -1 ? formName.push(data.v_box1 + data.v_box2) : console.log("This item already exists");
         })
     }, [formData])
 
@@ -35,12 +36,13 @@ export default function ComboBox() {
             onChange={(event: any, newValue: string | null) => {
                 setValue(newValue);
                 sessionStorage.setItem("selectCus", newValue)
+                props.func(newValue)
             }}
             inputValue={inputValue}
             onInputChange={(event, newInputValue) => {
                 setInputValue(newInputValue);
             }}
-            renderInput={(params) => <TextField {...params} label="Customer name" />}
+            renderInput={(params) => <TextField {...params} label="Customer name"/>}
         />
     );
 }

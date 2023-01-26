@@ -2,11 +2,11 @@ import * as React from "react";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useUserContext} from "../../../context/UserContexts";
-import {Button, IconButton, TextField} from "@mui/material";
+import {Button, TextField} from "@mui/material";
 import Modal from "@material-ui/core/Modal";
 import db, {storage} from "../../../config/firebase-config"
-import {doc, getDoc, updateDoc, setDoc} from "firebase/firestore"
-import {ref, uploadBytesResumable, getDownloadURL} from "firebase/storage"
+import {doc, getDoc, setDoc, updateDoc} from "firebase/firestore"
+import {getDownloadURL, ref, uploadBytesResumable} from "firebase/storage"
 import FormC from "./formC";
 import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -50,21 +50,22 @@ export default function Customer() {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(async () => {
-        async function fetchData(){
+        async function fetchData() {
             const docRef1 = doc(db, "CustomersDetail", sessionStorage.getItem("roomKeyCus"));
             const docSnap = await getDoc(docRef1);
             if (docSnap.exists()) {
                 setFormDataIn(docSnap.data())
-                if (count <= 1){
-                    setCount(count+1)
+                if (count <= 1) {
+                    setCount(count + 1)
                 }
             }
         }
-        await fetchData()
-    },[count])
 
-    useEffect( () => {
-        if (formDataIn.type === "Private"){
+        await fetchData()
+    }, [count])
+
+    useEffect(() => {
+        if (formDataIn.type === "Private") {
             setBox2("surname")
             setBox3("email")
             setBoxLa("nickname")
@@ -74,17 +75,17 @@ export default function Customer() {
             setBox2("taxpayerNum")
         }
         updateFormData({
-                v_box1: formDataIn.v_box1,
-                v_box2: formDataIn.v_box2,
-                v_box3: formDataIn.v_box3,
-                v_box4: formDataIn.v_box4,
-                v_box5: formDataIn.v_box5,
-                v_box6: formDataIn.v_box6,
-                v_box7: formDataIn.v_box7
-            })
+            v_box1: formDataIn.v_box1,
+            v_box2: formDataIn.v_box2,
+            v_box3: formDataIn.v_box3,
+            v_box4: formDataIn.v_box4,
+            v_box5: formDataIn.v_box5,
+            v_box6: formDataIn.v_box6,
+            v_box7: formDataIn.v_box7
+        })
     }, [count])
 
-    useEffect( () => {
+    useEffect(() => {
         if (!user) {
             navigate('/')
         }
@@ -147,13 +148,13 @@ export default function Customer() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        if (!edit){
+        if (!edit) {
             setEdit(true)
             setTextEdit("Edit")
             setTextColor("warning")
-            const docRef1 = doc(db, "CustomersDetail", formData.v_box1+formData.v_box2);
+            const docRef1 = doc(db, "CustomersDetail", formData.v_box1 + formData.v_box2);
             await updateDoc(docRef1, formData);
-        }else {
+        } else {
             setEdit(false)
             setTextEdit("Confirm")
             setTextColor("primary")
@@ -280,15 +281,15 @@ export default function Customer() {
                                 <th scope="col" className="t-stick">File</th>
                             </tr>
                             </thead>
-                            <FormC docname={formData.v_box1+formData.v_box2} name={docName.name}/>
+                            <FormC docname={formData.v_box1 + formData.v_box2} name={docName.name}/>
                         </table>
 
                     </div>
                     <div className="row m-2 pt-2 justify-content-end">
                         <div className="col-2 p-0 mx-3">
-                        <Button variant="contained" className="w-100" color="secondary" onClick={handleCreate}
-                                size="small"><AddIcon/>
-                        </Button>
+                            <Button variant="contained" className="w-100" color="secondary" onClick={handleCreate}
+                                    size="small"><AddIcon/>
+                            </Button>
                         </div>
                     </div>
                 </div>

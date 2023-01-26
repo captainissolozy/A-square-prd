@@ -2,11 +2,7 @@ import * as React from "react";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useUserContext} from "../../context/UserContexts";
-import {
-    Button,
-    Fab, IconButton,
-    TextField
-} from "@mui/material";
+import {Button, IconButton, TextField} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from '@mui/icons-material/Search';
 import Modal from "@material-ui/core/Modal";
@@ -17,7 +13,6 @@ import FormS from "./formS";
 import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import SupplierWrapper from "./SupplierWrapper";
-
 
 
 export default function Supplier() {
@@ -80,7 +75,7 @@ export default function Supplier() {
                 ...formData,
                 [e.target.name]: e.target.value.trim()
             })
-        }else if (sendTo === 2) {
+        } else if (sendTo === 2) {
             updateFormData2({
                 ...formData2,
                 [e.target.name]: e.target.value.trim()
@@ -111,11 +106,11 @@ export default function Supplier() {
         console.log(formData2)
         e.preventDefault()
         if (sendTo === 1) {
-            const docRef1 = doc(db, "SuppliersDetail", formData.name+formData.nickname);
+            const docRef1 = doc(db, "SuppliersDetail", formData.name + formData.nickname);
             await setDoc(docRef1, formData);
             console.log(formData)
         } else {
-            const docRef1 = doc(db, "SuppliersDetail", formData2.name+formData2.nickname);
+            const docRef1 = doc(db, "SuppliersDetail", formData2.name + formData2.nickname);
             await setDoc(docRef1, formData2);
             console.log(formData2)
         }
@@ -140,7 +135,8 @@ export default function Supplier() {
                 <div className="container pt-5">
                     <div className="col px-2">
                         <IconButton variant="outlined" className="px-0" color="primary" onClick={handleCreate}
-                                    size="small"><h4 className="text-dark mb-0">Supplier</h4><AddIcon className="mt-1 mx-1 bg-primary rounded text-light"/></IconButton>
+                                    size="small"><h4 className="text-dark mb-0">Supplier</h4><AddIcon
+                            className="mt-1 mx-1 bg-primary rounded text-light"/></IconButton>
                     </div>
                     <div className="row mt-3 d-flex justify-content-center">
                         <div className="row">

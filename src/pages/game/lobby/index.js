@@ -4,14 +4,13 @@ import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useUserContext} from "../../../context/UserContexts";
 import {
-    BottomNavigation, BottomNavigationAction,
     Button,
-    Fab,
     FormControl,
     FormControlLabel,
-    FormLabel, IconButton, Paper,
+    FormLabel,
+    IconButton,
     Radio,
-    RadioGroup, Tab, Tabs,
+    RadioGroup,
     TextField
 } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
@@ -19,7 +18,6 @@ import SearchIcon from '@mui/icons-material/Search';
 import Modal from "@material-ui/core/Modal";
 import db from "../../../config/firebase-config"
 import {doc, getDoc, setDoc} from "firebase/firestore"
-import {v4 as uuid} from 'uuid';
 import AddTable from "./AddTable";
 import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -365,7 +363,8 @@ export default function Lobby() {
                 <div className="container pt-5">
                     <div className="col px-2">
                         <IconButton variant="outlined" className="px-0" color="primary" onClick={handleCreate}
-                                    size="small"><h4 className="text-dark mb-0">Quotation</h4><AddIcon className="mt-1 mx-1 bg-primary rounded text-light"/></IconButton>
+                                    size="small"><h4 className="text-dark mb-0">Quotation</h4><AddIcon
+                            className="mt-1 mx-1 bg-primary rounded text-light"/></IconButton>
                     </div>
                     <div className="row mt-3 d-flex justify-content-center">
                         <div className="row">

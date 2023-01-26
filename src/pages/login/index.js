@@ -1,7 +1,7 @@
 import BasicTextFields from "../../components/common/Form";
-import {useState, useEffect} from "react";
-import  { useNavigate} from "react-router-dom";
-import {signInWithEmailAndPassword, getAuth} from "firebase/auth";
+import {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
+import {getAuth, signInWithEmailAndPassword} from "firebase/auth";
 import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import {useUserContext} from "../../context/UserContexts";
@@ -29,10 +29,10 @@ const LoginPage = () => {
                 navigate("/lobby");
             }
         ).catch((error) => {
-            if(error.code === 'auth/wrong-password'){
+            if (error.code === 'auth/wrong-password') {
                 toast.error('Please use the correct Password');
             }
-            if (error.code === 'auth/user-not-found'){
+            if (error.code === 'auth/user-not-found') {
                 toast.error('Please use the correct Email');
             }
         });
@@ -40,9 +40,9 @@ const LoginPage = () => {
 
     return (
         <div>
-            <BasicTextFields setEmail={setEmail} 
-              setPassword={setPassword} handleAction={() => handleAction()}/>
-            <ToastContainer />
+            <BasicTextFields setEmail={setEmail}
+                             setPassword={setPassword} handleAction={() => handleAction()}/>
+            <ToastContainer/>
         </div>
     )
 }

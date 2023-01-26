@@ -5,11 +5,11 @@ import {useNavigate} from "react-router-dom";
 const Initial = () => {
 
     const navigate = useNavigate();
-    
+
     const handleClick = () => {
-      navigate("/lobby")
+        navigate("/lobby")
     }
-    
+
     return (
         <InitialWrapper>
             <div className="d-flex justify-content-center">
@@ -24,7 +24,8 @@ const Initial = () => {
                 <h4 className="mx-3">IRONXO</h4>
                 <p> - IronXO are the pawn that can't be destroy by the Bomb. Player Can only place 1 IronXO</p>
                 <h4 className="mx-3">Bomb</h4>
-                <p> - Bomb are the Action that perform an act of destroying the target XO that you choose. Player can only use Bomb once</p>
+                <p> - Bomb are the Action that perform an act of destroying the target XO that you choose. Player can
+                    only use Bomb once</p>
             </div>
         </InitialWrapper>
 

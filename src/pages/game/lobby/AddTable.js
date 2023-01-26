@@ -1,8 +1,7 @@
 import {useEffect, useState} from "react";
 import db from "../../../config/firebase-config"
-import {onSnapshot, collection, doc, getDoc} from "firebase/firestore"
+import {collection, doc, getDoc, onSnapshot} from "firebase/firestore"
 import {useNavigate} from "react-router-dom";
-
 
 
 const AddTable = () => {
@@ -32,15 +31,15 @@ const AddTable = () => {
 
         formData.map((data) => (
 
-                <tbody>
-                <tr onClick={() => handleJoinPublic(data.UniqueKey, data.pubLic)} style={{cursor: "pointer"}}>
-                    <td>{data.winCon}</td>
-                    <td>{data.title}</td>
-                    <td>{data.name}</td>
-                    <td>{data.pubLic}</td>
+            <tbody>
+            <tr onClick={() => handleJoinPublic(data.UniqueKey, data.pubLic)} style={{cursor: "pointer"}}>
+                <td>{data.winCon}</td>
+                <td>{data.title}</td>
+                <td>{data.name}</td>
+                <td>{data.pubLic}</td>
 
-                </tr>
-                </tbody>
+            </tr>
+            </tbody>
 
         ))
 

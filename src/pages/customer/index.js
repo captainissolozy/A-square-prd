@@ -2,11 +2,7 @@ import * as React from "react";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useUserContext} from "../../context/UserContexts";
-import {
-    Button,
-    IconButton,
-    TextField
-} from "@mui/material";
+import {Button, IconButton, TextField} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import Modal from "@material-ui/core/Modal";
 import db from "../../config/firebase-config"
@@ -75,7 +71,7 @@ export default function Customer() {
                 ...formData,
                 [e.target.name]: e.target.value.trim()
             })
-        }else if (sendTo === 2) {
+        } else if (sendTo === 2) {
             updateFormData2({
                 ...formData2,
                 [e.target.name]: e.target.value.trim()
@@ -107,13 +103,13 @@ export default function Customer() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         if (sendTo === 1) {
-            sessionStorage.setItem('roomKeyCus', formData.v_box1+formData.v_box2)
-            const docRef1 = doc(db, "CustomersDetail", formData.v_box1+formData.v_box2);
+            sessionStorage.setItem('roomKeyCus', formData.v_box1 + formData.v_box2)
+            const docRef1 = doc(db, "CustomersDetail", formData.v_box1 + formData.v_box2);
             await setDoc(docRef1, formData);
             navigate('/inc')
         } else {
-            sessionStorage.setItem('roomKeyCus', formData2.v_box1+formData2.v_box2)
-            const docRef1 = doc(db, "CustomersDetail", formData2.v_box1+formData2.v_box2);
+            sessionStorage.setItem('roomKeyCus', formData2.v_box1 + formData2.v_box2)
+            const docRef1 = doc(db, "CustomersDetail", formData2.v_box1 + formData2.v_box2);
             await setDoc(docRef1, formData2);
             navigate('/inc')
         }
@@ -125,82 +121,86 @@ export default function Customer() {
             <div className="wrapper-box pt-4 ">
                 <div className="container pt-4">
                     <div className="my-1 p-3 pb-3 row d-flex justify-content-center">
-                    <div className="col-10 px-2 d-flex justify-content-start col-md-9">
+                        <div className="col-10 px-2 d-flex justify-content-start col-md-9">
                             <IconButton variant="outlined" className="px-0" color="primary" onClick={handleCreate}
-                                    size="small"><h4 className="text-dark mb-0">Customer</h4><AddIcon className="mt-1 mx-1 bg-primary rounded text-light"/></IconButton>
-                    </div>
-                    <div className="row mt-2 d-flex justify-content-center">
-                        <div className="row d-flex justify-content-center">
-                            <div className="col-8 px-2 col-md-6">
-                                <div className="col pt-1 col-md-12 mb-2">
-                                    <TextField id="outlined-search" type="search" InputLabelProps={{
-                                        shrink: true,
-                                    }} inputProps={{
-                                        style: {
-                                            height: "5px",
-                                        },
-                                    }}
-                                               name="name" label="Name" className="w-100" onChange={joinChange}/>
+                                        size="small"><h4 className="text-dark mb-0">Customer</h4><AddIcon
+                                className="mt-1 mx-1 bg-primary rounded text-light"/></IconButton>
+                        </div>
+                        <div className="row mt-2 d-flex justify-content-center">
+                            <div className="row d-flex justify-content-center">
+                                <div className="col-8 px-2 col-md-6">
+                                    <div className="col pt-1 col-md-12 mb-2">
+                                        <TextField id="outlined-search" type="search" InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                                   name="name" label="Name" className="w-100" onChange={joinChange}/>
+                                    </div>
+                                </div>
+                                <div className="col p-0 col-md-3">
+                                    <div className="col p-0 pt-1 mb-2 mx-2">
+                                        <TextField id="outlined-search" type="search" InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                                   name="status" label="Status" className="w-100"
+                                                   onChange={joinChange}/>
+                                    </div>
                                 </div>
                             </div>
-                            <div className="col p-0 col-md-3">
-                                <div className="col p-0 pt-1 mb-2 mx-2">
-                                    <TextField id="outlined-search" type="search" InputLabelProps={{
-                                        shrink: true,
-                                    }} inputProps={{
-                                        style: {
-                                            height: "5px",
-                                        },
-                                    }}
-                                               name="status" label="Status" className="w-100" onChange={joinChange}/>
+                            <div className="row d-flex justify-content-center">
+                                <div className="col-md-6 p-0 col-8">
+                                    <div className="col p-0 pt-1 mb-2 mx-2">
+                                        <TextField id="outlined-search" type="name" InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                                   name="nickname" label="Nickname" className="w-100"
+                                                   onChange={joinChange}/>
+                                    </div>
+                                </div>
+                                <div className="col p-0 col-md-3">
+                                    <div className="col p-0 pt-1 mb-2 mx-2">
+                                        <TextField id="outlined-search" type="search" InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                                   name="tel" label="Tel." className="w-100" onChange={joinChange}/>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div className="row d-flex justify-content-center">
-                            <div className="col-md-6 p-0 col-8">
-                                <div className="col p-0 pt-1 mb-2 mx-2">
-                                    <TextField id="outlined-search" type="name" InputLabelProps={{
-                                        shrink: true,
-                                    }} inputProps={{
-                                        style: {
-                                            height: "5px",
-                                        },
-                                    }}
-                                               name="nickname" label="Nickname" className="w-100" onChange={joinChange}/>
-                                </div>
-                            </div>
-                            <div className="col p-0 col-md-3">
-                                <div className="col p-0 pt-1 mb-2 mx-2">
-                                    <TextField id="outlined-search" type="search" InputLabelProps={{
-                                        shrink: true,
-                                    }} inputProps={{
-                                        style: {
-                                            height: "5px",
-                                        },
-                                    }}
-                                               name="tel" label="Tel." className="w-100" onChange={joinChange}/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     </div>
                     <div className="row m-2 mt-1 pt-2">
 
-                            <table className="table table-sm border-bottom-0">
-                                <thead className="bg-dark text-light">
-                                <tr>
-                                    <th scope="col" className="t-stick">Name</th>
-                                    <th scope="col" className="t-stick">Contact</th>
-                                    <th scope="col" className="t-stick">tel.</th>
-                                    <th scope="col" className="t-stick">status</th>
-                                </tr>
-                                </thead>
-                                <FormC s_name={searchChanged.name} s_status={searchChanged.status} s_nickname={searchChanged.nickname} s_tel={searchChanged.tel}/>
-                            </table>
+                        <table className="table table-sm border-bottom-0">
+                            <thead className="bg-dark text-light">
+                            <tr>
+                                <th scope="col" className="t-stick">Name</th>
+                                <th scope="col" className="t-stick">Contact</th>
+                                <th scope="col" className="t-stick">tel.</th>
+                                <th scope="col" className="t-stick">status</th>
+                            </tr>
+                            </thead>
+                            <FormC s_name={searchChanged.name} s_status={searchChanged.status}
+                                   s_nickname={searchChanged.nickname} s_tel={searchChanged.tel}/>
+                        </table>
 
                     </div>
 
-            </div>
+                </div>
             </div>
             <Modal
                 open={open}
