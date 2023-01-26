@@ -4,9 +4,8 @@ import {useNavigate} from "react-router-dom";
 import {useUserContext} from "../../../../context/UserContexts";
 import {Button, IconButton, TextField} from "@mui/material";
 import Modal from "@material-ui/core/Modal";
-import db, {storage} from "../../../../config/firebase-config"
-import {doc, getDoc, setDoc} from "firebase/firestore"
-import {getDownloadURL, ref, uploadBytesResumable} from "firebase/storage"
+import db from "../../../../config/firebase-config"
+import {collection, doc, getDoc, setDoc, getDocs, deleteDoc} from "firebase/firestore"
 import FormC from "./formC";
 import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -17,6 +16,18 @@ import ComboBox from "./combobox";
 
 export default function Customer() {
 
+    const current = new Date();
+
+    const initialFormData2 = Object.freeze({
+        type: "Organization",
+        v_box1: "",
+        v_box2: "",
+        v_box3: "",
+        v_box4: "",
+        v_box5: "",
+        v_box6: "Incompleted",
+        v_box7: ""
+    });
 
     const initialFormData = Object.freeze({
         type: "Private",
@@ -29,16 +40,32 @@ export default function Customer() {
         v_box7: ""
     });
 
+    const initialFormDataProject = Object.freeze({
+        subject: "",
+        projectName: "",
+        sales: sessionStorage.getItem("email"),
+        date: current.getDate(),
+        month: current.getMonth() + 1,
+        year: current.getFullYear()
+    });
+
     const initialDocData = Object.freeze({
-        name: ""
+        description: "",
+        quantity: 1,
+        unit: "",
+        labor: 0,
+        material: 0
     });
 
     const navigate = useNavigate()
     const {user} = useUserContext()
     const [open, setOpen] = useState(false)
+    const [stateOfN, setStateOfN] = useState(false)
     const [openTwo, setOpenTwo] = useState(false)
     const [formDataIn, setFormDataIn] = useState([])
     const [formData, updateFormData] = useState(initialFormData)
+    const [formData2, updateFormData2] = useState(initialFormData2)
+    const [formDataProject, updateFormDataProject] = useState(initialFormDataProject)
     const [edit] = useState(true)
     const [box2, setBox2] = useState("Taxpayer-num")
     const [box3, setBox3] = useState("Register-capital")
@@ -46,9 +73,9 @@ export default function Customer() {
     const [sendTo, setSendTo] = useState(2)
     const [count, setCount] = useState(0)
     const [docName, setDocName] = useState(initialDocData)
-    const [file, setFile] = useState("");
-    const [setPercent] = useState(0);
     const [listenC, setListen] = useState("");
+    const [genQo, setGenQo] = useState("");
+    const [countQo, setCountQo] = useState(0);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(async () => {
@@ -86,6 +113,15 @@ export default function Customer() {
         }
     }, [navigate, user])
 
+    useEffect(async () => {
+        const docRef1 = collection(db, "PO");
+        const docSnap = await getDocs(docRef1);
+        if (countQo === 0){
+            setGenQo(`${docSnap.docs.length+1}`+`${formDataProject.date}`+
+                `${formDataProject.month}`+`${formDataProject.year}`)
+        }
+    }, [formDataProject, genQo, stateOfN])
+
     const handleCreate = () => {
         setOpen(true)
     }
@@ -99,31 +135,7 @@ export default function Customer() {
 
     const handleSubmitUpload = (e) => {
         e.preventDefault()
-        if (!file) {
-            alert("Please choose a file first!")
-        }
-        const storageRef = ref(storage, `/media/Customer/${file.name}`)
-        const uploadTask = uploadBytesResumable(storageRef, file);
-        uploadTask.on(
-            "state_changed",
-            (snapshot) => {
-                const percent = Math.round(
-                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-                );
-                // update progress
-                setPercent(percent);
-            },
-            (err) => console.log(err),
-            () => {
-                // download url
-                getDownloadURL(uploadTask.snapshot.ref).then(async (url) => {
-                    const docRef1 = doc(db, "CustomersDetail", formData.v_box1 + formData.v_box2, "media", docName.name);
-                    await setDoc(docRef1, {docName, url});
-                });
-            }
-        );
         setOpen(false)
-        setDocName("")
     }
 
     const handleChangeToOrg = () => {
@@ -141,7 +153,6 @@ export default function Customer() {
     }
 
     const handleChangeUploadFile = (e) => {
-        setFile(e.target.files[0])
     }
 
     const handleChangeUpload = (e) => {
@@ -153,11 +164,18 @@ export default function Customer() {
 
     const handleClose = () => {
         setOpen(false)
-        setFile("")
     }
 
     const handleCloseTwo = () => {
         setOpenTwo(false)
+        setDocName({
+            ...docName,
+            total: 0,
+            labor: 0,
+            material: 0,
+            quantity: 1,
+            totalUnitPrice: 0
+        })
     }
 
     const handleChange = (e) => {
@@ -166,12 +184,70 @@ export default function Customer() {
                 ...formData,
                 [e.target.name]: e.target.value.trim()
             })
+        } else if (sendTo === 2) {
+            updateFormData2({
+                ...formData2,
+                [e.target.name]: e.target.value.trim()
+            })
         }
+    }
+
+    const handleChangePro = (e) => {
+        updateFormDataProject({
+            ...formDataProject,
+            [e.target.name]: e.target.value
+        })
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log("HI")
+        if (sendTo === 1) {
+            sessionStorage.setItem('roomKeyCus', formData.v_box1 + formData.v_box2)
+            const docRef1 = doc(db, "CustomersDetail", formData.v_box1 + formData.v_box2);
+            await setDoc(docRef1, formData);
+            setOpen(false)
+        } else {
+            sessionStorage.setItem('roomKeyCus', formData2.v_box1 + formData2.v_box2)
+            const docRef1 = doc(db, "CustomersDetail", formData2.v_box1 + formData2.v_box2);
+            await setDoc(docRef1, formData2);
+            setOpen(false)
+        }
+    };
+
+    const handleSubmitNext = async (e) => {
+        e.preventDefault()
+        if (stateOfN === false && formDataProject.projectName !== "" && formDataProject.subject !== "") {
+            setCountQo(1)
+            setStateOfN(true)
+            console.log(genQo)
+            let projectData = {
+                ...formDataProject,
+                ...formDataIn
+            }
+            const docRef1 = doc(db, "PO", genQo);
+            await setDoc(docRef1, projectData);
+        }
+    };
+
+    const handleSubmitPrice = async (e) => {
+        e.preventDefault()
+        const docRef1 = doc(db, "PO", genQo, "Work", docName.description);
+        await setDoc(docRef1, docName);
+        setOpenTwo(false)
+        setDocName({
+            ...docName,
+            labor: 0,
+            material: 0,
+            quantity: 1,
+        })
+    };
+
+    const handleCancelNext = async (e) => {
+        e.preventDefault()
+        if (stateOfN === true) {
+            setStateOfN(false)
+        }
+        console.log(genQo)
     };
 
     return (
@@ -183,33 +259,33 @@ export default function Customer() {
                         <div className="row pt-2 pt-md-1 px-3 mb-0">
                             <div className="col px-2">
                                 <div className="col pt-1 col-md-12">
-                                    <TextField id="v_box5" type="search" InputLabelProps={{
+                                    <TextField type="search" onChange={handleChangePro} InputLabelProps={{
                                         shrink: true,
                                     }} inputProps={{
                                         style: {
                                             height: "5px",
                                         },
                                     }}
-                                               name="subject" label="Subject" className="w-100" required
+                                               name="subject" label="Subject" className="w-100" required disabled={stateOfN}
                                     />
                                 </div>
                             </div>
                             <div className="col p-0">
                                 <div className="col p-0 pt-1 mb-2 mx-2">
-                                    <TextField id="v_box6" type="search" InputLabelProps={{
+                                    <TextField type="search" onChange={handleChangePro} InputLabelProps={{
                                         shrink: true,
                                     }} inputProps={{
                                         style: {
                                             height: "5px",
                                         },
                                     }}
-                                               name="projectName" label="Project Name" className="w-100" required
+                                               name="projectName" label="Project Name" className="w-100" required disabled={stateOfN}
                                     />
                                 </div>
                             </div>
                             <div className="col-12 px-1">
                                 <div className="col p-0 pt-1 mb-2">
-                                    <TextField id="v_box8" type="search" InputLabelProps={{
+                                    <TextField type="search" onChange={handleChangePro} InputLabelProps={{
                                         shrink: true,
                                     }} inputProps={{
                                         style: {
@@ -229,12 +305,12 @@ export default function Customer() {
                                 <div className="col p-0">
                                     <IconButton variant="outlined" className="px-1" color="error"
                                                 onClick={handleCreate}
-                                                size="small"><h5 className="text-dark mb-0">Add Customer:</h5>
+                                                size="small"><h5 className="text-dark mb-0">Customer:</h5>
                                         <AddIcon color="error"
                                                  className="mt-1 mx-1 bg-primary rounded text-light"/></IconButton>
                                 </div>
-                                <h5 className="px-1">Or Select:</h5>
-                                <ComboBox func={listenChange}/>
+                                <h5 className="px-1">Select:</h5>
+                                <ComboBox func={listenChange} dis={stateOfN}/>
                             </div>
 
                         </div>
@@ -327,39 +403,45 @@ export default function Customer() {
                             <div className="row">
                                 <div className="col p-0 mb-3">
                                     <div className="col p-0 pt-1 mt-2 mx-2 d-flex flex-row-reverse">
-                                        <Button variant="contained" className="" color="success"
-                                                onClick={handleSubmit} type="submit"
-                                                size="small">Next
+                                        <Button variant="contained" className="" color="primary"
+                                                onClick={handleSubmitNext} type="submit" disabled={stateOfN}
+                                                size="small">confirm
+                                        </Button>
+                                        <Button variant="contained" className="mx-1" color="secondary"
+                                                onClick={handleCancelNext} type="submit" disabled={!stateOfN}
+                                                size="small">Edit
                                         </Button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </form>
-                    <div className="row m-2 pt-1">
+                    {stateOfN?(<div className="container-fluid p-0">
+                        <div className="row m-2 pt-1">
 
-                        <table className="table table-sm border-bottom-0">
-                            <thead className="bg-dark text-light">
-                            <tr>
-                                <th scope="col" className="t-stick">Description</th>
-                                <th scope="col" className="t-stick">Quantity</th>
-                                <th scope="col" className="t-stick">unit</th>
-                                <th scope="col" className="t-stick">labor</th>
-                                <th scope="col" className="t-stick">material</th>
+                            <table className="table table-sm border-bottom-0">
+                                <thead className="bg-dark text-light">
+                                <tr>
+                                    <th scope="col" className="t-stick">Description</th>
+                                    <th scope="col" className="t-stick">Quantity</th>
+                                    <th scope="col" className="t-stick">unit</th>
+                                    <th scope="col" className="t-stick">labor</th>
+                                    <th scope="col" className="t-stick">material</th>
 
-                            </tr>
-                            </thead>
-                            <FormC docname={formData.v_box1 + formData.v_box2} name={docName.name}/>
-                        </table>
+                                </tr>
+                                </thead>
+                                <FormC docname={formData.v_box1 + formData.v_box2} name={docName.name}/>
+                            </table>
 
-                    </div>
-                    <div className="row m-2 pt-2 justify-content-end">
-                        <div className="col-2 p-0 mx-1">
-                            <Button variant="contained" className="w-100" color="error" onClick={handleCreateTwo}
-                                    size="small"><AddIcon/>
-                            </Button>
                         </div>
-                    </div>
+                        <div className="row m-2 pt-2 justify-content-end">
+                            <div className="col-2 p-0 mx-1">
+                                <Button variant="contained" className="w-100" color="primary" onClick={handleCreateTwo}
+                                        size="small"><AddIcon/>
+                                </Button>
+                            </div>
+                        </div>
+                    </div>):(<></>)}
                 </div>
             </div>
             <Modal
@@ -376,7 +458,7 @@ export default function Customer() {
                             <div className="row pt-1">
                                 <div className="col px-2">
                                     <div className="col pt-1 col-md-12 mb-2">
-                                        <TextField id="v_box1" type="search" InputLabelProps={{
+                                        <TextField onChange={handleChangeUpload} type="search" InputLabelProps={{
                                             shrink: true,
                                         }} inputProps={{
                                             style: {
@@ -391,20 +473,20 @@ export default function Customer() {
                             <div className="row pt-1">
                                 <div className="col px-2">
                                     <div className="col pt-1 col-md-12 mb-2">
-                                        <TextField id="v_box1" type="search" InputLabelProps={{
+                                        <TextField onChange={handleChangeUpload} type="number" InputLabelProps={{
                                             shrink: true,
                                         }} inputProps={{
                                             style: {
                                                 height: "5px",
                                             },
                                         }}
-                                                   name="quantity" label="Quantity" className="w-100"
+                                                   name="quantity" label="Quantity" className="w-100" Value={docName.quantity}
                                         />
                                     </div>
                                 </div>
                                 <div className="col p-0">
                                     <div className="col p-0 pt-1 mb-2 mx-2">
-                                        <TextField id="v_box2" type="search" InputLabelProps={{
+                                        <TextField onChange={handleChangeUpload} type="text" InputLabelProps={{
                                             shrink: true,
                                         }} inputProps={{
                                             style: {
@@ -419,7 +501,7 @@ export default function Customer() {
                             <div className="row">
                                 <div className="col px-2">
                                     <div className="col pt-1 col-md-12 mb-2">
-                                        <TextField id="v_box3" type="search" InputLabelProps={{
+                                        <TextField onChange={handleChangeUpload} type="number" InputLabelProps={{
                                             shrink: true,
                                         }} inputProps={{
                                             style: {
@@ -432,7 +514,7 @@ export default function Customer() {
                                 </div>
                                 <div className="col p-0">
                                     <div className="col p-0 pt-1 mb-2 mx-2">
-                                        <TextField id="v_box4" type="search" InputLabelProps={{
+                                        <TextField onChange={handleChangeUpload} type="number" InputLabelProps={{
                                             shrink: true,
                                         }} inputProps={{
                                             style: {
@@ -447,14 +529,29 @@ export default function Customer() {
                             <div className="row">
                                 <div className="col px-2">
                                     <div className="col pt-1 col-md-12 mb-2">
-                                        <TextField id="v_box5" type="search" InputLabelProps={{
+                                        <TextField type="number" disabled={true} InputLabelProps={{
                                             shrink: true,
                                         }} inputProps={{
                                             style: {
                                                 height: "5px",
                                             },
                                         }}
-                                                   name="total" label="Total" className="w-100"
+                                                   name="totalUnitPrice" label="TotalUnitPrice" className="w-100" value={(parseFloat(docName.labor)+parseFloat(docName.material))}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col px-2">
+                                    <div className="col pt-1 col-md-12 mb-2">
+                                        <TextField type="number" disabled={true} InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                                   name="total" label="Total" className="w-100" value={docName.quantity*(parseFloat(docName.labor)+parseFloat(docName.material))}
                                         />
                                     </div>
                                 </div>
@@ -467,7 +564,7 @@ export default function Customer() {
                                 Close
                             </Button>
                             <Button type="submit" variant="contained" color="primary" className="mx-3 px-2 col-3"
-                                    onClick={handleSubmitUpload}>
+                                    onClick={handleSubmitPrice}>
                                 Add
                             </Button>
 

@@ -32,6 +32,7 @@ export default function ComboBox(props) {
             disablePortal
             id="combo-box-demo"
             size="small"
+            disabled={props.dis}
             options={formName}
             onChange={(event: any, newValue: string | null) => {
                 setValue(newValue);

@@ -27,6 +27,7 @@ const AddTable = () => {
         console.log("9");
     }
 
+
     return (
 
         formData.map((data) => (
