@@ -183,7 +183,7 @@ export default function Customer() {
                             </div>
                         </div>
                     </div>
-                    <div className="row m-2 mt-1 pt-2">
+                    <div className="row m-2 mt-1 pt-2 shadow">
 
                         <table className="table table-sm border-bottom-0 rounded">
                             <thead className="bg-dark text-light">
