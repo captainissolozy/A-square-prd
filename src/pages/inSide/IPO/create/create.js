@@ -17,16 +17,6 @@ import ComboBox from "./combobox";
 
 export default function Customer() {
 
-    const initialFormData2 = Object.freeze({
-        type: "Organization",
-        v_box1: "",
-        v_box2: "",
-        v_box3: "",
-        v_box4: "",
-        v_box5: "",
-        v_box6: "Incompleted",
-        v_box7: ""
-    });
 
     const initialFormData = Object.freeze({
         type: "Private",
@@ -49,7 +39,6 @@ export default function Customer() {
     const [openTwo, setOpenTwo] = useState(false)
     const [formDataIn, setFormDataIn] = useState([])
     const [formData, updateFormData] = useState(initialFormData)
-    const [formData2, updateFormData2] = useState(initialFormData2)
     const [edit] = useState(true)
     const [box2, setBox2] = useState("Taxpayer-num")
     const [box3, setBox3] = useState("Register-capital")
@@ -59,7 +48,7 @@ export default function Customer() {
     const [docName, setDocName] = useState(initialDocData)
     const [file, setFile] = useState("");
     const [setPercent] = useState(0);
-    const [listenC ,setListen] = useState("");
+    const [listenC, setListen] = useState("");
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(async () => {
@@ -73,6 +62,7 @@ export default function Customer() {
                 }
             }
         }
+
         await fetchData()
     }, [count, listenC])
 
@@ -176,27 +166,12 @@ export default function Customer() {
                 ...formData,
                 [e.target.name]: e.target.value.trim()
             })
-        } else if (sendTo === 2) {
-            updateFormData2({
-                ...formData2,
-                [e.target.name]: e.target.value.trim()
-            })
         }
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        if (sendTo === 1) {
-            sessionStorage.setItem('roomKeyCus', formData.v_box1 + formData.v_box2)
-            const docRef1 = doc(db, "CustomersDetail", formData.v_box1 + formData.v_box2);
-            await setDoc(docRef1, formData);
-            setOpen(false)
-        } else {
-            sessionStorage.setItem('roomKeyCus', formData2.v_box1 + formData2.v_box2)
-            const docRef1 = doc(db, "CustomersDetail", formData2.v_box1 + formData2.v_box2);
-            await setDoc(docRef1, formData2);
-            setOpen(false)
-        }
+        console.log("HI")
     };
 
     return (
@@ -204,32 +179,34 @@ export default function Customer() {
             <div className="wrapper-box pt-4">
                 <div className="container pt-5 mb-3">
                     <h4 className="pt-1 pt-md-1 px-2 mb-0">Quotation</h4>
-                    <div className="row pt-2 pt-md-1 px-3 mb-0">
-                        <div className="col px-2">
-                            <div className="col pt-1 col-md-12">
-                                <TextField id="v_box5" type="search" InputLabelProps={{
-                                    shrink: true,
-                                }} inputProps={{
-                                    style: {
-                                        height: "5px",
-                                    },
-                                }}
-                                           name="subject" label="Subject" className="w-100"
-                                           />
+                    <form>
+                        <div className="row pt-2 pt-md-1 px-3 mb-0">
+                            <div className="col px-2">
+                                <div className="col pt-1 col-md-12">
+                                    <TextField id="v_box5" type="search" InputLabelProps={{
+                                        shrink: true,
+                                    }} inputProps={{
+                                        style: {
+                                            height: "5px",
+                                        },
+                                    }}
+                                               name="subject" label="Subject" className="w-100" required
+                                    />
+                                </div>
                             </div>
-                        </div>
-                        <div className="col p-0">
-                            <div className="col p-0 pt-1 mb-2 mx-2">
-                                <TextField id="v_box6" type="search" InputLabelProps={{
-                                    shrink: true,
-                                }} inputProps={{
-                                    style: {
-                                        height: "5px",
-                                    },
-                                }}
-                                           name="projectName" label="Project Name" className="w-100"/>
+                            <div className="col p-0">
+                                <div className="col p-0 pt-1 mb-2 mx-2">
+                                    <TextField id="v_box6" type="search" InputLabelProps={{
+                                        shrink: true,
+                                    }} inputProps={{
+                                        style: {
+                                            height: "5px",
+                                        },
+                                    }}
+                                               name="projectName" label="Project Name" className="w-100" required
+                                    />
+                                </div>
                             </div>
-                        </div>
                             <div className="col-12 px-1">
                                 <div className="col p-0 pt-1 mb-2">
                                     <TextField id="v_box8" type="search" InputLabelProps={{
@@ -241,121 +218,124 @@ export default function Customer() {
                                     }}
                                                label="sales"
                                                className="w-100 px-1"
+                                               required
                                                disabled={true}
                                                value={sessionStorage.getItem('email')}/>
                                 </div>
                             </div>
-                    </div>
-                    <div className="heading-container mt-1 d-flex justify-content-start px-2 pt-1">
-                        <div className="col">
-                            <div className="col p-0">
-                                <IconButton variant="outlined" className="px-1" color="primary"
-                                            onClick={handleCreate}
-                                            size="small"><h5 className="text-dark mb-0">Add Customer:</h5>
-                                    <AddIcon className="mt-1 mx-1 bg-primary rounded text-light"/></IconButton>
-                            </div>
-                            <h5 className="px-1">Or Select:</h5>
-                            <ComboBox func={listenChange}/>
                         </div>
-
-                    </div>
-                    <div className="row mt-3 d-flex justify-content-center">
-                        <div className="row pt-1">
-                            <h6 className="pt-1 pt-md-1">Customer-info:</h6>
-                            <div className="col px-2">
-                                <div className="col pt-1 col-md-12 mb-2">
-                                    <TextField id="v_box1" type="search" InputLabelProps={{
-                                        shrink: true,
-                                    }} inputProps={{
-                                        style: {
-                                            height: "5px",
-                                        },
-                                    }}
-                                               name="v_box1" label="Name" className="w-100"
-                                               value={formDataIn.v_box1} disabled={true}/>
-                                </div>
-                            </div>
-                            <div className="col p-0">
-                                <div className="col p-0 pt-1 mb-2 mx-2">
-                                    <TextField id="v_box2" type="search" InputLabelProps={{
-                                        shrink: true,
-                                    }} inputProps={{
-                                        style: {
-                                            height: "5px",
-                                        },
-                                    }}
-                                               name="v_box2" label={box2} className="w-100"
-                                               value={formDataIn.v_box2} disabled={true}/>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col px-2">
-                                <div className="col pt-1 col-md-12 mb-2">
-                                    <TextField id="v_box3" type="search" InputLabelProps={{
-                                        shrink: true,
-                                    }} inputProps={{
-                                        style: {
-                                            height: "5px",
-                                        },
-                                    }}
-                                               name="v_box3" label={box3} className="w-100"
-                                               value={formDataIn.v_box3} disabled={edit}/>
-                                </div>
-                            </div>
-                            <div className="col p-0">
-                                <div className="col p-0 pt-1 mb-2 mx-2">
-                                    <TextField id="v_box4" type="search" InputLabelProps={{
-                                        shrink: true,
-                                    }} inputProps={{
-                                        style: {
-                                            height: "5px",
-                                        },
-                                    }}
-                                               name="v_box4" label={boxLa} className="w-100"
-                                               value={formDataIn.v_box4} disabled={edit}/>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col px-2">
-                                <div className="col pt-1 col-md-12 mb-2">
-                                    <TextField id="v_box5" type="search" InputLabelProps={{
-                                        shrink: true,
-                                    }} inputProps={{
-                                        style: {
-                                            height: "5px",
-                                        },
-                                    }}
-                                               name="v_box5" label="Tel." className="w-100"
-                                               value={formDataIn.v_box5} disabled={edit}/>
-                                </div>
-                            </div>
-                            <div className="col p-0">
-                                <div className="col p-0 pt-1 mb-2 mx-2">
-                                    <TextField id="v_box7" type="search" InputLabelProps={{
-                                        shrink: true,
-                                    }} inputProps={{
-                                        style: {
-                                            height: "5px",
-                                        },
-                                    }}
-                                               name="v_box7" label="Address" className="w-100"
-                                               value={formDataIn.v_box7} disabled={edit}/>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col p-0 mb-3">
-                                <div className="col p-0 pt-1 mt-2 mx-2 d-flex flex-row-reverse">
-                                    <Button variant="contained" className="" color="primary"
+                        <div className="heading-container mt-1 d-flex justify-content-start px-2 pt-1">
+                            <div className="col">
+                                <div className="col p-0">
+                                    <IconButton variant="outlined" className="px-1" color="error"
                                                 onClick={handleCreate}
+                                                size="small"><h5 className="text-dark mb-0">Add Customer:</h5>
+                                        <AddIcon color="error"
+                                                 className="mt-1 mx-1 bg-primary rounded text-light"/></IconButton>
+                                </div>
+                                <h5 className="px-1">Or Select:</h5>
+                                <ComboBox func={listenChange}/>
+                            </div>
+
+                        </div>
+                        <div className="row mt-3 d-flex justify-content-center">
+                            <div className="row pt-1">
+                                <h6 className="pt-1 pt-md-1">Customer-info:</h6>
+                                <div className="col px-2">
+                                    <div className="col pt-1 col-md-12 mb-2">
+                                        <TextField id="v_box1" type="search" InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                                   name="v_box1" label="Name" className="w-100" required
+                                                   value={formDataIn.v_box1} disabled={true}/>
+                                    </div>
+                                </div>
+                                <div className="col p-0">
+                                    <div className="col p-0 pt-1 mb-2 mx-2">
+                                        <TextField id="v_box2" type="search" InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                                   name="v_box2" label={box2} className="w-100" required
+                                                   value={formDataIn.v_box2} disabled={true}/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col px-2">
+                                    <div className="col pt-1 col-md-12 mb-2">
+                                        <TextField id="v_box3" type="search" InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                                   name="v_box3" label={box3} className="w-100" required
+                                                   value={formDataIn.v_box3} disabled={edit}/>
+                                    </div>
+                                </div>
+                                <div className="col p-0">
+                                    <div className="col p-0 pt-1 mb-2 mx-2">
+                                        <TextField id="v_box4" type="search" InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                                   name="v_box4" label={boxLa} className="w-100" required
+                                                   value={formDataIn.v_box4} disabled={edit}/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col px-2">
+                                    <div className="col pt-1 col-md-12 mb-2">
+                                        <TextField id="v_box5" type="search" InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                                   name="v_box5" label="Tel." className="w-100" required
+                                                   value={formDataIn.v_box5} disabled={edit}/>
+                                    </div>
+                                </div>
+                                <div className="col p-0">
+                                    <div className="col p-0 pt-1 mb-2 mx-2">
+                                        <TextField id="v_box7" type="search" InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                                   name="v_box7" label="Address" className="w-100" required
+                                                   value={formDataIn.v_box7} disabled={edit}/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col p-0 mb-3">
+                                    <div className="col p-0 pt-1 mt-2 mx-2 d-flex flex-row-reverse">
+                                        <Button variant="contained" className="" color="success"
+                                                onClick={handleSubmit} type="submit"
                                                 size="small">Next
-                                    </Button>
+                                        </Button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </form>
                     <div className="row m-2 pt-1">
 
                         <table className="table table-sm border-bottom-0">
@@ -374,8 +354,8 @@ export default function Customer() {
 
                     </div>
                     <div className="row m-2 pt-2 justify-content-end">
-                        <div className="col-2 p-0 mx-3">
-                            <Button variant="contained" className="w-100" color="secondary" onClick={handleCreateTwo}
+                        <div className="col-2 p-0 mx-1">
+                            <Button variant="contained" className="w-100" color="error" onClick={handleCreateTwo}
                                     size="small"><AddIcon/>
                             </Button>
                         </div>
@@ -404,7 +384,7 @@ export default function Customer() {
                                             },
                                         }}
                                                    name="description" label="Description" className="w-100"
-                                                   />
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -447,7 +427,7 @@ export default function Customer() {
                                             },
                                         }}
                                                    name="labor" label="Labor" className="w-100"
-                                                   />
+                                        />
                                     </div>
                                 </div>
                                 <div className="col p-0">
@@ -460,7 +440,7 @@ export default function Customer() {
                                             },
                                         }}
                                                    name="material" label="Material" className="w-100"
-                                                   />
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -475,21 +455,21 @@ export default function Customer() {
                                             },
                                         }}
                                                    name="total" label="Total" className="w-100"
-                                                   />
+                                        />
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <div className="row d-flex justify-content-center">
-                                <Button type="submit" variant="contained" color="error" className="mx-3 col-3"
-                                        onClick={handleCloseTwo}>
-                                    Close
-                                </Button>
-                                <Button type="submit" variant="contained" color="primary" className="mx-3 px-2 col-3"
-                                        onClick={handleSubmitUpload}>
-                                    Add
-                                </Button>
+                            <Button type="submit" variant="contained" color="error" className="mx-3 col-3"
+                                    onClick={handleCloseTwo}>
+                                Close
+                            </Button>
+                            <Button type="submit" variant="contained" color="primary" className="mx-3 px-2 col-3"
+                                    onClick={handleSubmitUpload}>
+                                Add
+                            </Button>
 
                         </div>
                     </div>
