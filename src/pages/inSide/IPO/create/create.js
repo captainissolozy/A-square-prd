@@ -77,7 +77,7 @@ export default function Customer() {
 
         await fetchData()
     }, [count, listenC])
-    
+
 
     useEffect(() => {
         if (formDataIn.type === "Private") {
@@ -215,9 +215,51 @@ export default function Customer() {
             <div className="wrapper-box pt-4">
                 <div className="container pt-5 mb-3">
                     <h4 className="pt-1 pt-md-1 px-2 mb-0">Quotation</h4>
-                    <div className="heading-container mt-2 d-flex justify-content-start px-2 pt-1">
+                    <div className="row pt-2 pt-md-1 px-3 mb-0">
+                        <div className="col px-2">
+                            <div className="col pt-1 col-md-12">
+                                <TextField id="v_box5" type="search" InputLabelProps={{
+                                    shrink: true,
+                                }} inputProps={{
+                                    style: {
+                                        height: "5px",
+                                    },
+                                }}
+                                           name="subject" label="Subject" className="w-100"
+                                           />
+                            </div>
+                        </div>
+                        <div className="col p-0">
+                            <div className="col p-0 pt-1 mb-2 mx-2">
+                                <TextField id="v_box6" type="search" InputLabelProps={{
+                                    shrink: true,
+                                }} inputProps={{
+                                    style: {
+                                        height: "5px",
+                                    },
+                                }}
+                                           name="projectName" label="Project Name" className="w-100"/>
+                            </div>
+                        </div>
+                            <div className="col-12 px-1">
+                                <div className="col p-0 pt-1 mb-2">
+                                    <TextField id="v_box8" type="search" InputLabelProps={{
+                                        shrink: true,
+                                    }} inputProps={{
+                                        style: {
+                                            height: "5px",
+                                        },
+                                    }}
+                                               label="sales"
+                                               className="w-100 px-1"
+                                               disabled={true}
+                                               value={sessionStorage.getItem('email')}/>
+                                </div>
+                            </div>
+                    </div>
+                    <div className="heading-container mt-1 d-flex justify-content-start px-2 pt-1">
                         <div className="col">
-                            <h5 className="pt-1 pt-md-1 px-1">Select Customer:</h5>
+                            <h5 className="px-1">Select Customer:</h5>
                             <ComboBox func={listenChange}/>
                         </div>
 
@@ -296,21 +338,6 @@ export default function Customer() {
                             </div>
                             <div className="col p-0">
                                 <div className="col p-0 pt-1 mb-2 mx-2">
-                                    <TextField id="v_box6" type="search" InputLabelProps={{
-                                        shrink: true,
-                                    }} inputProps={{
-                                        style: {
-                                            height: "5px",
-                                        },
-                                    }}
-                                               name="v_box6" label="Status" className="w-100"
-                                               value={formDataIn.v_box6} disabled={edit}/>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col p-0">
-                                <div className="col p-0 pt-1 mb-2 mx-2">
                                     <TextField id="v_box7" type="search" InputLabelProps={{
                                         shrink: true,
                                     }} inputProps={{
@@ -334,13 +361,17 @@ export default function Customer() {
                             </div>
                         </div>
                     </div>
-                    <div className="row m-2 pt-4">
+                    <div className="row m-2 pt-1">
 
                         <table className="table table-sm border-bottom-0">
                             <thead className="bg-dark text-light">
                             <tr>
-                                <th scope="col" className="t-stick">Document-name</th>
-                                <th scope="col" className="t-stick">File</th>
+                                <th scope="col" className="t-stick">Description</th>
+                                <th scope="col" className="t-stick">Quantity</th>
+                                <th scope="col" className="t-stick">unit</th>
+                                <th scope="col" className="t-stick">labor</th>
+                                <th scope="col" className="t-stick">material</th>
+
                             </tr>
                             </thead>
                             <FormC docname={formData.v_box1 + formData.v_box2} name={docName.name}/>
@@ -365,18 +396,94 @@ export default function Customer() {
 
                 <form className="border border-secondary p-2 m-2 rounded-2 row bg-white py-4">
                     <div className="pt-2">
-                        <h4 className="col d-flex justify-content-center">Add new-document</h4>
-                        <div className="col d-flex justify-content-center">
-
-                            <TextField className="m-3"
-                                       label="Name"
-                                       name="name"
-                                       required
-                                       size="small"
-                                       onChange={handleChangeUpload}
-                            />
-                            <input name="path" className="row d-flex justify-content-center px-2 mb-3 pt-4"
-                                   type="file" accept="image/*" onChange={handleChangeUploadFile}/>
+                        <h4 className="col d-flex justify-content-start px-2">Add work</h4>
+                        <div className="row mt-3 d-flex justify-content-center mb-2">
+                            <div className="row pt-1">
+                                <div className="col px-2">
+                                    <div className="col pt-1 col-md-12 mb-2">
+                                        <TextField id="v_box1" type="search" InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                                   name="description" label="Description" className="w-100"
+                                                   />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row pt-1">
+                                <div className="col px-2">
+                                    <div className="col pt-1 col-md-12 mb-2">
+                                        <TextField id="v_box1" type="search" InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                                   name="quantity" label="Quantity" className="w-100"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="col p-0">
+                                    <div className="col p-0 pt-1 mb-2 mx-2">
+                                        <TextField id="v_box2" type="search" InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                                   name="unit" label="Unit" className="w-100"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col px-2">
+                                    <div className="col pt-1 col-md-12 mb-2">
+                                        <TextField id="v_box3" type="search" InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                                   name="labor" label="Labor" className="w-100"
+                                                   />
+                                    </div>
+                                </div>
+                                <div className="col p-0">
+                                    <div className="col p-0 pt-1 mb-2 mx-2">
+                                        <TextField id="v_box4" type="search" InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                                   name="material" label="Material" className="w-100"
+                                                   />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col px-2">
+                                    <div className="col pt-1 col-md-12 mb-2">
+                                        <TextField id="v_box5" type="search" InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                                   name="total" label="Total" className="w-100"
+                                                   />
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div className="col d-flex justify-content-center">
