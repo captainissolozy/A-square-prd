@@ -25,7 +25,7 @@ export default function ComboBox(props) {
         formData.map((data) => {
             return formName.indexOf(data.v_box1 + data.v_box2) === -1 ? formName.push(data.v_box1 + data.v_box2) : console.log("This item already exists");
         })
-    }, [formData])
+    }, [formData, formName])
 
     return (
         <Autocomplete

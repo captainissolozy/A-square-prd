@@ -73,8 +73,6 @@ export default function Customer() {
                 }
             }
         }
-        console.log(count)
-
         await fetchData()
     }, [count, listenC])
 
@@ -89,16 +87,8 @@ export default function Customer() {
             setBox3("registeredCapital")
             setBox2("taxpayerNum")
         }
-        updateFormData({
-            v_box1: formDataIn.v_box1,
-            v_box2: formDataIn.v_box2,
-            v_box3: formDataIn.v_box3,
-            v_box4: formDataIn.v_box4,
-            v_box5: formDataIn.v_box5,
-            v_box6: formDataIn.v_box6,
-            v_box7: formDataIn.v_box7
-        })
-    }, [count])
+
+    }, [count, formDataIn.type, listenC])
 
     useEffect(() => {
         if (!user) {
@@ -115,7 +105,6 @@ export default function Customer() {
 
     const listenChange = (data) => {
         setListen(data)
-        console.log(data)
     }
 
     const handleSubmitUpload = (e) => {
@@ -259,7 +248,13 @@ export default function Customer() {
                     </div>
                     <div className="heading-container mt-1 d-flex justify-content-start px-2 pt-1">
                         <div className="col">
-                            <h5 className="px-1">Select Customer:</h5>
+                            <div className="col p-0">
+                                <IconButton variant="outlined" className="px-1" color="primary"
+                                            onClick={handleCreate}
+                                            size="small"><h5 className="text-dark mb-0">Add Customer:</h5>
+                                    <AddIcon className="mt-1 mx-1 bg-primary rounded text-light"/></IconButton>
+                            </div>
+                            <h5 className="px-1">Or Select:</h5>
                             <ComboBox func={listenChange}/>
                         </div>
 
@@ -351,12 +346,12 @@ export default function Customer() {
                             </div>
                         </div>
                         <div className="row">
-                            <div className="col p-0">
-                                <div className="col p-0 pt-1 mb-2 mx-2">
-                                    <IconButton variant="outlined" className="px-1" color="primary"
+                            <div className="col p-0 mb-3">
+                                <div className="col p-0 pt-1 mt-2 mx-2 d-flex flex-row-reverse">
+                                    <Button variant="contained" className="" color="primary"
                                                 onClick={handleCreate}
-                                                size="small"><h5 className="text-dark mb-0">Or Add new:</h5>
-                                        <AddIcon className="mt-1 mx-1 bg-primary rounded text-light"/></IconButton>
+                                                size="small">Next
+                                    </Button>
                                 </div>
                             </div>
                         </div>
@@ -486,17 +481,16 @@ export default function Customer() {
                             </div>
                         </div>
 
-                        <div className="col d-flex justify-content-center">
+                        <div className="row d-flex justify-content-center">
+                                <Button type="submit" variant="contained" color="error" className="mx-3 col-3"
+                                        onClick={handleCloseTwo}>
+                                    Close
+                                </Button>
+                                <Button type="submit" variant="contained" color="primary" className="mx-3 px-2 col-3"
+                                        onClick={handleSubmitUpload}>
+                                    Add
+                                </Button>
 
-                            <Button type="submit" variant="contained" color="error" className="mx-3 col"
-                                    onClick={handleCloseTwo}>
-                                Close
-                            </Button>
-
-                            <Button type="submit" variant="contained" color="primary" className="mx-3 col"
-                                    onClick={handleSubmitUpload}>
-                                Add
-                            </Button>
                         </div>
                     </div>
                 </form>
