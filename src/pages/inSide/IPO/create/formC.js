@@ -11,19 +11,11 @@ const AddTable = (props) => {
 
 
     useEffect(() => {
-        onSnapshot(collection(db, "PO", props.roomCode, props.roomCode), (snapshot) => {
+        onSnapshot(collection(db, "PO", props.roomCode, "Quotation", props.roomCode, "work"), (snapshot) => {
             setFormData(snapshot.docs.map((doc) => doc.data()))
         });
     }, [])
 
-    const handleJoinPublic = async (id) => {
-        sessionStorage.setItem('roomKeyCus', id)
-        const docRef1 = doc(db, "CustomersDetail", id);
-        const docSnap = await getDoc(docRef1);
-        if (docSnap.exists()) {
-            navigate('/inc')
-        }
-    }
 
     return (
         formData.map((data) => (

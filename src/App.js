@@ -15,7 +15,7 @@ import InSupplier from "./pages/inSide/Isupplier"
 import CreateQuote from "./pages/inSide/IPO/create/create"
 import InsideQuote from "./pages/inSide/IPO/create/inProject"
 import StaticQuote from "./pages/inSide/IPO/create/createStatic"
-import PdfQuote from "./pages/inSide/IPO/pdfQuote"
+import StaticQuote2 from "./pages/inSide/IPO/create/createStaticClick"
 
 function App() {
 
@@ -44,7 +44,7 @@ function App() {
                 <Route path="/createQuotation" element={<CreateQuote/>}/>
                 <Route path="/insideQuotation" element={<InsideQuote/>}/>
                 <Route path="/staticQuotation" element={<StaticQuote/>}/>
-                <Route path="/genQuotation" element={<PdfQuote/>}/>
+                <Route path="/staticQuotation2" element={<StaticQuote2/>}/>
             </Routes>
         </BrowserRouter>
     </>);

@@ -228,8 +228,10 @@ export default function Customer() {
 
     const handleSubmitPrice = async (e) => {
         e.preventDefault()
-        const docRef1 = doc(db, "PO", genQo, genQo, docName.description);
-        await setDoc(docRef1, docName);
+        const docRef1 = doc(db, "PO", genQo, "Quotation", genQo);
+        await setDoc(docRef1, {genQo, "payment": formDataProject.payment});
+        const docRef2 = doc(db, "PO", genQo, "Quotation", genQo, "work", docName.description);
+        await setDoc(docRef2, docName);
         setOpenTwo(false)
         setDocName({
             ...docName,
@@ -247,7 +249,7 @@ export default function Customer() {
     };
 
     const handleGoNext = async () => {
-        navigate("/")
+        navigate("/insideQuotation")
         sessionStorage.setItem("projectID", genQo)
     };
 

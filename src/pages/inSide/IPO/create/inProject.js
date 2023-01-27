@@ -17,30 +17,6 @@ import {getDownloadURL, ref, uploadBytesResumable} from "firebase/storage";
 
 export default function Customer() {
 
-    const current = new Date();
-
-    const initialFormData2 = Object.freeze({
-        type: "Organization",
-        v_box1: "",
-        v_box2: "",
-        v_box3: "",
-        v_box4: "",
-        v_box5: "",
-        v_box6: "Incompleted",
-        v_box7: ""
-    });
-
-    const initialFormData = Object.freeze({
-        type: "Private",
-        v_box1: "",
-        v_box2: "",
-        v_box3: "",
-        v_box4: "",
-        v_box5: "",
-        v_box6: "Incompleted",
-        v_box7: ""
-    });
-
     const initialDocData = Object.freeze({
         name: "",
     });
@@ -50,13 +26,10 @@ export default function Customer() {
     const [open, setOpen] = useState(false)
     const [openTwo, setOpenTwo] = useState(false)
     const [formDataIn, setFormDataIn] = useState([])
-    const [formData, updateFormData] = useState(initialFormData)
-    const [formData2, updateFormData2] = useState(initialFormData2)
     const [edit] = useState(true)
     const [box2, setBox2] = useState("Taxpayer-num")
     const [box3, setBox3] = useState("Register-capital")
     const [boxLa, setBoxLa] = useState("Agent")
-    const [sendTo, setSendTo] = useState(2)
     const [count, setCount] = useState(0)
     const [docName, setDocName] = useState(initialDocData)
     const [file, setFile] = useState("");

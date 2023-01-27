@@ -10,12 +10,10 @@ const AddTable = (props) => {
 
 
     useEffect(() => {
-        onSnapshot(collection(db, "PO", props.roomCode, props.currentCode), (snapshot) => {
+        onSnapshot(collection(db, "PO", props.roomCode, "Quotation", props.currentCode, "work"), (snapshot) => {
             setFormData(snapshot.docs.map((doc) => doc.data()))
         });
-    }, [])
-
-    console.log(props.currentCode)
+    }, [formData])
 
     return (
         formData.map((data) => (
@@ -28,10 +26,7 @@ const AddTable = (props) => {
                 <td>{data.material}</td>
             </tr>
             </tbody>
-
         ))
-
-
     )
 }
 
