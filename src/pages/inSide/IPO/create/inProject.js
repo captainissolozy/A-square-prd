@@ -251,14 +251,13 @@ export default function Customer() {
     };
 
     const handleGoNext = async (e) => {
-        navigate("/insideQuotation")
     };
 
     return (
         <CustomerWrapper>
             <div className="wrapper-box pt-4">
                 <div className="container pt-5 mb-3">
-                    <h4 className="pt-1 pt-md-1 px-2 mb-0">Quotation</h4>
+                    <h4 className="pt-1 pt-md-1 px-2 mb-0">Project:</h4>
                     <form>
                         <div className="row pt-2 pt-md-1 px-3 mb-0">
                             <div className="col px-2">

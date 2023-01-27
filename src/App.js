@@ -12,6 +12,7 @@ import Customer from "./pages/customer"
 import Supplier from "./pages/supplier"
 import InCustomer from "./pages/inSide/Icustomer"
 import CreateQuote from "./pages/inSide/IPO/create/create"
+import InsideQuote from "./pages/inSide/IPO/create/inProject"
 
 function App() {
 
@@ -37,6 +38,7 @@ function App() {
                 <Route path="/supplier" element={<Supplier/>}/>
                 <Route path="/inc" element={<InCustomer/>}/>
                 <Route path="/createQuotation" element={<CreateQuote/>}/>
+                <Route path="/insideQuotation" element={<InsideQuote/>}/>
             </Routes>
         </BrowserRouter>
     </>);
