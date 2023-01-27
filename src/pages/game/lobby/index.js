@@ -36,252 +36,23 @@ export default function Lobby() {
         UniqueKey: "",
         winCon: 0
     });
-    const initialGameData = Object.freeze({
-        winX: 0,
-        winY: 0,
-        winCon: 0,
-        playerX: "",
-        playerY: "",
-        gameState: false,
-        turn: 0,
-        ironX: "",
-        ironO: "",
-        timeX: 20,
-        timeO: 20,
-        1: '',
-        2: '',
-        3: '',
-        4: '',
-        5: '',
-        6: '',
-        7: '',
-        8: '',
-        9: '',
-        10: '',
-        11: '',
-        12: '',
-        13: '',
-        14: '',
-        15: '',
-        16: '',
-        17: '',
-        18: '',
-        19: '',
-        20: '',
-        21: '',
-        22: '',
-        23: '',
-        24: '',
-        25: '',
-        26: '',
-        27: '',
-        28: '',
-        29: '',
-        30: '',
-        31: '',
-        32: '',
-        33: '',
-        34: '',
-        35: '',
-        36: '',
-        37: '',
-        38: '',
-        39: '',
-        40: '',
-        41: '',
-        42: '',
-        43: '',
-        44: '',
-        45: '',
-        46: '',
-        47: '',
-        48: '',
-        49: '',
-        50: '',
-        51: '',
-        52: '',
-        53: '',
-        54: '',
-        55: '',
-        56: '',
-        57: '',
-        58: '',
-        59: '',
-        60: '',
-        61: '',
-        62: '',
-        63: '',
-        64: '',
-        65: '',
-        66: '',
-        67: '',
-        68: '',
-        69: '',
-        70: '',
-        71: '',
-        72: '',
-        73: '',
-        74: '',
-        75: '',
-        76: '',
-        77: '',
-        78: '',
-        79: '',
-        80: '',
-        81: '',
-        82: '',
-        83: '',
-        84: '',
-        85: '',
-        86: '',
-        87: '',
-        88: '',
-        89: '',
-        90: '',
-        91: '',
-        92: '',
-        93: '',
-        94: '',
-        95: '',
-        96: '',
-        97: '',
-        98: '',
-        99: '',
-        100: '',
-        101: '',
-        102: '',
-        103: '',
-        104: '',
-        105: '',
-        106: '',
-        107: '',
-        108: '',
-        109: '',
-        110: '',
-        111: '',
-        112: '',
-        113: '',
-        114: '',
-        115: '',
-        116: '',
-        117: '',
-        118: '',
-        119: '',
-        120: '',
-        121: '',
-        122: '',
-        123: '',
-        124: '',
-        125: '',
-        126: '',
-        127: '',
-        128: '',
-        129: '',
-        130: '',
-        131: '',
-        132: '',
-        133: '',
-        134: '',
-        135: '',
-        136: '',
-        137: '',
-        138: '',
-        139: '',
-        140: '',
-        141: '',
-        142: '',
-        143: '',
-        144: '',
-        145: '',
-        146: '',
-        147: '',
-        148: '',
-        149: '',
-        150: '',
-        151: '',
-        152: '',
-        153: '',
-        154: '',
-        155: '',
-        156: '',
-        157: '',
-        158: '',
-        159: '',
-        160: '',
-        161: '',
-        162: '',
-        163: '',
-        164: '',
-        165: '',
-        166: '',
-        167: '',
-        168: '',
-        169: '',
-        170: '',
-        171: '',
-        172: '',
-        173: '',
-        174: '',
-        175: '',
-        176: '',
-        177: '',
-        178: '',
-        179: '',
-        180: '',
-        181: '',
-        182: '',
-        183: '',
-        184: '',
-        185: '',
-        186: '',
-        187: '',
-        188: '',
-        189: '',
-        190: '',
-        191: '',
-        192: '',
-        193: '',
-        194: '',
-        195: '',
-        196: '',
-        197: '',
-        198: '',
-        199: '',
-        200: '',
-        201: '',
-        202: '',
-        203: '',
-        204: '',
-        205: '',
-        206: '',
-        207: '',
-        208: '',
-        209: '',
-        210: '',
-        211: '',
-        212: '',
-        213: '',
-        214: '',
-        215: '',
-        216: '',
-        217: '',
-        218: '',
-        219: '',
-        220: '',
-        221: '',
-        222: '',
-        223: '',
-        224: '',
-        225: '',
-    })
+
+    const initialSearchKey = Object.freeze({
+        sales: "",
+        genQo: "",
+        day: "",
+        month: "",
+        year: "",
+        status: "",
+    });
 
     const navigate = useNavigate()
     const {user} = useUserContext()
     const [open, setOpen] = useState(false)
     const [formData, updateFormData] = useState(initialFormData)
-    const [gameData, upDateGameData] = useState(initialGameData)
+    const [gameData, upDateGameData] = useState()
     const [pKey, generatePKey] = useState("")
-    const [searchKey, setSearchKey] = useState('')
+    const [searchKey, setSearchKey] = useState(initialSearchKey)
 
     useEffect(() => {
         if (!user) {
@@ -308,25 +79,12 @@ export default function Lobby() {
         sessionStorage.removeItem('selectCus');
         navigate('/createQuotation')
     }
-    const handleClose = () => {
-        setOpen(false)
-    }
-    const handleChange = (e) => {
-        updateFormData({
-            ...formData,
-            [e.target.name]: e.target.value.trim(),
-            UniqueKey: pKey
-        })
-        if (e.target.name === "winCon") {
-            upDateGameData({
-                ...gameData,
-                [e.target.name]: parseInt(e.target.value.trim())
-            })
-        }
-    }
 
     const joinChange = (e) => {
-        setSearchKey(e.target.value.trim())
+        setSearchKey({
+            ...searchKey,
+            [e.target.name]: e.target.value
+        })
     }
 
     const handleSubmit = async (e) => {
@@ -344,19 +102,6 @@ export default function Lobby() {
         }
     };
 
-    const handleJoin = async (e) => {
-
-        e.preventDefault()
-        sessionStorage.setItem('gameKey', searchKey)
-        const docRef1 = doc(db, "Game", searchKey);
-        const docSnap = await getDoc(docRef1);
-        if (docSnap.exists()) {
-            navigate('/game')
-        } else {
-            toast.error('Please fill in the correct Room-key');
-        }
-    }
-
     return (
         <LobbyWrapper>
             <div className="wrapper-box pt-4">
@@ -368,7 +113,7 @@ export default function Lobby() {
                     </div>
                     <div className="row mt-3 d-flex justify-content-center">
                         <div className="row">
-                            <div className="col-md-4 px-2 col-4">
+                            <div className="col-8 px-2">
                                 <div className="col pt-1 col-md-12 mb-2">
                                     <TextField id="outlined-search" type="search" InputLabelProps={{
                                         shrink: true,
@@ -377,7 +122,7 @@ export default function Lobby() {
                                             height: "5px",
                                         },
                                     }}
-                                               label="Quotation Id" className="w-100" onChange={joinChange}/>
+                                               name="genQo" label="Quotation Id" className="w-100" onChange={joinChange}/>
                                 </div>
                             </div>
                             <div className="col-md-4 p-0 col">
@@ -389,19 +134,7 @@ export default function Lobby() {
                                             height: "5px",
                                         },
                                     }}
-                                               label="Sales" className="w-100" onChange={joinChange}/>
-                                </div>
-                            </div>
-                            <div className="col p-0">
-                                <div className="col p-0 pt-1 mb-2 mx-2">
-                                    <TextField id="outlined-search" type="search" InputLabelProps={{
-                                        shrink: true,
-                                    }} inputProps={{
-                                        style: {
-                                            height: "5px",
-                                        },
-                                    }}
-                                               label="Status" className="w-100" onChange={joinChange}/>
+                                               name="sales" label="Sales" className="w-100" onChange={joinChange}/>
                                 </div>
                             </div>
                         </div>
@@ -416,7 +149,7 @@ export default function Lobby() {
                                                 height: "5px",
                                             },
                                         }}
-                                                   label="Date" className="w-100" onChange={joinChange}/>
+                                                   name="day" label="Date" className="w-100" onChange={joinChange}/>
                                     </div>
                                     <div className="col p-0 pt-1 col-md mb-2 mx-2">
                                         <TextField id="outlined-search" type="search" InputLabelProps={{
@@ -426,7 +159,7 @@ export default function Lobby() {
                                                 height: "5px",
                                             },
                                         }}
-                                                   label="Month" className="w-100" onChange={joinChange}/>
+                                                   name="month" label="Month" className="w-100" onChange={joinChange}/>
                                     </div>
                                     <div className="col p-0 pt-1 col-md mb-2 mx-2">
                                         <TextField id="outlined-search" type="search" InputLabelProps={{
@@ -436,112 +169,48 @@ export default function Lobby() {
                                                 height: "5px",
                                             },
                                         }}
-                                                   label="Year" className="w-100" onChange={joinChange}/>
+                                                   name="year" label="Year" className="w-100" onChange={joinChange}/>
                                     </div>
                                 </div>
                             </div>
                             <div className="col">
                                 <div className="row d-flex justify-content-center">
-                                    <div
-                                        className="col d-flex justify-content-center mx-2 px-0 pt-lg-0 m-2"
-                                        onClick={handleJoin}>
-                                        <Button variant="contained" className="w-100" color="secondary"
-                                                size="small"><SearchIcon/></Button>
+                                    <div className="col p-0">
+                                        <div className="col p-0 pt-1 mb-2 mx-2">
+                                            <TextField id="outlined-search" type="search" InputLabelProps={{
+                                                shrink: true,
+                                            }} inputProps={{
+                                                style: {
+                                                    height: "5px",
+                                                },
+                                            }}
+                                                       name="status" label="Status" className="w-100" onChange={joinChange}/>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className="row m-2">
-                        <div className="">
+                    <div className="row mt-2">
+                        <div className="table-responsive">
                             <table className="table table-sm border-bottom-0">
                                 <thead className="bg-dark text-light">
                                 <tr>
-                                    <th scope="col" className="t-stick">Q-No</th>
-                                    <th scope="col" className="t-stick">Customer</th>
-                                    <th scope="col" className="t-stick">Sales</th>
-                                    <th scope="col" className="t-stick">Date</th>
-                                    <th scope="col" className="t-stick">Status</th>
+                                    <th scope="col" className="t-stick th-sm">Q-No</th>
+                                    <th scope="col" className="t-stick th-sm">Customer</th>
+                                    <th scope="col" className="t-stick th-sm">Sales</th>
+                                    <th scope="col" className="t-stick th-sm">Status</th>
                                 </tr>
                                 </thead>
-                                <AddTable/>
+                                <AddTable genQo={searchKey.genQo} sales={searchKey.sales} status={searchKey.status}
+                                          day={searchKey.day} month={searchKey.month} year={searchKey.year}
+                                />
                             </table>
                         </div>
                     </div>
                 </div>
 
             </div>
-            <Modal
-                open={open}
-                onClose={handleClose}
-                className="d-flex justify-content-center align-items-center"
-            >
-                <form className="border border-secondary p-4 m-2 rounded-2 row bg-white">
-                    <div className="heading-container mt-2 d-flex flex-row-reverse justify-content-center">
-                        <h3>Create-Lobby</h3>
-                    </div>
-                    <TextField className="my-3"
-                               label="email"
-                               disabled={true}
-                               value={sessionStorage.getItem('email')}
-                               onChange={handleChange}
-                    />
-                    <TextField className="my-3"
-                               label="UniqueKey"
-                               disabled={true}
-                               value={pKey}
-                               onChange={handleChange}
-                    />
-                    <TextField className="my-3"
-                               label="Title"
-                               name="title"
-                               variant="filled"
-                               type="text"
-                               required
-                               onChange={handleChange}
-                    />
-                    <FormControl>
-                        <FormLabel id="demo-radio-buttons-group-label">Win-condition</FormLabel>
-                        <RadioGroup
-                            aria-labelledby="demo-radio-buttons-group-label"
-                            name="winCon"
-                            type="number"
-                            onChange={handleChange}
-
-                        >
-                            <FormControlLabel value={2} control={<Radio/>} label="Best of 2"/>
-                            <FormControlLabel value={3} control={<Radio/>} label="Best of 3"/>
-                        </RadioGroup>
-                    </FormControl>
-                    <FormControl>
-                        <FormLabel id="demo-radio-buttons-group-label">Public</FormLabel>
-                        <RadioGroup
-                            aria-labelledby="demo-radio-buttons-group-label"
-                            name="pubLic"
-                            required
-                            onChange={handleChange}
-                        >
-                            <FormControlLabel value="yes" control={<Radio/>} label="Yes"/>
-                            <FormControlLabel value="no" control={<Radio/>} label="No"/>
-                        </RadioGroup>
-                    </FormControl>
-
-                    <div className="pt-2">
-                        <div className="col d-flex justify-content-center">
-                            <Button type="submit" variant="contained" color="secondary" className="mx-3 m"
-                                    onClick={handleClose}>
-                                Close
-                            </Button>
-
-                            <Button type="submit" variant="contained" color="primary" className="mx-3"
-                                    onClick={handleSubmit}>
-                                Create
-                            </Button>
-                        </div>
-                    </div>
-                </form>
-
-            </Modal>
             <ToastContainer/>
         </LobbyWrapper>
 

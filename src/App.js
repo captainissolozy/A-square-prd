@@ -11,8 +11,11 @@ import Game from "./pages/game/gamePlay/Game";
 import Customer from "./pages/customer"
 import Supplier from "./pages/supplier"
 import InCustomer from "./pages/inSide/Icustomer"
+import InSupplier from "./pages/inSide/Isupplier"
 import CreateQuote from "./pages/inSide/IPO/create/create"
 import InsideQuote from "./pages/inSide/IPO/create/inProject"
+import StaticQuote from "./pages/inSide/IPO/create/createStatic"
+import PdfQuote from "./pages/inSide/IPO/pdfQuote"
 
 function App() {
 
@@ -37,8 +40,11 @@ function App() {
                 <Route path="/customer" element={<Customer/>}/>
                 <Route path="/supplier" element={<Supplier/>}/>
                 <Route path="/inc" element={<InCustomer/>}/>
+                <Route path="/ins" element={<InSupplier/>}/>
                 <Route path="/createQuotation" element={<CreateQuote/>}/>
                 <Route path="/insideQuotation" element={<InsideQuote/>}/>
+                <Route path="/staticQuotation" element={<StaticQuote/>}/>
+                <Route path="/genQuotation" element={<PdfQuote/>}/>
             </Routes>
         </BrowserRouter>
     </>);

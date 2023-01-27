@@ -4,39 +4,37 @@ import {useNavigate} from "react-router-dom";
 import {useUserContext} from "../../context/UserContexts";
 import {Button, IconButton, TextField} from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
-import SearchIcon from '@mui/icons-material/Search';
 import Modal from "@material-ui/core/Modal";
 import db from "../../config/firebase-config"
-import {doc, getDoc, setDoc} from "firebase/firestore"
-import {v4 as uuid} from 'uuid';
-import FormS from "./formS";
-import {toast, ToastContainer} from "react-toastify";
+import {doc, setDoc} from "firebase/firestore"
+import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import SupplierWrapper from "./SupplierWrapper";
+import CustomerWrapper from "./SupplierWrapper";
+import FormS from "./formS";
 
 
-export default function Supplier() {
+export default function Customer() {
 
     const initialFormData2 = Object.freeze({
-        sales: sessionStorage.getItem('email'),
         type: "Organization",
-        name: "",
-        taxpayerNum: "",
-        registerCapital: "",
-        nickname: "",
-        tel: "",
-        status: "Active"
+        v_box1: "",
+        v_box2: "",
+        v_box3: "",
+        v_box4: "",
+        v_box5: "",
+        v_box6: "Incompleted",
+        v_box7: ""
     });
 
     const initialFormData = Object.freeze({
-        sales: sessionStorage.getItem('email'),
         type: "Private",
-        name: "",
-        surname: "",
-        email: "",
-        nickname: "",
-        tel: "",
-        status: "Active"
+        v_box1: "",
+        v_box2: "",
+        v_box3: "",
+        v_box4: "",
+        v_box5: "",
+        v_box6: "Incompleted",
+        v_box7: ""
     });
 
     const navigate = useNavigate()
@@ -44,12 +42,16 @@ export default function Supplier() {
     const [open, setOpen] = useState(false)
     const [formData, updateFormData] = useState(initialFormData)
     const [formData2, updateFormData2] = useState(initialFormData2)
-    const [generatePKey] = useState("")
-    const [searchKey, setSearchKey] = useState('')
     const [box2, setBox2] = useState("Taxpayer-num")
     const [box3, setBox3] = useState("Register-capital")
     const [boxLa, setBoxLa] = useState("Agent")
     const [sendTo, setSendTo] = useState(2)
+    const [searchChanged, setSearchChanged] = useState({
+        name: "",
+        status: "",
+        nickname: "",
+        tel: ""
+    })
 
     useEffect(() => {
         if (!user) {
@@ -57,14 +59,8 @@ export default function Supplier() {
         }
     }, [navigate, user])
 
-
-    const generateKey = function () {
-        const unique_id = uuid();
-        return unique_id.slice(0, 8);
-    }
     const handleCreate = () => {
         setOpen(true)
-        generatePKey(generateKey)
     }
     const handleClose = () => {
         setOpen(false)
@@ -98,113 +94,112 @@ export default function Supplier() {
     }
 
     const joinChange = (e) => {
-        setSearchKey(e.target.value.trim())
+        setSearchChanged({
+            ...searchChanged,
+            [e.target.name]: e.target.value.trim()
+        })
     }
 
     const handleSubmit = async (e) => {
-        console.log(sendTo)
-        console.log(formData2)
         e.preventDefault()
         if (sendTo === 1) {
-            const docRef1 = doc(db, "SuppliersDetail", formData.name + formData.nickname);
+            sessionStorage.setItem('roomKeySup', formData.v_box1 + formData.v_box2)
+            const docRef1 = doc(db, "SuppliersDetail", formData.v_box1 + formData.v_box2);
             await setDoc(docRef1, formData);
-            console.log(formData)
+            navigate('/ins')
         } else {
-            const docRef1 = doc(db, "SuppliersDetail", formData2.name + formData2.nickname);
+            sessionStorage.setItem('roomKeySup', formData2.v_box1 + formData2.v_box2)
+            const docRef1 = doc(db, "SuppliersDetail", formData2.v_box1 + formData2.v_box2);
             await setDoc(docRef1, formData2);
-            console.log(formData2)
+            navigate('/ins')
         }
     };
 
-    const handleJoin = async (e) => {
-
-        e.preventDefault()
-        sessionStorage.setItem('gameKey', searchKey)
-        const docRef1 = doc(db, "Game", searchKey);
-        const docSnap = await getDoc(docRef1);
-        if (docSnap.exists()) {
-            navigate('/game')
-        } else {
-            toast.error('Please fill in the correct Room-key');
-        }
-    }
 
     return (
-        <SupplierWrapper>
-            <div className="wrapper-box pt-4">
-                <div className="container pt-5">
-                    <div className="col px-2">
-                        <IconButton variant="outlined" className="px-0" color="primary" onClick={handleCreate}
-                                    size="small"><h4 className="text-dark mb-0">Supplier</h4><AddIcon
-                            className="mt-1 mx-1 bg-primary rounded text-light"/></IconButton>
-                    </div>
-                    <div className="row mt-3 d-flex justify-content-center">
-                        <div className="row">
-                            <div className="col-8 px-2">
-                                <div className="col pt-1 col-md-12 mb-2">
-                                    <TextField id="outlined-search" type="search" InputLabelProps={{
-                                        shrink: true,
-                                    }} inputProps={{
-                                        style: {
-                                            height: "5px",
-                                        },
-                                    }}
-                                               label="Name" className="w-100" onChange={joinChange}/>
-                                </div>
-                            </div>
-                            <div className="col p-0">
-                                <div className="col p-0 pt-1 mb-2 mx-2">
-                                    <TextField id="outlined-search" type="search" InputLabelProps={{
-                                        shrink: true,
-                                    }} inputProps={{
-                                        style: {
-                                            height: "5px",
-                                        },
-                                    }}
-                                               label="Status" className="w-100" onChange={joinChange}/>
-                                </div>
-                            </div>
+        <CustomerWrapper>
+            <div className="wrapper-box pt-4 ">
+                <div className="container pt-4">
+                    <div className="my-1 p-3 pb-3 row d-flex justify-content-center">
+                        <div className="col-10 px-2 d-flex justify-content-start col-md-9">
+                            <IconButton variant="outlined" className="px-0" color="primary" onClick={handleCreate}
+                                        size="small"><h4 className="text-dark mb-0">Supplier</h4><AddIcon
+                                className="mt-1 mx-1 bg-primary rounded text-light"/></IconButton>
                         </div>
-                        <div className="row">
-                            <div className="col-md-8 p-0 col-8">
-                                <div className="col p-0 pt-1 mb-2 mx-2">
-                                    <TextField id="outlined-search" type="name" InputLabelProps={{
-                                        shrink: true,
-                                    }} inputProps={{
-                                        style: {
-                                            height: "5px",
-                                        },
-                                    }}
-                                               label="Nickname" className="w-100" onChange={joinChange}/>
+                        <div className="row mt-2 d-flex justify-content-center">
+                            <div className="row d-flex justify-content-center">
+                                <div className="col-8 px-2 col-md-6">
+                                    <div className="col pt-1 col-md-12 mb-2">
+                                        <TextField id="outlined-search" type="search" InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                                   name="name" label="Name" className="w-100" onChange={joinChange}/>
+                                    </div>
+                                </div>
+                                <div className="col p-0 col-md-3">
+                                    <div className="col p-0 pt-1 mb-2 mx-2">
+                                        <TextField id="outlined-search" type="search" InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                                   name="status" label="Status" className="w-100"
+                                                   onChange={joinChange}/>
+                                    </div>
                                 </div>
                             </div>
-                            <div className="col-4 col-md-4">
-                                <div className="row d-flex justify-content-center">
-                                    <div
-                                        className="col d-flex justify-content-center col-md mx-2 px-0 pt-lg-0 m-2"
-                                        onClick={handleJoin}>
-                                        <Button variant="contained" className="w-100" color="secondary"
-                                                size="small"><SearchIcon/></Button>
+                            <div className="row d-flex justify-content-center">
+                                <div className="col-md-6 p-0 col-8">
+                                    <div className="col p-0 pt-1 mb-2 mx-2">
+                                        <TextField id="outlined-search" type="name" InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                                   name="nickname" label="Nickname" className="w-100"
+                                                   onChange={joinChange}/>
+                                    </div>
+                                </div>
+                                <div className="col p-0 col-md-3">
+                                    <div className="col p-0 pt-1 mb-2 mx-2">
+                                        <TextField id="outlined-search" type="search" InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "5px",
+                                            },
+                                        }}
+                                                   name="tel" label="Tel." className="w-100" onChange={joinChange}/>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className="row m-2">
-                        <div className="col-12 t-tab box p-0">
-                            <table className="table table-sm border-bottom-0">
-                                <thead className="bg-dark text-light">
-                                <tr>
-                                    <th scope="col" className="t-stick">Name</th>
-                                    <th scope="col" className="t-stick">Contact</th>
-                                    <th scope="col" className="t-stick">tel.</th>
-                                    <th scope="col" className="t-stick">status</th>
-                                </tr>
-                                </thead>
-                                <FormS/>
-                            </table>
-                        </div>
+                    <div className="row m-2 mt-1 pt-2">
+
+                        <table className="table table-sm border-bottom-0 rounded">
+                            <thead className="bg-dark text-light">
+                            <tr>
+                                <th scope="col" className="t-stick">Name</th>
+                                <th scope="col" className="t-stick">Contact</th>
+                                <th scope="col" className="t-stick">tel.</th>
+                                <th scope="col" className="t-stick">status</th>
+                            </tr>
+                            </thead>
+                            <FormS s_name={searchChanged.name} s_status={searchChanged.status}
+                                   s_nickname={searchChanged.nickname} s_tel={searchChanged.tel}/>
+                        </table>
+
                     </div>
+
                 </div>
             </div>
             <Modal
@@ -216,7 +211,7 @@ export default function Supplier() {
 
                 <form className="border border-secondary p-4 m-2 rounded-2 row bg-white">
                     <div className="heading-container mt-2 d-flex justify-content-start">
-                        <h3>Supplier</h3>
+                        <h3>Customer</h3>
                         <Button type="submit" variant="outlined" color="warning" className="mx-2 m"
                                 onClick={handleChangeToOrg}>
                             Org
@@ -227,34 +222,28 @@ export default function Supplier() {
                         </Button>
                     </div>
                     <TextField className="my-3"
-                               label="sales"
-                               disabled={true}
-                               value={sessionStorage.getItem('email')}
-                               onChange={handleChange}
-                    />
-                    <TextField className="my-3"
                                label="Name"
-                               name="name"
+                               name="v_box1"
                                required
                                onChange={handleChange}
                     />
                     <TextField className="my-3"
                                label={box2}
-                               name={box2}
+                               name="v_box2"
                                type="text"
                                required
                                onChange={handleChange}
                     />
                     <TextField className="my-3"
                                label={box3}
-                               name={box3}
+                               name="v_box3"
                                type="text"
                                required
                                onChange={handleChange}
                     />
                     <TextField className="my-3"
                                label={boxLa}
-                               name="nickname"
+                               name="v_box4"
                                variant="filled"
                                type="text"
                                required
@@ -262,8 +251,15 @@ export default function Supplier() {
                     />
                     <TextField className="my-3"
                                label="Tel."
-                               name="tel"
+                               name="v_box5"
                                variant="filled"
+                               type="text"
+                               required
+                               onChange={handleChange}
+                    />
+                    <TextField className="my-3"
+                               label="Address"
+                               name="v_box7"
                                type="text"
                                required
                                onChange={handleChange}
@@ -285,7 +281,7 @@ export default function Supplier() {
                 </form>
             </Modal>
             <ToastContainer/>
-        </SupplierWrapper>
+        </CustomerWrapper>
 
     );
 }

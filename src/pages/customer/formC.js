@@ -24,8 +24,6 @@ const AddTable = (s_name) => {
             navigate('/inc')
         }
     }
-    console.log(s_name.s_name)
-    console.log(typeof formData)
 
     return (
         formData.filter( result => {

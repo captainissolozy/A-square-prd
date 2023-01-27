@@ -7,7 +7,7 @@ import Modal from "@material-ui/core/Modal";
 import db from "../../../../config/firebase-config"
 import {collection, doc, getDoc, setDoc, getDocs, deleteDoc} from "firebase/firestore"
 import FormC from "./formC";
-import {ToastContainer} from "react-toastify";
+import {toast, ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import CustomerWrapper from "./CustomerWrapper";
 import AddIcon from "@mui/icons-material/Add";
@@ -46,7 +46,8 @@ export default function Customer() {
         sales: sessionStorage.getItem("email"),
         date: current.getDate(),
         month: current.getMonth() + 1,
-        year: current.getFullYear()
+        year: current.getFullYear(),
+        payment: ""
     });
 
     const initialDocData = Object.freeze({
@@ -133,11 +134,6 @@ export default function Customer() {
         setListen(data)
     }
 
-    const handleSubmitUpload = (e) => {
-        e.preventDefault()
-        setOpen(false)
-    }
-
     const handleChangeToOrg = () => {
         setBox2("taxpayerNum")
         setBox3("registerCapital")
@@ -150,9 +146,6 @@ export default function Customer() {
         setBox3("email")
         setSendTo(1)
         setBoxLa("Nickname")
-    }
-
-    const handleChangeUploadFile = (e) => {
     }
 
     const handleChangeUpload = (e) => {
@@ -216,16 +209,20 @@ export default function Customer() {
 
     const handleSubmitNext = async (e) => {
         e.preventDefault()
-        if (stateOfN === false && formDataProject.projectName !== "" && formDataProject.subject !== "") {
+        if (stateOfN === false && formDataProject.projectName !== "" && formDataProject.subject !== ""
+            && listenC !== "" && listenC !== null) {
             setCountQo(1)
             setStateOfN(true)
             console.log(genQo)
             let projectData = {
                 ...formDataProject,
-                ...formDataIn
+                ...formDataIn,
+                genQo
             }
             const docRef1 = doc(db, "PO", genQo);
             await setDoc(docRef1, projectData);
+        }else {
+            toast.error('Please Fill in all the value', {position: toast.POSITION.BOTTOM_CENTER});
         }
     };
 
@@ -247,11 +244,11 @@ export default function Customer() {
         if (stateOfN === true) {
             setStateOfN(false)
         }
-        console.log(genQo)
     };
 
-    const handleGoNext = async (e) => {
-        navigate("/insideQuotation")
+    const handleGoNext = async () => {
+        navigate("/")
+        sessionStorage.setItem("projectID", genQo)
     };
 
     return (
@@ -401,6 +398,21 @@ export default function Customer() {
                                         }}
                                                    name="v_box7" label="Address" className="w-100" required
                                                    value={formDataIn.v_box7} disabled={edit}/>
+                                    </div>
+                                </div>
+                                <div className="col-12 px-1">
+                                    <div className="col p-0 pt-1 mb-2">
+                                        <TextField name="payment" type="text" variant="filled" onChange={handleChangePro} InputLabelProps={{
+                                            shrink: true,
+                                        }} inputProps={{
+                                            style: {
+                                                height: "20px",
+                                            },
+                                        }}
+                                                   label="payment"
+                                                   className="w-100 px-1"
+                                                   required
+                                                   />
                                     </div>
                                 </div>
                             </div>

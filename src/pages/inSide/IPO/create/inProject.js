@@ -4,14 +4,15 @@ import {useNavigate} from "react-router-dom";
 import {useUserContext} from "../../../../context/UserContexts";
 import {Button, IconButton, TextField} from "@mui/material";
 import Modal from "@material-ui/core/Modal";
-import db from "../../../../config/firebase-config"
+import db, {storage} from "../../../../config/firebase-config"
 import {collection, doc, getDoc, setDoc, getDocs, deleteDoc} from "firebase/firestore"
-import FormC from "./formC";
+import FormP from "./formP";
+import FormP2 from "./formP2";
 import {ToastContainer} from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import CustomerWrapper from "./CustomerWrapper";
 import AddIcon from "@mui/icons-material/Add";
-import ComboBox from "./combobox";
+import {getDownloadURL, ref, uploadBytesResumable} from "firebase/storage";
 
 
 export default function Customer() {
@@ -40,32 +41,17 @@ export default function Customer() {
         v_box7: ""
     });
 
-    const initialFormDataProject = Object.freeze({
-        subject: "",
-        projectName: "",
-        sales: sessionStorage.getItem("email"),
-        date: current.getDate(),
-        month: current.getMonth() + 1,
-        year: current.getFullYear()
-    });
-
     const initialDocData = Object.freeze({
-        description: "",
-        quantity: 1,
-        unit: "",
-        labor: 0,
-        material: 0
+        name: "",
     });
 
     const navigate = useNavigate()
     const {user} = useUserContext()
     const [open, setOpen] = useState(false)
-    const [stateOfN, setStateOfN] = useState(false)
     const [openTwo, setOpenTwo] = useState(false)
     const [formDataIn, setFormDataIn] = useState([])
     const [formData, updateFormData] = useState(initialFormData)
     const [formData2, updateFormData2] = useState(initialFormData2)
-    const [formDataProject, updateFormDataProject] = useState(initialFormDataProject)
     const [edit] = useState(true)
     const [box2, setBox2] = useState("Taxpayer-num")
     const [box3, setBox3] = useState("Register-capital")
@@ -73,14 +59,12 @@ export default function Customer() {
     const [sendTo, setSendTo] = useState(2)
     const [count, setCount] = useState(0)
     const [docName, setDocName] = useState(initialDocData)
-    const [listenC, setListen] = useState("");
-    const [genQo, setGenQo] = useState("");
-    const [countQo, setCountQo] = useState(0);
+    const [file, setFile] = useState("");
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(async () => {
         async function fetchData() {
-            const docRef1 = doc(db, "CustomersDetail", listenC);
+            const docRef1 = doc(db, "PO", sessionStorage.getItem("projectID"));
             const docSnap = await getDoc(docRef1);
             if (docSnap.exists()) {
                 setFormDataIn(docSnap.data())
@@ -91,8 +75,7 @@ export default function Customer() {
         }
 
         await fetchData()
-    }, [count, listenC])
-
+    }, [count])
 
     useEffect(() => {
         if (formDataIn.type === "Private") {
@@ -105,7 +88,7 @@ export default function Customer() {
             setBox2("taxpayerNum")
         }
 
-    }, [count, formDataIn.type, listenC])
+    }, [count, formDataIn.type])
 
     useEffect(() => {
         if (!user) {
@@ -113,57 +96,15 @@ export default function Customer() {
         }
     }, [navigate, user])
 
-    useEffect(async () => {
-        const docRef1 = collection(db, "PO");
-        const docSnap = await getDocs(docRef1);
-        if (countQo === 0){
-            setGenQo(`${docSnap.docs.length+1}`+`${formDataProject.date}`+
-                `${formDataProject.month}`+`${formDataProject.year}`)
-        }
-    }, [formDataProject, genQo, stateOfN])
-
     const handleCreate = () => {
         setOpen(true)
+        navigate('/StaticQuotation')
     }
     const handleCreateTwo = () => {
         setOpenTwo(true)
     }
 
-    const listenChange = (data) => {
-        setListen(data)
-    }
-
-    const handleSubmitUpload = (e) => {
-        e.preventDefault()
-        setOpen(false)
-    }
-
-    const handleChangeToOrg = () => {
-        setBox2("taxpayerNum")
-        setBox3("registerCapital")
-        setSendTo(2)
-        setBoxLa("Agent")
-    }
-
-    const handleChangeToPer = () => {
-        setBox2("surname")
-        setBox3("email")
-        setSendTo(1)
-        setBoxLa("Nickname")
-    }
-
-    const handleChangeUploadFile = (e) => {
-    }
-
-    const handleChangeUpload = (e) => {
-        setDocName({
-            ...docName,
-            [e.target.name]: e.target.value
-        })
-    }
-
-    const handleClose = () => {
-        setOpen(false)
+    const handleDone = () => {
     }
 
     const handleCloseTwo = () => {
@@ -178,117 +119,67 @@ export default function Customer() {
         })
     }
 
-    const handleChange = (e) => {
-        if (sendTo === 1) {
-            updateFormData({
-                ...formData,
-                [e.target.name]: e.target.value.trim()
-            })
-        } else if (sendTo === 2) {
-            updateFormData2({
-                ...formData2,
-                [e.target.name]: e.target.value.trim()
-            })
-        }
+    const handleChangeUploadFile = (e) => {
+        setFile(e.target.files[0])
     }
 
-    const handleChangePro = (e) => {
-        updateFormDataProject({
-            ...formDataProject,
+    const handleChangeUpload = (e) => {
+        setDocName({
+            ...docName,
             [e.target.name]: e.target.value
         })
     }
 
-    const handleSubmit = async (e) => {
+    const handleSubmitUpload = (e) => {
         e.preventDefault()
-        if (sendTo === 1) {
-            sessionStorage.setItem('roomKeyCus', formData.v_box1 + formData.v_box2)
-            const docRef1 = doc(db, "CustomersDetail", formData.v_box1 + formData.v_box2);
-            await setDoc(docRef1, formData);
-            setOpen(false)
-        } else {
-            sessionStorage.setItem('roomKeyCus', formData2.v_box1 + formData2.v_box2)
-            const docRef1 = doc(db, "CustomersDetail", formData2.v_box1 + formData2.v_box2);
-            await setDoc(docRef1, formData2);
-            setOpen(false)
+        if (!file) {
+            alert("Please choose a file first!")
         }
-    };
-
-    const handleSubmitNext = async (e) => {
-        e.preventDefault()
-        if (stateOfN === false && formDataProject.projectName !== "" && formDataProject.subject !== "") {
-            setCountQo(1)
-            setStateOfN(true)
-            console.log(genQo)
-            let projectData = {
-                ...formDataProject,
-                ...formDataIn
+        const storageRef = ref(storage, `/media/PO/${file.name}`)
+        const uploadTask = uploadBytesResumable(storageRef, file);
+        uploadTask.on(
+            "state_changed",
+            (snapshot) => {
+                const percent = Math.round(
+                    (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+                );
+            },
+            (err) => console.log(err),
+            () => {
+                // download url
+                getDownloadURL(uploadTask.snapshot.ref).then(async (url) => {
+                    const docRef1 = doc(db, "PO", sessionStorage.getItem("projectID"), "media", docName.name);
+                    await setDoc(docRef1, {docName, url});
+                });
             }
-            const docRef1 = doc(db, "PO", genQo);
-            await setDoc(docRef1, projectData);
-        }
-    };
-
-    const handleSubmitPrice = async (e) => {
-        e.preventDefault()
-        const docRef1 = doc(db, "PO", genQo, genQo, docName.description);
-        await setDoc(docRef1, docName);
+        );
         setOpenTwo(false)
-        setDocName({
-            ...docName,
-            labor: 0,
-            material: 0,
-            quantity: 1,
-        })
-    };
-
-    const handleCancelNext = async (e) => {
-        e.preventDefault()
-        if (stateOfN === true) {
-            setStateOfN(false)
-        }
-        console.log(genQo)
-    };
-
-    const handleGoNext = async (e) => {
-    };
+        setDocName("")
+    }
 
     return (
         <CustomerWrapper>
             <div className="wrapper-box pt-4">
                 <div className="container pt-5 mb-3">
-                    <h4 className="pt-1 pt-md-1 px-2 mb-0">Project:</h4>
+                    <h4 className="pt-1 pt-md-1 px-2 mb-0">Project: {formDataIn.projectName}</h4>
                     <form>
                         <div className="row pt-2 pt-md-1 px-3 mb-0">
                             <div className="col px-2">
                                 <div className="col pt-1 col-md-12">
-                                    <TextField type="search" onChange={handleChangePro} InputLabelProps={{
+                                    <TextField type="search" InputLabelProps={{
                                         shrink: true,
                                     }} inputProps={{
                                         style: {
                                             height: "5px",
                                         },
                                     }}
-                                               name="subject" label="Subject" className="w-100" required disabled={stateOfN}
+                                               name="subject" label="Subject" className="w-100" disabled={true} value={formDataIn.subject}
                                     />
                                 </div>
                             </div>
                             <div className="col p-0">
                                 <div className="col p-0 pt-1 mb-2 mx-2">
-                                    <TextField type="search" onChange={handleChangePro} InputLabelProps={{
-                                        shrink: true,
-                                    }} inputProps={{
-                                        style: {
-                                            height: "5px",
-                                        },
-                                    }}
-                                               name="projectName" label="Project Name" className="w-100" required disabled={stateOfN}
-                                    />
-                                </div>
-                            </div>
-                            <div className="col-12 px-1">
-                                <div className="col p-0 pt-1 mb-2">
-                                    <TextField type="search" onChange={handleChangePro} InputLabelProps={{
+                                    <TextField type="search" InputLabelProps={{
                                         shrink: true,
                                     }} inputProps={{
                                         style: {
@@ -296,30 +187,16 @@ export default function Customer() {
                                         },
                                     }}
                                                label="sales"
-                                               className="w-100 px-1"
+                                               className="w-100"
                                                required
                                                disabled={true}
-                                               value={sessionStorage.getItem('email')}/>
+                                               value={formDataIn.sales}/>
                                 </div>
                             </div>
                         </div>
-                        <div className="heading-container mt-1 d-flex justify-content-start px-2 pt-1">
-                            <div className="col">
-                                <div className="col p-0">
-                                    <IconButton variant="outlined" className="px-1" color="error"
-                                                onClick={handleCreate}
-                                                size="small"><h5 className="text-dark mb-0">Customer:</h5>
-                                        <AddIcon color="error"
-                                                 className="mt-1 mx-1 bg-primary rounded text-light"/></IconButton>
-                                </div>
-                                <h5 className="px-1">Select:</h5>
-                                <ComboBox func={listenChange} dis={stateOfN}/>
-                            </div>
-
-                        </div>
-                        <div className="row mt-3 d-flex justify-content-center">
-                            <div className="row pt-1">
-                                <h6 className="pt-1 pt-md-1">Customer-info:</h6>
+                        <div className="row mt-1 d-flex justify-content-center">
+                            <div className="row">
+                                <h6 className="">Customer-info:</h6>
                                 <div className="col px-2">
                                     <div className="col pt-1 col-md-12 mb-2">
                                         <TextField id="v_box1" type="search" InputLabelProps={{
@@ -403,39 +280,39 @@ export default function Customer() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="row">
-                                <div className="col p-0 mb-3">
-                                    <div className="col p-0 pt-1 mt-2 mx-2 d-flex flex-row-reverse">
-                                        <Button variant="contained" className="" color="primary"
-                                                onClick={handleSubmitNext} type="submit" disabled={stateOfN}
-                                                size="small">confirm
-                                        </Button>
-                                        <Button variant="contained" className="mx-1" color="secondary"
-                                                onClick={handleCancelNext} type="submit" disabled={!stateOfN}
-                                                size="small">Edit
-                                        </Button>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </form>
-                    {stateOfN?(<div className="container-fluid p-0">
+                    <div className="container-fluid p-0">
                         <div className="row m-2 pt-1 mb-0">
-
+                            <table className="table table-sm border-bottom-0">
+                                <thead className="bg-dark text-light">
+                                <tr>
+                                    <th scope="col" className="t-stick">Quotation</th>
+                                    <th scope="col" className="t-stick">File</th>
+                                </tr>
+                                </thead>
+                                <FormP roomCode={sessionStorage.getItem("projectID")}/>
+                            </table>
+                        </div>
+                        <div className="row m-2 justify-content-end mt-0">
+                            <div className="col-2 p-0 mx-md-1 col-md-1 mx-2">
+                                <Button variant="outlined" className="w-100" color="primary" onClick={handleCreate}
+                                        size="small"><AddIcon/>
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="container-fluid p-0">
+                        <div className="row m-2 pt-1 mb-0 mt-4">
                             <table className="table table-sm border-bottom-0">
                                 <thead className="bg-dark text-light">
                                 <tr>
                                     <th scope="col" className="t-stick">Description</th>
-                                    <th scope="col" className="t-stick">Quantity</th>
-                                    <th scope="col" className="t-stick">unit</th>
-                                    <th scope="col" className="t-stick">labor</th>
-                                    <th scope="col" className="t-stick">material</th>
-
+                                    <th scope="col" className="t-stick">Document</th>
                                 </tr>
                                 </thead>
-                                <FormC roomCode={genQo}/>
+                                <FormP2 roomCode={sessionStorage.getItem("projectID")}/>
                             </table>
-
                         </div>
                         <div className="row m-2 justify-content-end mt-0">
                             <div className="col-2 p-0 mx-md-1 col-md-1 mx-2">
@@ -444,14 +321,16 @@ export default function Customer() {
                                 </Button>
                             </div>
                         </div>
-                        <div className="row m-1 mt-0 justify-content-end">
-                            <div className="col-4 p-0 mt-2 col-md-2 mx-1">
-                                <Button variant="contained" className="w-100" color="primary" onClick={handleGoNext}
+                    </div>
+                    <div className="container-fluid p-0">
+                        <div className="row m-2 justify-content-center mt-3">
+                            <div className="col-3 p-0 col-md-1">
+                                <Button variant="contained" className="w-100" color="error" onClick={handleDone}
                                         size="small">Finish
                                 </Button>
                             </div>
                         </div>
-                    </div>):(<></>)}
+                    </div>
                 </div>
             </div>
             <Modal
@@ -460,201 +339,32 @@ export default function Customer() {
                 className="d-flex justify-content-center align-items-center"
 
             >
-
                 <form className="border border-secondary p-2 m-2 rounded-2 row bg-white py-4">
                     <div className="pt-2">
-                        <h4 className="col d-flex justify-content-start px-2">Add work</h4>
-                        <div className="row mt-3 d-flex justify-content-center mb-2">
-                            <div className="row pt-1">
-                                <div className="col px-2">
-                                    <div className="col pt-1 col-md-12 mb-2">
-                                        <TextField onChange={handleChangeUpload} type="search" InputLabelProps={{
-                                            shrink: true,
-                                        }} inputProps={{
-                                            style: {
-                                                height: "5px",
-                                            },
-                                        }}
-                                                   name="description" label="Description" className="w-100"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="row pt-1">
-                                <div className="col px-2">
-                                    <div className="col pt-1 col-md-12 mb-2">
-                                        <TextField onChange={handleChangeUpload} type="number" InputLabelProps={{
-                                            shrink: true,
-                                        }} inputProps={{
-                                            style: {
-                                                height: "5px",
-                                            },
-                                        }}
-                                                   name="quantity" label="Quantity" className="w-100" Value={docName.quantity}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="col p-0">
-                                    <div className="col p-0 pt-1 mb-2 mx-2">
-                                        <TextField onChange={handleChangeUpload} type="text" InputLabelProps={{
-                                            shrink: true,
-                                        }} inputProps={{
-                                            style: {
-                                                height: "5px",
-                                            },
-                                        }}
-                                                   name="unit" label="Unit" className="w-100"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col px-2">
-                                    <div className="col pt-1 col-md-12 mb-2">
-                                        <TextField onChange={handleChangeUpload} type="number" InputLabelProps={{
-                                            shrink: true,
-                                        }} inputProps={{
-                                            style: {
-                                                height: "5px",
-                                            },
-                                        }}
-                                                   name="labor" label="Labor" className="w-100"
-                                        />
-                                    </div>
-                                </div>
-                                <div className="col p-0">
-                                    <div className="col p-0 pt-1 mb-2 mx-2">
-                                        <TextField onChange={handleChangeUpload} type="number" InputLabelProps={{
-                                            shrink: true,
-                                        }} inputProps={{
-                                            style: {
-                                                height: "5px",
-                                            },
-                                        }}
-                                                   name="material" label="Material" className="w-100"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col px-2">
-                                    <div className="col pt-1 col-md-12 mb-2">
-                                        <TextField type="number" disabled={true} InputLabelProps={{
-                                            shrink: true,
-                                        }} inputProps={{
-                                            style: {
-                                                height: "5px",
-                                            },
-                                        }}
-                                                   name="totalUnitPrice" label="TotalUnitPrice" className="w-100" value={(parseFloat(docName.labor)+parseFloat(docName.material))}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="row">
-                                <div className="col px-2">
-                                    <div className="col pt-1 col-md-12 mb-2">
-                                        <TextField type="number" disabled={true} InputLabelProps={{
-                                            shrink: true,
-                                        }} inputProps={{
-                                            style: {
-                                                height: "5px",
-                                            },
-                                        }}
-                                                   name="total" label="Total" className="w-100" value={docName.quantity*(parseFloat(docName.labor)+parseFloat(docName.material))}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
+                        <h4 className="col d-flex justify-content-center">Add new-document</h4>
+                        <div className="col d-flex justify-content-center">
+
+                            <TextField className="m-3"
+                                       label="Name"
+                                       name="name"
+                                       required
+                                       size="small"
+                                       onChange={handleChangeUpload}
+                            />
+                            <input name="path" className="row d-flex justify-content-center px-2 mb-3 pt-4"
+                                   type="file" accept="image/*" onChange={handleChangeUploadFile}/>
                         </div>
 
-                        <div className="row d-flex justify-content-center">
-                            <Button type="submit" variant="contained" color="error" className="mx-3 col-3"
+                        <div className="col d-flex justify-content-center">
+
+                            <Button type="submit" variant="contained" color="error" className="mx-3 col"
                                     onClick={handleCloseTwo}>
                                 Close
                             </Button>
-                            <Button type="submit" variant="contained" color="primary" className="mx-3 px-2 col-3"
-                                    onClick={handleSubmitPrice}>
+
+                            <Button type="submit" variant="contained" color="primary" className="mx-3 col"
+                                    onClick={handleSubmitUpload}>
                                 Add
-                            </Button>
-
-                        </div>
-                    </div>
-                </form>
-            </Modal>
-            <Modal
-                open={open}
-                onClose={handleClose}
-                className="d-flex justify-content-center align-items-center"
-
-            >
-
-                <form className="border border-secondary p-4 m-2 rounded-2 row bg-white">
-                    <div className="heading-container mt-2 d-flex justify-content-start">
-                        <h3>Customer</h3>
-                        <Button type="submit" variant="outlined" color="warning" className="mx-2 m"
-                                onClick={handleChangeToOrg}>
-                            Org
-                        </Button>
-                        <Button type="submit" variant="outlined" color="success" className="mx-1 m"
-                                onClick={handleChangeToPer}>
-                            Private
-                        </Button>
-                    </div>
-                    <TextField className="my-3"
-                               label="Name"
-                               name="v_box1"
-                               required
-                               onChange={handleChange}
-                    />
-                    <TextField className="my-3"
-                               label={box2}
-                               name="v_box2"
-                               type="text"
-                               required
-                               onChange={handleChange}
-                    />
-                    <TextField className="my-3"
-                               label={box3}
-                               name="v_box3"
-                               type="text"
-                               required
-                               onChange={handleChange}
-                    />
-                    <TextField className="my-3"
-                               label={boxLa}
-                               name="v_box4"
-                               variant="filled"
-                               type="text"
-                               required
-                               onChange={handleChange}
-                    />
-                    <TextField className="my-3"
-                               label="Tel."
-                               name="v_box5"
-                               variant="filled"
-                               type="text"
-                               required
-                               onChange={handleChange}
-                    />
-                    <TextField className="my-3"
-                               label="Address"
-                               name="v_box7"
-                               type="text"
-                               required
-                               onChange={handleChange}
-                    />
-
-                    <div className="pt-2">
-                        <div className="col d-flex justify-content-center">
-                            <Button type="submit" variant="contained" color="secondary" className="mx-3 m"
-                                    onClick={handleClose}>
-                                Close
-                            </Button>
-
-                            <Button type="submit" variant="contained" color="primary" className="mx-3"
-                                    onClick={handleSubmit}>
-                                Create
                             </Button>
                         </div>
                     </div>
