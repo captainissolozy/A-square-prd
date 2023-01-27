@@ -16,9 +16,7 @@ const AddTable = (props) => {
     }, [])
 
     const handleJoinPublic = async (id) => {
-        console.log("click")
         sessionStorage.setItem('quotationID', id)
-        console.log(id)
         const docRef1 = doc(db, "PO", props.roomCode, "Quotation", id);
         const docSnap = await getDoc(docRef1);
         console.log(docSnap.data())

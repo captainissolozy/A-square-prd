@@ -296,13 +296,6 @@ export default function Customer() {
                         </div>
                     </div>
                     <div className="container-fluid p-0">
-                        <div className="row m-2 justify-content-center mt-3">
-                            <div className="col-3 p-0 col-md-1">
-                                <Button variant="contained" className="w-100" color="error" onClick={handleDone}
-                                        size="small">Finish
-                                </Button>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

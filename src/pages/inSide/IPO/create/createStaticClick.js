@@ -14,15 +14,6 @@ import FormPStatic2 from "./formPStatic2";
 
 export default function Customer(props) {
 
-    const initialDocData = Object.freeze({
-        description: "",
-        quantity: 1,
-        unit: "",
-        labor: 0,
-        material: 0
-    });
-
-
     const navigate = useNavigate()
     const {user} = useUserContext()
     const [formDataIn, setFormDataIn] = useState([])
