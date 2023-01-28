@@ -34,6 +34,10 @@ const CustomerWrapper = styled.div`
     max-width: 900px !important;
     background: white;
   }
+  form2 {
+    overflow: scroll;
+    max-width: 900px;
+  }
 
 `
 export default CustomerWrapper

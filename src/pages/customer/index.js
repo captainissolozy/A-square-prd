@@ -119,7 +119,7 @@ export default function Customer() {
     return (
         <CustomerWrapper>
             <div className="wrapper-box pt-4 ">
-                <div className="container pt-4 bg-cus">
+                <div className="container-fluid bg-white pt-4 bg-cus">
                     <div className="my-1 p-3 pb-3 row d-flex justify-content-center">
                         <div className="col-10 px-2 d-flex justify-content-start col-md-9">
                             <IconButton variant="outlined" className="px-0" color="primary" onClick={handleCreate}
@@ -205,13 +205,12 @@ export default function Customer() {
             <Modal
                 open={open}
                 onClose={handleClose}
-                className="d-flex justify-content-center align-items-center overflow-scroll mt-5 h-100 p-3"
-
+                className="d-flex justify-content-center align-items-center overflow-scroll h-100 p-2"
             >
 
-                <form className="border border-secondary p-4 m-2 rounded-2 row bg-white">
+                <form className="border border-secondary p-4 m-2 rounded-2 row bg-white" style={{maxWidth: "900px"}}>
                     <div className="heading-container mt-2 d-flex justify-content-start">
-                        <h3>Customer</h3>
+                        <h3>Customer:</h3>
                         <Button type="submit" variant="outlined" color="warning" className="mx-2 m"
                                 onClick={handleChangeToOrg}>
                             Org
@@ -221,27 +220,27 @@ export default function Customer() {
                             Private
                         </Button>
                     </div>
-                    <TextField className="my-3"
+                    <TextField className="my-2"
                                label="Name"
                                name="v_box1"
                                required
                                onChange={handleChange}
                     />
-                    <TextField className="my-3"
+                    <TextField className="my-2"
                                label={box2}
                                name="v_box2"
                                type="text"
                                required
                                onChange={handleChange}
                     />
-                    <TextField className="my-3"
+                    <TextField className="my-2"
                                label={box3}
                                name="v_box3"
                                type="text"
                                required
                                onChange={handleChange}
                     />
-                    <TextField className="my-3"
+                    <TextField className="my-2"
                                label={boxLa}
                                name="v_box4"
                                variant="filled"
@@ -249,7 +248,7 @@ export default function Customer() {
                                required
                                onChange={handleChange}
                     />
-                    <TextField className="my-3"
+                    <TextField className="my-2"
                                label="Tel."
                                name="v_box5"
                                variant="filled"
@@ -257,7 +256,7 @@ export default function Customer() {
                                required
                                onChange={handleChange}
                     />
-                    <TextField className="my-3"
+                    <TextField className="my-2"
                                label="Address"
                                name="v_box7"
                                type="text"

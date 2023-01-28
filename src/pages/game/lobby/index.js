@@ -105,7 +105,7 @@ export default function Lobby() {
     return (
         <LobbyWrapper>
             <div className="wrapper-box pt-4">
-                <div className="container pt-5">
+                <div className="container pt-5" style={{height: "auto"}}>
                     <div className=''>
                     <div className="col px-2">
                         <IconButton variant="outlined" className="px-0" color="primary" onClick={handleCreate}
@@ -193,9 +193,8 @@ export default function Lobby() {
                         </div>
                     </div>
                     </div>
-                    <div className="row mt-2">
-                        <div className="table-responsive">
-                            <table className="table table-sm border-bottom-0">
+                    <div className="row mt-2 mx-1 table-responsive">
+                            <table className="table table-sm border-bottom-0 overflow-auto" id="dtHorizontalExample" >
                                 <thead className="bg-dark text-light">
                                 <tr>
                                     <th scope="col" className="t-stick th-sm">Q-No</th>
@@ -208,7 +207,6 @@ export default function Lobby() {
                                           day={searchKey.day} month={searchKey.month} year={searchKey.year}
                                 />
                             </table>
-                        </div>
                     </div>
                 </div>
 

@@ -8,17 +8,17 @@ const LobbyWrapper = styled.div`
   }
 .t-tab{
     height: calc(75vh - 62.5px);
-  border-bottom: black;
+    border-bottom: black;
 }
 
 .t-stick{
     position: sticky; top: 0;
     border-top: white;
-  overflow: hidden;
+    overflow: hidden;
 }
 .table{
   border-bottom: solid black 2px;
-  overflow: hidden;
+  overflow-x: scroll;
 }
   .box{
     border: solid black 2px;
@@ -26,6 +26,12 @@ const LobbyWrapper = styled.div`
   th{
     background: #23354D;
   }
-  
+  .tableContainer {
+    overflow: hidden;
+    min-width: 360px;
+  }
+  #dtHorizontalExample{
+    overflow-x: hidden;
+  }
 `
 export default LobbyWrapper

@@ -4,6 +4,9 @@ const NavWrapper = styled.div`
   .navbar{
     background: #23354D;
   }
+  .lmh{
+    max-width: 1400px;
+  }
 .btn-res{
   @media screen and (max-width: 769px){
     display: none!important;

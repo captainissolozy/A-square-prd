@@ -20,6 +20,7 @@ function App() {
 
     return (<>
         <BrowserRouter>
+            <div className="container-fluid" >
             <Navbar/>
             <Routes>
                 <Route path="/" element={<LoginPage/>}/>
@@ -44,6 +45,7 @@ function App() {
                 <Route path="/staticQuotation" element={<StaticQuote/>}/>
                 <Route path="/staticQuotation2" element={<StaticQuote2/>}/>
             </Routes>
+        </div>
         </BrowserRouter>
     </>);
 }

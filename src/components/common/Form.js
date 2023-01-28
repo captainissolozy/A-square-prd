@@ -13,7 +13,7 @@ const BasicTextFields = ({setPassword, setEmail, handleAction}) => {
     return (
         <FormWrapper>
             <div className="box">
-                <form className="regis-b c-box border border-primary p-4 rounded-2 w-100" onSubmit={handleSubmit}>
+                <form className="regis-b c-box border border-primary p-4 rounded-2 w-100 bg-white" onSubmit={handleSubmit}>
                     <div>
                     </div>
                     <div className="heading-container mt-2 d-flex flex-row-reverse justify-content-center">

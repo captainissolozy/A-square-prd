@@ -47,7 +47,7 @@ const Navbar = () => {
     return (
         <NavWrapper>
             <nav className="navbar navbar-expand-lg navbar-dark fixed-top mb-4">
-                <div className="container-fluid">
+                <div className="container-fluid lmh">
                     <a className="navbar-brand" href="#">
                         ASQuare
                     </a>
