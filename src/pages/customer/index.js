@@ -118,7 +118,7 @@ export default function Customer() {
 
     return (
         <CustomerWrapper>
-            <div className="wrapper-box pt-4 ">
+            <div className="wrapper-box pt-4 container px-0">
                 <div className="container-fluid bg-white pt-4 bg-cus">
                     <div className="my-1 p-3 pb-3 row d-flex justify-content-center">
                         <div className="col-10 px-2 d-flex justify-content-start col-md-9">
@@ -184,7 +184,7 @@ export default function Customer() {
                         </div>
                     </div>
                     <div className="row m-2 mt-1 pt-2">
-
+                        <div className="table-responsive">
                         <table className="table table-sm border-bottom-0 rounded">
                             <thead className="text-light color">
                             <tr>
@@ -197,7 +197,7 @@ export default function Customer() {
                             <FormC s_name={searchChanged.name} s_status={searchChanged.status}
                                    s_nickname={searchChanged.nickname} s_tel={searchChanged.tel}/>
                         </table>
-
+                        </div>
                     </div>
 
                 </div>

@@ -255,7 +255,7 @@ export default function Customer() {
     return (
         <CustomerWrapper>
             <div className="wrapper-box pt-4">
-                <div className="container-fluid pt-5 mb-3 bg-white">
+                <div className="container pt-5 mb-3 bg-white">
                     <h4 className="pt-1 pt-md-1 px-2 mb-0">Quotation</h4>
                     <form>
                         <div className="row pt-2 pt-md-1 px-3 mb-0">

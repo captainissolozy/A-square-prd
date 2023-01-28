@@ -30,7 +30,7 @@ const CustomerWrapper = styled.div`
     border: solid black 2px;
   }
   .container{
-    height: 100vh;
+    min-height: 1080px;
     max-width: 900px !important;
     background: white;
   }

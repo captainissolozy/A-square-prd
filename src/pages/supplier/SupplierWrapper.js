@@ -22,7 +22,7 @@ const LobbyWrapper = styled.div`
     background: #23354D;
   }
   .container{
-    height: 100vh;
+    min-height: 1080px;
     max-width: 900px !important;
     background: white;
   }

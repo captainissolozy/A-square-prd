@@ -143,7 +143,7 @@ export default function Customer(props) {
     return (
         <CustomerWrapper>
             <div className="wrapper-box pt-4">
-                <div className="container-fluid bg-white pt-5 mb-3">
+                <div className="container bg-white pt-5 mb-3">
                     <h4 className="pt-1 pt-md-1 px-2 mb-2">Quotation: {formDataIn.genQo}</h4>
                     <form>
                         <div className="row pt-2 pt-md-1 px-3 mb-0">

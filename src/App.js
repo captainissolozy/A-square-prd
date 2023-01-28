@@ -20,7 +20,7 @@ function App() {
 
     return (<>
         <BrowserRouter>
-            <div className="container-fluid" >
+            <div className="container" >
             <Navbar/>
             <Routes>
                 <Route path="/" element={<LoginPage/>}/>
