@@ -101,7 +101,6 @@ export default function Customer(props) {
             [e.target.name]: e.target.value
         })
     }
-
     const handleSubmitNext = async (e) => {
         e.preventDefault()
         if (formDataIn.option) {
