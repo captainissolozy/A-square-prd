@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "A-square"
-  }
+    "default": "A-square",
+    "a-square": "a-square-c59d8"
+  },
+  "targets": {},
+  "etags": {}
 }
