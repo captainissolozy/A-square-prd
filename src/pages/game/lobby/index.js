@@ -106,6 +106,7 @@ export default function Lobby() {
         <LobbyWrapper>
             <div className="wrapper-box pt-4">
                 <div className="container pt-5">
+                    <div className=''>
                     <div className="col px-2">
                         <IconButton variant="outlined" className="px-0" color="primary" onClick={handleCreate}
                                     size="small"><h4 className="text-dark mb-0">Quotation</h4><AddIcon
@@ -190,6 +191,7 @@ export default function Lobby() {
                                 </div>
                             </div>
                         </div>
+                    </div>
                     </div>
                     <div className="row mt-2">
                         <div className="table-responsive">

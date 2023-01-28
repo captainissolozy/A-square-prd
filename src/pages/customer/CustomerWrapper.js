@@ -23,8 +23,16 @@ const CustomerWrapper = styled.div`
     border-bottom: solid black 2px;
     overflow: hidden;
   }
+  thead{
+    background: #23354D;
+  }
   .box{
     border: solid black 2px;
+  }
+  .container{
+    height: 100vh;
+    max-width: 900px !important;
+    background: white;
   }
 
 `

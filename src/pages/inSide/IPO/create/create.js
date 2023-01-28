@@ -213,7 +213,6 @@ export default function Customer() {
             && listenC !== "" && listenC !== null) {
             setCountQo(1)
             setStateOfN(true)
-            console.log(genQo)
             let projectData = {
                 ...formDataProject,
                 ...formDataIn,

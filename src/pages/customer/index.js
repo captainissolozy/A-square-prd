@@ -119,7 +119,7 @@ export default function Customer() {
     return (
         <CustomerWrapper>
             <div className="wrapper-box pt-4 ">
-                <div className="container pt-4">
+                <div className="container pt-4 bg-cus">
                     <div className="my-1 p-3 pb-3 row d-flex justify-content-center">
                         <div className="col-10 px-2 d-flex justify-content-start col-md-9">
                             <IconButton variant="outlined" className="px-0" color="primary" onClick={handleCreate}
@@ -186,7 +186,7 @@ export default function Customer() {
                     <div className="row m-2 mt-1 pt-2">
 
                         <table className="table table-sm border-bottom-0 rounded">
-                            <thead className="bg-dark text-light">
+                            <thead className="text-light color">
                             <tr>
                                 <th scope="col" className="t-stick">Name</th>
                                 <th scope="col" className="t-stick">Contact</th>
@@ -205,7 +205,7 @@ export default function Customer() {
             <Modal
                 open={open}
                 onClose={handleClose}
-                className="d-flex justify-content-center align-items-center"
+                className="d-flex justify-content-center align-items-center overflow-scroll mt-5 h-100 p-3"
 
             >
 
@@ -265,7 +265,7 @@ export default function Customer() {
                                onChange={handleChange}
                     />
 
-                    <div className="pt-2">
+                    <div className="pt-2 pb-3">
                         <div className="col d-flex justify-content-center">
                             <Button type="submit" variant="contained" color="secondary" className="mx-3 m"
                                     onClick={handleClose}>

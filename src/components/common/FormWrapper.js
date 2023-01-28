@@ -16,7 +16,7 @@ const FormWrapper = styled.div`
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    max-width: 350px !important;
+    max-width: 320px !important;
   }
   .font {
     font-size: 1.2em;

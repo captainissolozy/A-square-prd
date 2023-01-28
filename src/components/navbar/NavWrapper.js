@@ -1,6 +1,9 @@
 import styled from "styled-components";
 
-const NavWrapper = styled.div`
+const NavWrapper = styled.div` 
+  .navbar{
+    background: #23354D;
+  }
 .btn-res{
   @media screen and (max-width: 769px){
     display: none!important;

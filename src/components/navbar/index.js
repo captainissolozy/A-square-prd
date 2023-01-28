@@ -46,7 +46,7 @@ const Navbar = () => {
     if (userInfo === {}) return null;
     return (
         <NavWrapper>
-            <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top mb-4">
+            <nav className="navbar navbar-expand-lg navbar-dark fixed-top mb-4">
                 <div className="container-fluid">
                     <a className="navbar-brand" href="#">
                         ASQuare
@@ -78,7 +78,7 @@ const Navbar = () => {
                                         to={"/regis"}
                                         className="nav-link d-flex justify-content-center"
                                     >
-                                        <Button className="m-0 p-0 text-secondary" variant="text">User-regis</Button>
+                                        <Button className="mt-0 p-0 text-secondary" color="secondary" variant="text">User-regis</Button>
                                     </Link>
                                 </li>
                             ) : (
@@ -122,7 +122,7 @@ const Navbar = () => {
                                     <form
                                         className="nav-link active d-flex justify-content-center"
                                     ><Button className="m-0 p-0 text-secondary" variant="text"
-                                             onClick={handlePrPo}>PR/PO</Button>
+                                             onClick={handlePrPo}>Quotation</Button>
                                     </form>
                                 </li>
                             ) : (

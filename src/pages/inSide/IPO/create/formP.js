@@ -19,7 +19,6 @@ const AddTable = (props) => {
         sessionStorage.setItem('quotationID', id)
         const docRef1 = doc(db, "PO", props.roomCode, "Quotation", id);
         const docSnap = await getDoc(docRef1);
-        console.log(docSnap.data())
         if (docSnap.exists()) {
             navigate('/staticQuotation2')
         }

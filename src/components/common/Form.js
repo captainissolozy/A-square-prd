@@ -15,9 +15,6 @@ const BasicTextFields = ({setPassword, setEmail, handleAction}) => {
             <div className="box">
                 <form className="regis-b c-box border border-primary p-4 rounded-2 w-100" onSubmit={handleSubmit}>
                     <div>
-                        <Link to={"/home"} className="font px-4 mx-3 text-decoration-none">
-                            <MdOutlineArrowBackIos/>
-                        </Link>
                     </div>
                     <div className="heading-container mt-2 d-flex flex-row-reverse justify-content-center">
                         <h3>ASQuare</h3>

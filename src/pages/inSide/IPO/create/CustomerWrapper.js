@@ -1,7 +1,10 @@
 import styled from "styled-components";
 
 const CustomerWrapper = styled.div`
-  .wrapper-box{
+  .container{
+    height: 100vh;
+    max-width: 900px !important;
+    background: white;
   }
   .pos-top{
     top: 50px;
@@ -25,6 +28,9 @@ const CustomerWrapper = styled.div`
   }
   .box{
     border: solid black 2px;
+  }
+  th{
+    background: #23354D;
   }
 
 `

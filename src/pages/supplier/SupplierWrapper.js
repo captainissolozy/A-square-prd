@@ -1,9 +1,6 @@
 import styled from "styled-components";
 
 const LobbyWrapper = styled.div`
-  .wrapper-box{
-    height: calc(100vh - 62.5px);
-  }
   .t-tab{
     height: calc(75vh - 62.5px);
     border-bottom: black;
@@ -20,6 +17,14 @@ const LobbyWrapper = styled.div`
   }
   .box{
     border: solid black 2px;
+  }
+  th{
+    background: #23354D;
+  }
+  .container{
+    height: 100vh;
+    max-width: 900px !important;
+    background: white;
   }
 
 `

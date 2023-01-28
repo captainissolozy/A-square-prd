@@ -118,7 +118,7 @@ export default function Customer() {
 
     return (
         <CustomerWrapper>
-            <div className="wrapper-box pt-4 ">
+            <div className="wrapper-box pt-4 bg-cus h-100">
                 <div className="container pt-4">
                     <div className="my-1 p-3 pb-3 row d-flex justify-content-center">
                         <div className="col-10 px-2 d-flex justify-content-start col-md-9">
