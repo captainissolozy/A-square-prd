@@ -32,6 +32,9 @@ const CustomerWrapper = styled.div`
   th{
     background: #23354D;
   }
+  #max{
+    max-width: 900px;!important;
+  }
 
 `
 export default CustomerWrapper

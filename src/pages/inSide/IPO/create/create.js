@@ -476,7 +476,7 @@ export default function Customer() {
             >
 
                 <form className="border border-secondary p-2 m-2 rounded-2 row bg-white py-4" >
-                    <div className="pt-2" style={{maxWidth: "900px"}}>
+                    <div id="max" className="pt-2" style={{maxWidth: "900px"}}>
                         <h4 className="col d-flex justify-content-start px-2">Add work</h4>
                         <div className="row mt-3 d-flex justify-content-center mb-2">
                             <div className="row pt-1">
