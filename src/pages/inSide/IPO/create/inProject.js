@@ -77,9 +77,6 @@ export default function Customer() {
         setOpenTwo(true)
     }
 
-    const handleDone = () => {
-    }
-
     const handleCloseTwo = () => {
         setOpenTwo(false)
         setDocName({

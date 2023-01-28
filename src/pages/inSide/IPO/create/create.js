@@ -255,7 +255,7 @@ export default function Customer() {
     return (
         <CustomerWrapper>
             <div className="wrapper-box pt-4">
-                <div className="container pt-5 mb-3">
+                <div className="container-fluid pt-5 mb-3 bg-white">
                     <h4 className="pt-1 pt-md-1 px-2 mb-0">Quotation</h4>
                     <form>
                         <div className="row pt-2 pt-md-1 px-3 mb-0">
@@ -434,7 +434,7 @@ export default function Customer() {
                         </div>
                     </form>
                     {stateOfN?(<div className="container-fluid p-0">
-                        <div className="row m-2 pt-1 mb-0">
+                        <div className="row m-2 pt-1 mb-0 table-responsive">
 
                             <table className="table table-sm border-bottom-0">
                                 <thead className="bg-dark text-light">

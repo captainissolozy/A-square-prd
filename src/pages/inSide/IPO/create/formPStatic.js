@@ -1,7 +1,6 @@
 import {useEffect, useState} from "react";
 import db from "../../../../config/firebase-config"
 import {collection, doc, getDoc, onSnapshot} from "firebase/firestore"
-import {useNavigate} from "react-router-dom";
 
 
 const AddTable = (props) => {

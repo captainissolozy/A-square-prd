@@ -26,10 +26,9 @@ export default function Customer(props) {
 
     const navigate = useNavigate()
     const {user} = useUserContext()
-    const [stateOfN, setStateOfN] = useState(true)
+    const [stateOfN, setStateOfN] = useState(false)
     const [openTwo, setOpenTwo] = useState(false)
-    const [formDataIn, setFormDataIn] = useState([])
-    const [formDataIn2, setFormDataIn2] = useState([])
+    const [formDataIn, setFormDataIn] = useState([{name: "hi"}])
     const [edit] = useState(true)
     const [box2, setBox2] = useState("Taxpayer-num")
     const [box3, setBox3] = useState("Register-capital")
@@ -53,7 +52,6 @@ export default function Customer(props) {
         }
         await fetchData()
     }, [count])
-
 
     useEffect(() => {
         if (formDataIn.type === "Private") {
@@ -118,6 +116,7 @@ export default function Customer(props) {
 
     const handleSubmitPrice = async (e) => {
         e.preventDefault()
+        setOpenTwo(false)
         const docRef1 = doc(db, "PO", formDataIn.genQo, "Quotation", formDataIn.genQo+"_"+formDataIn.option, "work", docName.description);
         await setDoc(docRef1, docName);
         setOpenTwo(false)
@@ -144,7 +143,7 @@ export default function Customer(props) {
     return (
         <CustomerWrapper>
             <div className="wrapper-box pt-4">
-                <div className="container pt-5 mb-3">
+                <div className="container-fluid bg-white pt-5 mb-3">
                     <h4 className="pt-1 pt-md-1 px-2 mb-2">Quotation: {formDataIn.genQo}</h4>
                     <form>
                         <div className="row pt-2 pt-md-1 px-3 mb-0">
@@ -335,6 +334,7 @@ export default function Customer(props) {
                                 </tr>
                                 </thead>
                                 <FormPStatic roomCode={formDataIn.genQo} currentCode={formDataIn.genQo+"_"+formDataIn.option}/>
+
                             </table>
 
                         </div>
@@ -345,7 +345,7 @@ export default function Customer(props) {
                                 </Button>
                             </div>
                         </div>
-                        <div className="row m-1 mt-0 justify-content-end">
+                        <div className="row m-1 mt-0 justify-content-end pb-2">
                             <div className="col-4 p-0 mt-2 col-md-2 mx-1">
                                 <Button variant="contained" className="w-100" color="primary" onClick={handleGoNext}
                                         size="small">Finish
