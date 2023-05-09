@@ -315,7 +315,7 @@ export default function Customer() {
                                        onChange={handleChangeUpload}
                             />
                             <input name="path" className="row d-flex justify-content-center px-2 mb-3 pt-4"
-                                   type="file" accept="image/*" onChange={handleChangeUploadFile}/>
+                                   type="file" accept="image/*,application/pdf" onChange={handleChangeUploadFile}/>
                         </div>
 
                         <div className="col d-flex justify-content-center">
